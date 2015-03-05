@@ -21,6 +21,7 @@ public class FriseActivity extends Activity {
 	private ArrayList<Task> myTasks; // la liste des activites de la frise
 	private double h0; // l'heure a laquelle commence la frise
 	private double h1; // l'heure a laquelle se termine la frise
+	private final int[] colorTab; // les id des differentes couleurs des activites
 
 	/**
 	 * Constructeur par defaut
@@ -29,6 +30,10 @@ public class FriseActivity extends Activity {
 		myTasks = new ArrayList<Task>();
 		h0 = 8; // debut a 8h
 		h1 = 21; // debut a 21h
+		colorTab = new int[11];
+		colorTab[0] = R.color.vert1; colorTab[1]=R.color.vert2;colorTab[2]=R.color.vert3;colorTab[3]=R.color.bleu1;
+		colorTab[4]=R.color.bleu2;colorTab[5]=R.color.jaune1;colorTab[6]=R.color.orange1;colorTab[7]=R.color.orange2;
+		colorTab[8]=R.color.orange3;colorTab[9]=R.color.rose;colorTab[10]=R.color.fushia;
 	}
 
 	@Override
@@ -36,18 +41,16 @@ public class FriseActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_frise);
 
-		/* Cahngement de police du titre */
+		/* Changement de police du titre */
 		TextView txtView1 = (TextView) findViewById(R.id.texte);
 		Typeface externalFont = Typeface.createFromAsset(getAssets(),
 				"fonts/onthemove.ttf");
 		txtView1.setTypeface(externalFont);
 
 		/* Remplissage de mes taches par lecture du fichier */
-		// Drawable image =
-		// getResources().getDrawable(R.drawable.image_dejeuner);
-		// Task myTask = new Task("Dejeuner", "C'est l'heure de manger", 2,
-		// 14,image);
-		myTasks = TaskReader.read(this, "myTasks.txt");
+		Drawable image = getResources().getDrawable(R.drawable.image_dejeuner);
+		//myTasks = TaskReader.read(this, "myTasks.txt");
+		myTasks = Task.createTasks(this);
 
 		/* Recuperation de la frise et de sa largeur */
 		ImageView scope = (ImageView) findViewById(R.id.scope);
@@ -55,6 +58,8 @@ public class FriseActivity extends Activity {
 		int W = 820;
 		int H = 47;
 
+		int color = 0;
+		
 		for (Task myTask : myTasks) {
 
 			/* Affichage de ma tache sur la frise */
@@ -64,11 +69,12 @@ public class FriseActivity extends Activity {
 
 			/* Creation du rectangle et placement */
 			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(Xwidth, H);
-			layoutParams.setMargins(Xbegin + 3, 3, 0, 0);
+			layoutParams.setMargins(3, 3, 0, 0);
 			rectTask.setLayoutParams(layoutParams);
-			rectTask.setBackgroundColor(getResources().getColor(R.color.vert1));
+			rectTask.setBackgroundColor(getResources().getColor(colorTab[color]));
 			frise.addView(rectTask);
 			rectTask.setVisibility(View.VISIBLE);
+			color += 1;
 		}
 
 		/* Met le scope a l'activite en cours */
@@ -81,6 +87,10 @@ public class FriseActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Trouve la tache qui se deroule a l'heure actuelle
+	 * @return la tache actuelle
+	 */
 	Task findCurrentTask() {
 
 		final Calendar now = Calendar.getInstance();
@@ -108,4 +118,5 @@ public class FriseActivity extends Activity {
 		}
 		return null;
 	}
+	
 }
