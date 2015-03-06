@@ -36,4 +36,28 @@
         android:textColor="@color/fushia"
         android:textSize="50dp" />
 
+    <Button
+        android:id="@+id/bouton_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/home" />
+
+    <Button
+        android:id="@+id/bouton_aide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/bouton_menu"
+        android:background="@drawable/help" />
+
+    <Button
+        android:id="@+id/bouton_retour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/bouton_menu"
+        android:background="@drawable/back" />
+
 </RelativeLayout>

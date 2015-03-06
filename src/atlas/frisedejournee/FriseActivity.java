@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -12,8 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class FriseActivity extends Activity {
@@ -23,6 +26,9 @@ public class FriseActivity extends Activity {
 	private double h1; // l'heure a laquelle se termine la frise
 	private final int[] colorTab; // les id des differentes couleurs des activites
 
+	Button aide = null;
+	Button menu = null;
+	Button retour = null;
 	/**
 	 * Constructeur par defaut
 	 */
@@ -85,6 +91,53 @@ public class FriseActivity extends Activity {
 			paramsScope.leftMargin = 250 + Xmiddle;
 			scope.setLayoutParams(paramsScope);
 		}
+		
+		/* creation des 3 boutons menu, aide et retour à l'activite precedente*/
+		aide = (Button) findViewById(R.id.bouton_aide);
+		menu = (Button) findViewById(R.id.bouton_menu);
+		retour = (Button) findViewById(R.id.bouton_retour);
+		
+		menu.setOnClickListener(new View.OnClickListener() {
+	      @Override
+	      public void onClick(View v) {
+	    	  
+	    	/* Changement de l'aspect du bouton lorsqu'on l'enfonce */  
+	    	Drawable d = getResources().getDrawable(R.drawable.home_e);
+	    	menu.setBackground(d);
+	    	
+	    	/* Passage a l'autre activite */
+	        Intent secondeActivite = new Intent(FriseActivity.this,MenuActivity.class);
+	        startActivity(secondeActivite);
+	      }});
+	      
+	      aide.setOnClickListener(new View.OnClickListener() {
+		      @Override
+		      public void onClick(View v) {
+		    	  
+		    	/* Changement de l'aspect du bouton lorsqu'on l'enfonce */  
+		    	Drawable d = getResources().getDrawable(R.drawable.help_e);
+		    	aide.setBackground(d);
+		    	
+		    	/* Passage a l'autre activite */
+		        Intent secondeActivite = new Intent(FriseActivity.this,MenuAide.class);
+		        startActivity(secondeActivite);
+		      }});
+		      
+		      retour.setOnClickListener(new View.OnClickListener() {
+			      @Override
+			      public void onClick(View v) {
+			    	  
+			    	/* Changement de l'aspect du bouton lorsqu'on l'enfonce */  
+			    	Drawable d = getResources().getDrawable(R.drawable.back_e);
+			    	retour.setBackground(d);
+			    	
+			    	/* Passage a l'autre activite */
+			        Intent secondeActivite = new Intent(FriseActivity.this,MenuActivity.class);
+			        startActivity(secondeActivite);
+			      }
+	    });
+		
+		
 	}
 
 	/**
@@ -117,6 +170,22 @@ public class FriseActivity extends Activity {
 
 		}
 		return null;
+	}
+	
+	@Override
+	/* L'activite revient sur le devant de la scene */
+	public void onResume(){
+	    super.onResume();
+	    final Button boutonRetour = (Button) findViewById(R.id.bouton_retour);
+	    Drawable d1 = getResources().getDrawable(R.drawable.back);
+    	boutonRetour.setBackground(d1);
+    	 final Button boutonMenu = (Button) findViewById(R.id.bouton_menu);
+ 	    Drawable d2 = getResources().getDrawable(R.drawable.home);
+     	boutonMenu.setBackground(d2);
+     	 final Button boutonAide = (Button) findViewById(R.id.bouton_aide);
+ 	    Drawable d3 = getResources().getDrawable(R.drawable.help);
+     	boutonAide.setBackground(d3);
+
 	}
 	
 }
