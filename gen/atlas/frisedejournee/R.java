@@ -58,12 +58,13 @@ public final class R {
         public static final int r2=0x7f020019;
         public static final int return_e=0x7f02001a;
         public static final int s=0x7f02001b;
-        public static final int shape=0x7f02001c;
-        public static final int u=0x7f02001d;
+        public static final int scope=0x7f02001c;
+        public static final int shape=0x7f02001d;
+        public static final int u=0x7f02001e;
     }
     public static final class id {
-        public static final int bouton_aide=0x7f080006;
-        public static final int bouton_menu=0x7f080005;
+        public static final int bouton_aide=0x7f080005;
+        public static final int bouton_menu=0x7f080004;
         public static final int bouton_retour=0x7f080001;
         public static final int d=0x7f08000e;
         public static final int e=0x7f08000d;
@@ -80,8 +81,8 @@ public final class R {
         public static final int r=0x7f08000a;
         public static final int r2=0x7f080013;
         public static final int s=0x7f08000c;
-        public static final int scope=0x7f080003;
-        public static final int texte=0x7f080004;
+        public static final int scope=0x7f080006;
+        public static final int texte=0x7f080003;
         public static final int texte_aide=0x7f080000;
         public static final int titre=0x7f080008;
         public static final int u=0x7f080012;

@@ -13,16 +13,7 @@
         android:layout_marginTop="67dp"
         android:background="@drawable/frise_support"
         android:orientation="horizontal" >
-
-
     </LinearLayout>
-    
-    <ImageView
-        android:id="@+id/scope"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/frise_target"
-            android:layout_marginTop="55dp" />
 
     <TextView
         android:id="@+id/texte"
@@ -59,5 +50,13 @@
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/bouton_menu"
         android:background="@drawable/back" />
+
+    <ImageView
+        android:id="@+id/scope"
+        android:layout_width="100dp"
+        android:layout_height="73dp"
+        android:layout_marginTop="58dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/scope" />
 
 </RelativeLayout>
