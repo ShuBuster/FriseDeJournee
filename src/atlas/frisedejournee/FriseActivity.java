@@ -88,7 +88,7 @@ public class FriseActivity extends Activity {
 		
 		/* Met le scope a l'activite en cours */
 		//Task currentTask = findCurrentTask();
-		Task currentTask = myTasks.get(0);
+		Task currentTask = myTasks.get(1);
 		if (!(currentTask == null)) {
 			int indice = Task.indexOfTask(myTasks, currentTask);
 			int XBegin = currentTask.getXbegin(W, h0, h1);
@@ -99,7 +99,7 @@ public class FriseActivity extends Activity {
 			scope.setLayoutParams(paramsScope);
 			scopedTask = currentTask;
 		}
-		moveScope(5);
+		moveScope(7);
 		
 		/* creation des 3 boutons menu, aide et retour à l'activite precedente*/
 		aide = (Button) findViewById(R.id.bouton_aide);
@@ -198,23 +198,22 @@ public class FriseActivity extends Activity {
 	    int x2 = nextScopedTask.getXwidth(W,h0,h1);
 
 		// Translation
+	    
 		AnimationSet animationSet = new AnimationSet(true);
 		animationSet.setFillAfter(true);
 		int XDelta = nextScopedTask.getXbegin(W,h0, h1) - oldScopedTask.getXbegin(W,h0, h1);
-		TranslateAnimation translate = new TranslateAnimation(0,(XDelta+pas*3)*(x1/x2), 0, 0);
-	    translate.setDuration(Math.abs(pas)*1000);
+		TranslateAnimation translate = new TranslateAnimation(0,(XDelta)*(x1/x2)+pas*(x1/x2)*3+7, 0, 0);
+	    translate.setDuration(2000);
+	    //translate.setStartOffset(1000);
 	    animationSet.addAnimation(translate);
+	    
 	    // Mise a l'echelle
 	    
 	    double ratio =(double) x2/x1;
-	    float ratioF = (float) ratio;
-	    Log.d("tag","R = "+ ratioF);
-
-	    		
+	    float ratioF = (float) ratio;		
 	    ScaleAnimation scale = new ScaleAnimation(1,ratioF, 1, 1);
-	    scale.setDuration(Math.abs(pas)*1000);
+	    scale.setDuration(2000);
 	    animationSet.addAnimation(scale);
-	    
 	    scope.startAnimation(animationSet);
 	}
 	

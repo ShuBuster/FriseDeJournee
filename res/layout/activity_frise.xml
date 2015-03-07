@@ -50,7 +50,7 @@
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/bouton_menu"
         android:background="@drawable/back" />
-
+    
     <ImageView
         android:id="@+id/scope"
         android:layout_width="100dp"
@@ -58,5 +58,13 @@
         android:layout_marginTop="58dp"
         android:scaleType="fitXY"
         android:src="@drawable/scope" />
+
+    <Button
+        android:id="@+id/bouton_manual"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:layout_toRightOf="@+id/frise"
+        android:background="@drawable/manual" />
 
 </RelativeLayout>
