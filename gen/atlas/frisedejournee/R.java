@@ -66,7 +66,7 @@ public final class R {
     }
     public static final class id {
         public static final int bouton_aide=0x7f080005;
-        public static final int bouton_manual=0x7f080006;
+        public static final int bouton_manual=0x7f080007;
         public static final int bouton_menu=0x7f080004;
         public static final int bouton_retour=0x7f080001;
         public static final int d=0x7f08000f;
@@ -84,7 +84,7 @@ public final class R {
         public static final int r=0x7f08000b;
         public static final int r2=0x7f080014;
         public static final int s=0x7f08000d;
-        public static final int scope=0x7f080007;
+        public static final int scope=0x7f080006;
         public static final int texte=0x7f080003;
         public static final int texte_aide=0x7f080000;
         public static final int titre=0x7f080009;

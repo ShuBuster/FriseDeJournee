@@ -2,8 +2,10 @@ package atlas.frisedejournee;
 
 import java.util.ArrayList;
 
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 public class Task {
 
@@ -135,6 +137,42 @@ public class Task {
 	public static boolean isPlanningValid(ArrayList<Task> myTasks){
 		/* A faire */
 		return false;
+	}
+	
+	
+	/**
+	 * Trouve une activite dans un planning relativement a une activite donne
+	 * @param myTasks Le planning
+	 * @param t L'activite de reference
+	 * @param pas la distance relative a laquelle on veut trouver l'autre activite
+	 * @return
+	 */
+	public static Task findRelativeTask(ArrayList<Task> myTasks,Task t,int pas){
+		
+		/* Retrouve l'indice de l'activite de reference dans le planning   */
+		int id = indexOfTask(myTasks, t);
+		
+		/* Renvoie la bonne activite */
+	    Log.d("tag","id vaut ="+id);
+		return myTasks.get(id+pas);
+	}
+	
+	/**
+	 * Trouve l'indice d'une activite dans un planning
+	 * @param myTasks Le planning
+	 * @param t L'activite
+	 * @return l'indice
+	 */
+	public static int indexOfTask(ArrayList<Task> myTasks,Task t){
+		
+		/* Retrouve l'indice de l'activite de reference dans le planning */
+		int id = 0;
+		for(int i=0;i<myTasks.size();i++){
+			if(myTasks.get(i)==t) id = i;
+		}
+		
+		/* Renvoie la bonne activite */
+		return id;
 	}
 
 }
