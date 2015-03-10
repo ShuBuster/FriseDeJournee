@@ -12,12 +12,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class FriseActivity extends Activity {
@@ -29,10 +31,15 @@ public class FriseActivity extends Activity {
 	private final int[] colorTab; // les id des differentes couleurs des activites
 	private final int W; // largeur de la frise en px
 	private final int H; // hauteur de la frise en px
+	private boolean modeManuel = false; // mode manuel desactive au debut
 
 	Button aide = null;
 	Button menu = null;
 	Button retour = null;
+	Button manual = null;
+	Button right = null;
+	Button left = null;
+	
 	/**
 	 * Constructeur par defaut
 	 */
@@ -64,8 +71,7 @@ public class FriseActivity extends Activity {
 		//myTasks = TaskReader.read(this, "myTasks.txt");
 		myTasks = Task.createTasks(this);
 
-		/* Recuperation de la frise et de sa largeur */
-		ImageView scope = (ImageView) findViewById(R.id.scope);
+		/* Recuperation de la frise*/
 		LinearLayout frise = (LinearLayout) findViewById(R.id.frise);
 
 		int color = 0;
@@ -88,18 +94,11 @@ public class FriseActivity extends Activity {
 		
 		/* Met le scope a l'activite en cours */
 		//Task currentTask = findCurrentTask();
-		Task currentTask = myTasks.get(1);
+		Task currentTask = myTasks.get(4);
 		if (!(currentTask == null)) {
-			int indice = Task.indexOfTask(myTasks, currentTask);
-			int XBegin = currentTask.getXbegin(W, h0, h1);
-			int XWidth = currentTask.getXwidth(W, h0, h1);
-			MarginLayoutParams paramsScope = (MarginLayoutParams) scope.getLayoutParams();
-			paramsScope.width = XWidth + 20;
-			paramsScope.leftMargin = 290 + XBegin + indice*3;
-			scope.setLayoutParams(paramsScope);
 			scopedTask = currentTask;
+			replaceScope();
 		}
-		moveScope(7);
 		
 		/* creation des 3 boutons menu, aide et retour à l'activite precedente*/
 		aide = (Button) findViewById(R.id.bouton_aide);
@@ -146,7 +145,59 @@ public class FriseActivity extends Activity {
 			      }
 	    });
 		
+		/* creation du mode manuel */      
+		manual = (Button) findViewById(R.id.bouton_manual);
+		left = (Button) findViewById(R.id.bouton_left);
+		right = (Button) findViewById(R.id.bouton_right);
+		Log.d("tag","scoped task = "+ Task.indexOfTask(myTasks, scopedTask));
 		
+		manual.setOnClickListener(new View.OnClickListener() {
+			@Override
+		      public void onClick(View v) {
+				
+				if(modeManuel){ // si on est en mode manuel
+					
+					manual.setBackground(getResources().getDrawable(R.drawable.manual)); // desenfonce le bouton
+					modeManuel = false;
+					left.setActivated(false); // desactivation des boutons
+					right.setActivated(false);
+					left.setVisibility(View.INVISIBLE); // disparition des boutons
+					right.setVisibility(View.INVISIBLE);
+				}
+				else{ // si on n'est pas en mode manuel
+					
+				/* Changement de l'aspect du bouton lorsqu'on l'enfonce */  
+		    	Drawable d = getResources().getDrawable(R.drawable.manual_e);
+		    	manual.setBackground(d);
+		    	
+		    	/* passage en mode manuel */
+		    	modeManuel = true;
+		    	left.setActivated(true); // activation des boutons
+				right.setActivated(true);
+				left.setVisibility(View.VISIBLE); // affichage des boutons fleches
+				right.setVisibility(View.VISIBLE);
+				}
+				
+			}});
+		
+		left.setOnClickListener(new View.OnClickListener() {
+			@Override
+		      public void onClick(View v) {
+				
+				moveScope(-1); // deplace le scope d'une activite vers l'arriere
+				Log.d("tag","scoped task = "+ Task.indexOfTask(myTasks, scopedTask));
+			}});
+		
+		right.setOnClickListener(new View.OnClickListener() {
+			@Override
+		      public void onClick(View v) {
+				
+				moveScope(1); // deplace le scope d'une activite vers l'avant
+				Log.d("tag","scoped task = "+ Task.indexOfTask(myTasks, scopedTask));
+				
+			}});
+		
+		      
 	}
 
 	/**
@@ -185,7 +236,7 @@ public class FriseActivity extends Activity {
 	 * Deplace le scope vers l'avant ou l'arriere
 	 * @param pas le nombre relatif de pas en nombre d'activite a faire
 	 */
-	public void moveScope(int pas){
+	public void moveScope(final int pas){
 		
 		Task oldScopedTask = scopedTask;
 		Task nextScopedTask = Task.findRelativeTask(myTasks,scopedTask,pas);
@@ -194,13 +245,12 @@ public class FriseActivity extends Activity {
 		
 		/* Creation de l'animation */
 		
-	    int x1 = oldScopedTask.getXwidth(W,h0,h1);
-	    int x2 = nextScopedTask.getXwidth(W,h0,h1);
+	    final int x1 = oldScopedTask.getXwidth(W,h0,h1);
+	    final int x2 = nextScopedTask.getXwidth(W,h0,h1);
 
 		// Translation
 	    
 		AnimationSet animationSet = new AnimationSet(true);
-		animationSet.setFillAfter(true);
 		int XDelta = nextScopedTask.getXbegin(W,h0, h1) - oldScopedTask.getXbegin(W,h0, h1);
 		TranslateAnimation translate = new TranslateAnimation(0,(XDelta)*(x1/x2)+pas*(x1/x2)*3+7, 0, 0);
 	    translate.setDuration(2000);
@@ -214,7 +264,38 @@ public class FriseActivity extends Activity {
 	    ScaleAnimation scale = new ScaleAnimation(1,ratioF, 1, 1);
 	    scale.setDuration(2000);
 	    animationSet.addAnimation(scale);
+	    
+	    animationSet.setAnimationListener(new AnimationListener() {
+
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+            	  replaceScope(); // replace vraiment le scope a sa nouvelle position
+                }
+            });
+
 	    scope.startAnimation(animationSet);
+	}
+	
+	/**
+	 * Replace le scope a la position scopedTask sans animation
+	 */
+	public void replaceScope( ){
+		
+		ImageView scope = (ImageView) findViewById(R.id.scope);
+		int indice = Task.indexOfTask(myTasks,scopedTask);
+		int XBegin = scopedTask.getXbegin(W, h0, h1);
+		int XWidth = scopedTask.getXwidth(W, h0, h1);
+		MarginLayoutParams paramsScope = (MarginLayoutParams) scope.getLayoutParams();
+		paramsScope.width = XWidth + 20;
+		paramsScope.leftMargin = 290 + XBegin + indice*3;
+		scope.setLayoutParams(paramsScope);
+		
 	}
 	
 	@Override

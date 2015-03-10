@@ -19,9 +19,8 @@
         android:id="@+id/texte"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/frise"
-        android:layout_marginRight="177dp"
         android:text="Ma frise de journée"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/fushia"
@@ -66,5 +65,23 @@
         android:layout_marginTop="45dp"
         android:layout_toRightOf="@+id/frise"
         android:background="@drawable/manual" />
+
+    <Button
+        android:id="@+id/bouton_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/frise"
+        android:layout_marginTop="110dp"
+        android:background="@drawable/fleche_droite"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/bouton_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="110dp"
+        android:layout_alignLeft="@+id/frise"
+        android:background="@drawable/fleche_gauche"
+        android:visibility="invisible" />
 
 </RelativeLayout>
