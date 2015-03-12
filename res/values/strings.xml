@@ -4,5 +4,6 @@
     <string name="app_name">FriseDeJournee</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_frise">FriseActivity</string>
+    <string name="aide">le petit enfant Romouille a une question ?</string>
 
 </resources>
