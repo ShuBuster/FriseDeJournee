@@ -71,38 +71,39 @@ public final class R {
     }
     public static final class id {
         public static final int bouton_aide=0x7f080005;
-        public static final int bouton_left=0x7f080009;
-        public static final int bouton_manual=0x7f080007;
+        public static final int bouton_left=0x7f08000a;
+        public static final int bouton_manual=0x7f080008;
         public static final int bouton_menu=0x7f080004;
-        public static final int bouton_retour=0x7f080001;
-        public static final int bouton_right=0x7f080008;
-        public static final int d=0x7f080011;
-        public static final int e=0x7f080010;
-        public static final int e2=0x7f080012;
-        public static final int e3=0x7f080018;
-        public static final int e4=0x7f080019;
-        public static final int f=0x7f08000c;
+        public static final int bouton_retour=0x7f080006;
+        public static final int bouton_right=0x7f080009;
+        public static final int d=0x7f080012;
+        public static final int e=0x7f080011;
+        public static final int e2=0x7f080013;
+        public static final int e3=0x7f080019;
+        public static final int e4=0x7f08001a;
+        public static final int f=0x7f08000d;
         public static final int frise=0x7f080002;
-        public static final int go=0x7f08000a;
-        public static final int i=0x7f08000e;
-        public static final int j=0x7f080013;
-        public static final int n=0x7f080017;
-        public static final int o=0x7f080014;
-        public static final int r=0x7f08000d;
-        public static final int r2=0x7f080016;
-        public static final int s=0x7f08000f;
-        public static final int scope=0x7f080006;
+        public static final int go=0x7f08000b;
+        public static final int i=0x7f08000f;
+        public static final int j=0x7f080014;
+        public static final int menuDeroulant=0x7f080000;
+        public static final int n=0x7f080018;
+        public static final int o=0x7f080015;
+        public static final int r=0x7f08000e;
+        public static final int r2=0x7f080017;
+        public static final int s=0x7f080010;
+        public static final int scope=0x7f080007;
         public static final int texte=0x7f080003;
-        public static final int texte_aide=0x7f080000;
-        public static final int titre=0x7f08000b;
-        public static final int u=0x7f080015;
+        public static final int texte_aide=0x7f080001;
+        public static final int titre=0x7f08000c;
+        public static final int u=0x7f080016;
     }
     public static final class layout {
-        public static final int activity_aide=0x7f030000;
-        public static final int activity_frise=0x7f030001;
-        public static final int activity_menu=0x7f030002;
+        public static final int activity_frise=0x7f030000;
+        public static final int activity_menu=0x7f030001;
     }
     public static final class string {
+        public static final int aide=0x7f060003;
         public static final int app_name=0x7f060000;
         public static final int hello_world=0x7f060001;
         public static final int title_activity_frise=0x7f060002;
