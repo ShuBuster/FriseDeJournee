@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
@@ -14,6 +15,7 @@ public class Task {
 	private double duree; // duree de l'activite en heure
 	private double heureDebut; // heure du debut de l'activite
 	private Drawable image; // une image illustrant l'activite
+	private int couleur; // la couleur de l'activite dans la frise
 	
 	public Task(String nom, String description, double duree, double heureDebut,
 			Drawable image) {
@@ -22,6 +24,7 @@ public class Task {
 		this.duree = duree;
 		this.heureDebut = heureDebut;
 		this.image = image;
+		this.couleur = Color.BLACK;
 	}
 
 	public String getNom() {
@@ -43,6 +46,10 @@ public class Task {
 	public Drawable getImage() {
 		return image;
 	}
+	
+	public int getCouleur(){
+		return couleur;
+	}
 
 	public void setNom(String nom) {
 		this.nom = nom;
@@ -62,6 +69,10 @@ public class Task {
 
 	public void setImage(Drawable image) {
 		this.image = image;
+	}
+	
+	public void setCouleur(int couleur){
+		this.couleur = couleur;
 	}
 	
 	/**
@@ -114,6 +125,7 @@ public class Task {
 		Task t7 = new Task("Pause", "On peut prendre une pause entre les deux leçons pour se détendre",0.5,15,image);
 		Task t8 = new Task("Français", "On étudie la conjugaison et on s'entraîne à la dictée",1,15.5,image);
 		Task t9 = new Task("Retour à la maison", "On rentre à la maison pour se reposer !",1,16,image);
+		Task t10 = new Task("Soiree", "On mange, les dents et au lit !",3.5,17,image);
 		
 		ArrayList<Task> tasks = new ArrayList<Task>();
 		tasks.add(t1);
@@ -125,6 +137,7 @@ public class Task {
 		tasks.add(t7);
 		tasks.add(t8);
 		tasks.add(t9);
+		tasks.add(t10);
 		return tasks;
 		
 	}

@@ -74,7 +74,7 @@ public class FriseActivity extends Activity {
 		/* Recuperation de la frise*/
 		LinearLayout frise = (LinearLayout) findViewById(R.id.frise);
 
-		int color = 0;
+		int color_indice = 0;
 		
 		for (Task myTask : myTasks) {
 
@@ -86,10 +86,12 @@ public class FriseActivity extends Activity {
 			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(Xwidth, H);
 			layoutParams.setMargins(3, 3, 0, 0);
 			rectTask.setLayoutParams(layoutParams);
-			rectTask.setBackgroundColor(getResources().getColor(colorTab[color]));
+			int couleur = getResources().getColor(colorTab[color_indice]);
+			myTask.setCouleur(couleur); // on associe a la tache sa couleur
+			rectTask.setBackgroundColor(couleur);
 			frise.addView(rectTask);
 			rectTask.setVisibility(View.VISIBLE);
-			color += 1;
+			color_indice += 1;
 		}
 		
 		/* Met le scope a l'activite en cours */
@@ -97,7 +99,8 @@ public class FriseActivity extends Activity {
 		Task currentTask = myTasks.get(4);
 		if (!(currentTask == null)) {
 			scopedTask = currentTask;
-			replaceScope();
+			replaceScope(); // place le scope sur la tahce
+			displayTask(); // affiche les infos de la tache
 		}
 		
 		/* creation des 3 boutons menu, aide et retour à l'activite precedente*/
@@ -185,7 +188,7 @@ public class FriseActivity extends Activity {
 		      public void onClick(View v) {
 				
 				moveScope(-1); // deplace le scope d'une activite vers l'arriere
-				Log.d("tag","scoped task = "+ Task.indexOfTask(myTasks, scopedTask));
+				displayTask();
 			}});
 		
 		right.setOnClickListener(new View.OnClickListener() {
@@ -193,7 +196,7 @@ public class FriseActivity extends Activity {
 		      public void onClick(View v) {
 				
 				moveScope(1); // deplace le scope d'une activite vers l'avant
-				Log.d("tag","scoped task = "+ Task.indexOfTask(myTasks, scopedTask));
+				displayTask();
 				
 			}});
 		
@@ -295,6 +298,30 @@ public class FriseActivity extends Activity {
 		paramsScope.width = XWidth + 20;
 		paramsScope.leftMargin = 290 + XBegin + indice*3;
 		scope.setLayoutParams(paramsScope);
+		
+	}
+	
+    /**
+     * Affiche les informations de la scopedTask au milieu de l'ecran
+     */
+	public void displayTask(){
+
+		/* Recuperation du cadre et modification de sa couleur */
+		ImageView cadre = (ImageView) findViewById(R.id.frame);
+		int couleur = scopedTask.getCouleur(); // recuperation de la couleur
+		cadre.setBackgroundColor(couleur);
+		
+		/* Affichage du titre de l'activite */
+		TextView titreTask = (TextView) findViewById(R.id.titreTask);
+		Typeface externalFont = Typeface.createFromAsset(getAssets(),"fonts/onthemove.ttf");
+		titreTask.setTypeface(externalFont);
+		titreTask.setText(scopedTask.getNom());
+		
+		/* Affichage de l'image de l'activite */
+		ImageView imageTask = (ImageView) findViewById(R.id.imageTask);
+		imageTask.setBackground(scopedTask.getImage());
+		
+		/* Affiche l'heure de debut l'activite*/
 		
 	}
 	

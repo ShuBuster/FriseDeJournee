@@ -15,16 +15,52 @@
         android:orientation="horizontal" >
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/frame"
+        android:layout_width="950dp"
+        android:layout_height="450dp"
+        android:layout_below="@+id/bouton_right"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp" />
+
+    <TextView
+        android:id="@+id/titreTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/frame"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:text=""
+        android:textColor="@color/jaune1"
+        android:textSize="60sp" />
+
+    <ImageView
+        android:id="@+id/imageTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignBottom="@+id/frame"
+        android:layout_marginBottom="0dp" />
+    
+    <LinearLayout
+        android:id="@+id/heure"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/frame"
+        android:layout_alignLeft="@+id/frame"
+        />
+
     <TextView
         android:id="@+id/texte"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:text="Ma frise de journée"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/fushia"
-        android:textSize="50dp" />
+        android:textSize="50sp" />
 
     <Button
         android:id="@+id/bouton_menu"
@@ -49,7 +85,7 @@
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/bouton_menu"
         android:background="@drawable/back" />
-    
+
     <ImageView
         android:id="@+id/scope"
         android:layout_width="100dp"
@@ -79,8 +115,8 @@
         android:id="@+id/bouton_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="110dp"
         android:layout_alignLeft="@+id/frise"
+        android:layout_marginTop="110dp"
         android:background="@drawable/fleche_gauche"
         android:visibility="invisible" />
 
