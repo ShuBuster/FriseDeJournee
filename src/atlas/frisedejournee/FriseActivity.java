@@ -208,11 +208,12 @@ public class FriseActivity extends Activity {
 					manual.setBackground(getResources().getDrawable(
 							R.drawable.manual)); // desenfonce le bouton
 					modeManuel = false;
-					left.setActivated(false); // desactivation des boutons
-					right.setActivated(false);
+					left.setEnabled(false); // desactivation des boutons droite et gauche
+					right.setEnabled(false);
 					left.setVisibility(View.INVISIBLE); // disparition des
-														// boutons
+														// boutons droite et gauche
 					right.setVisibility(View.INVISIBLE);
+					moveScopeToCurrentTask(); // retour du scope a l'activite courante
 				} else { // si on n'est pas en mode manuel
 
 					/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
@@ -222,8 +223,8 @@ public class FriseActivity extends Activity {
 
 					/* passage en mode manuel */
 					modeManuel = true;
-					left.setActivated(true); // activation des boutons
-					right.setActivated(true);
+					left.setEnabled(true); // activation des boutons
+					right.setEnabled(true);
 					left.setVisibility(View.VISIBLE); // affichage des boutons
 														// fleches
 					right.setVisibility(View.VISIBLE);
@@ -237,7 +238,9 @@ public class FriseActivity extends Activity {
 			public void onClick(View v) {
 
 				moveScope(-1); // deplace le scope d'une activite vers l'arriere
-				displayTask();
+				displayTask(); // affiche la tache scoped au centre
+				left.setEnabled(false); // desactive les boutons pendant l'animation du scope
+				right.setEnabled(false);
 			}
 		});
 
@@ -246,7 +249,9 @@ public class FriseActivity extends Activity {
 			public void onClick(View v) {
 
 				moveScope(1); // deplace le scope d'une activite vers l'avant
-				displayTask();
+				displayTask(); // affiche la tache scoped au centre
+				left.setEnabled(false); // desactive les boutons pendant l'animation du scope
+				right.setEnabled(false);
 
 			}
 		});
@@ -358,7 +363,7 @@ public class FriseActivity extends Activity {
 	}
 
 	/**
-	 * Deplace le scope vers l'avant ou l'arriere
+	 * Deplace le scope vers l'avant ou l'arriere avec une animation
 	 * 
 	 * @param pas
 	 *            le nombre relatif de pas en nombre d'activite a faire
@@ -383,8 +388,8 @@ public class FriseActivity extends Activity {
 				- oldScopedTask.getXbegin(W, h0, h1);
 		TranslateAnimation translate = new TranslateAnimation(0, (XDelta)
 				* (x1 / x2) + pas * (x1 / x2) * 3 + 7, 0, 0);
-		translate.setDuration(2000);
-		// translate.setStartOffset(1000);
+		translate.setDuration(1000);
+		//translate.setStartOffset(500);
 		animationSet.addAnimation(translate);
 
 		// Mise a l'echelle
@@ -392,7 +397,7 @@ public class FriseActivity extends Activity {
 		double ratio = (double) x2 / x1;
 		float ratioF = (float) ratio;
 		ScaleAnimation scale = new ScaleAnimation(1, ratioF, 1, 1);
-		scale.setDuration(2000);
+		scale.setDuration(1000);
 		animationSet.addAnimation(scale);
 
 		animationSet.setAnimationListener(new AnimationListener() {
@@ -409,6 +414,8 @@ public class FriseActivity extends Activity {
 			public void onAnimationEnd(Animation animation) {
 				replaceScope(); // replace vraiment le scope a sa nouvelle
 								// position
+				left.setEnabled(true);
+				right.setEnabled(true);
 			}
 		});
 
@@ -416,6 +423,15 @@ public class FriseActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Fait revenir le scope a la tache courante avec animation
+	 */
+	public void moveScopeToCurrentTask() {
+		Task currentTask = findCurrentTask();
+		int pas = Task.indexOfTask(myTasks,currentTask) - Task.indexOfTask(myTasks,scopedTask);
+		moveScope(pas);
+		displayTask();
+	}
 	/**
 	 * Replace le scope a la position scopedTask sans animation
 	 */
@@ -481,7 +497,7 @@ public class FriseActivity extends Activity {
 	public String[] splitHour(double hour){
 		String[] result = new String[4];
 		int heure = (int) Math.floor(hour);
-		int minute = (int) ((H - heure) * 0.6);
+		int minute = (int) ((hour - heure) * 0.6);
 		
 		int heure_dizaine = (int) Math.floor(heure/10);
 		result[0] = String.valueOf(heure_dizaine);
