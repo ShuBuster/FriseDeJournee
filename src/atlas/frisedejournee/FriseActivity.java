@@ -91,7 +91,8 @@ public class FriseActivity extends Activity {
 		LinearLayout frise = (LinearLayout) findViewById(R.id.frise);
 
 		int color_indice = 0;
-
+        int task_indice = 0;
+		
 		for (Task myTask : myTasks) {
 
 			/* Affichage de ma tache sur la frise */
@@ -99,8 +100,13 @@ public class FriseActivity extends Activity {
 			int Xwidth = myTask.getXwidth(W, h0, h1);
 
 			/* Creation du rectangle et placement */
-			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-					Xwidth, H);
+			LinearLayout.LayoutParams layoutParams;
+			if(task_indice != myTasks.size()-1){ // Si ce n'est pas la derniere tache de la journee
+			layoutParams = new LinearLayout.LayoutParams(Xwidth, H);
+			}
+			else{ // si c'est la derniere tache de la journee
+			layoutParams = new LinearLayout.LayoutParams(Xwidth-3*(myTasks.size()-2), H);
+			}
 			layoutParams.setMargins(3, 3, 0, 0);
 			rectTask.setLayoutParams(layoutParams);
 
@@ -110,6 +116,7 @@ public class FriseActivity extends Activity {
 			frise.addView(rectTask);
 			rectTask.setVisibility(View.VISIBLE);
 			color_indice += 1;
+			task_indice += 1;
 		}
 
 		/* Met le scope a l'activite en cours */
