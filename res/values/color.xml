@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="translucide">#00000000</color>
+    <color name="blanc">#FFFFFF</color> 
     <color name="vert1">#8CC63E</color>
     <color name="vert2">#2AB573</color>
     <color name="vert3">#38B449</color>

@@ -4,28 +4,25 @@
     android:layout_height="match_parent"
     android:background="@drawable/back_frise"
     tools:context="${relativePackage}.${activityClass}" >
-    
-        <RelativeLayout
+
+    <RelativeLayout
         android:id="@+id/menuDeroulant"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="10dip"
         android:paddingRight="10dip" >
 
-    <TextView
-        android:id="@+id/texte_aide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/orange1"
-        android:textSize="20sp" />
+        <TextView
+            android:id="@+id/texte_aide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/orange1"
+            android:textSize="20sp" />
+    </RelativeLayout>
 
-        
-</RelativeLayout>
-    
-    
     <LinearLayout
         android:id="@+id/frise"
         android:layout_width="wrap_content"
@@ -37,12 +34,45 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/frame_next"
+        android:layout_width="300dp"
+        android:layout_height="420dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/bouton_right"
+        android:layout_marginTop="75dp" />
+
+    <ImageView
+        android:id="@+id/frame_previous"
+        android:layout_width="300dp"
+        android:layout_height="420dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/bouton_right"
+        android:layout_marginTop="75dp" />
+
+    <ImageView
+        android:id="@+id/border_shadow"
+        android:layout_width="1120dp"
+        android:layout_height="470dp"
+        android:layout_below="@+id/bouton_right"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"/>
+
+    <ImageView
+        android:id="@+id/border"
+        android:layout_width="1120dp"
+        android:layout_height="470dp"
+        android:layout_below="@+id/bouton_right"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:background="@color/vert1" />
+
+    <ImageView
         android:id="@+id/frame"
-        android:layout_width="950dp"
+        android:layout_width="1100dp"
         android:layout_height="450dp"
         android:layout_below="@+id/bouton_right"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp" />
+        android:layout_marginTop="60dp" />
 
     <TextView
         android:id="@+id/titreTask"
@@ -59,18 +89,67 @@
         android:id="@+id/imageTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignBottom="@+id/frame"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="0dp" />
-    
+
     <LinearLayout
         android:id="@+id/heure"
-        android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/frame"
         android:layout_alignLeft="@+id/frame"
-        />
+        android:layout_alignTop="@+id/frame"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/heure_dizaine"
+            android:layout_width="60dp"
+            android:layout_height="80dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:textColor="@color/blanc"
+            android:textSize="50sp" />
+
+        <TextView
+            android:id="@+id/heure_unite"
+            android:layout_width="60dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="8dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:textColor="@color/blanc"
+            android:textSize="50sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:text=":"
+            android:textColor="@color/blanc"
+            android:textSize="50sp" />
+
+        <TextView
+            android:id="@+id/minute_dizaine"
+            android:layout_width="60dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="8dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:textColor="@color/blanc"
+            android:textSize="50sp" />
+
+        <TextView
+            android:id="@+id/minute_unite"
+            android:layout_width="60dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="8dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:textColor="@color/blanc"
+            android:textSize="50sp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/texte"
