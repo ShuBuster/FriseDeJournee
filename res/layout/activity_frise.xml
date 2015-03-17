@@ -34,12 +34,32 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/frame_next_shadow"
+        android:layout_width="200dp"
+        android:layout_height="500dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/bouton_right"
+        android:layout_marginTop="75dp"
+        android:background="@drawable/shadow_2_nine"
+        android:alpha="0.7" />
+
+    <ImageView
         android:id="@+id/frame_next"
         android:layout_width="300dp"
         android:layout_height="420dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/bouton_right"
         android:layout_marginTop="75dp" />
+
+    <ImageView
+        android:id="@+id/frame_previous_shadow"
+        android:layout_width="200dp"
+        android:layout_height="500dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/bouton_right"
+        android:layout_marginTop="75dp"
+        android:background="@drawable/shadow_2_nine"
+        android:alpha="0.7" />
 
     <ImageView
         android:id="@+id/frame_previous"
@@ -51,11 +71,12 @@
 
     <ImageView
         android:id="@+id/border_shadow"
-        android:layout_width="1120dp"
-        android:layout_height="470dp"
+        android:layout_width="1220dp"
+        android:layout_height="730dp"
         android:layout_below="@+id/bouton_right"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shadow_1_nine" />
 
     <ImageView
         android:id="@+id/border"
