@@ -457,7 +457,7 @@ public class FriseActivity extends Activity {
 	}
 
 	/**
-	 * Affiche les informations de la scopedTask au milieu de l'ecran
+	 * Affiche les informations de la scopedTask au milieu de l'ecran et de ses taches voisines
 	 */
 	public void displayTask() {
 
@@ -493,6 +493,43 @@ public class FriseActivity extends Activity {
 		heure1.setText(splitedHour[1]);
 		minute10.setText(splitedHour[2]);
 		minute1.setText(splitedHour[3]);
+		
+		/* Affiche les taches voisines */
+		displayNearTasks();
+	}
+	
+	/**
+	 * Affiche de part et d'autre de la tache scoped, les deux taches d'avant et d'apres
+	 */
+	public void displayNearTasks() {
+		/* Recupere les taches adjacentes */
+		Task previous = Task.findRelativeTask(myTasks, scopedTask, -1);
+		Task next = Task.findRelativeTask(myTasks, scopedTask, 1);
+		
+		ImageView prev = (ImageView) findViewById(R.id.frame_previous);
+		ImageView nxt = (ImageView) findViewById(R.id.frame_next);
+		
+		/* Affichage de la tache precedente si elle existe */
+		if(previous!=null){
+			int couleur = previous.getCouleur(); // recuperation de la couleur
+			prev.setBackgroundColor(couleur);
+			prev.setVisibility(View.VISIBLE);
+			prev.setAlpha(0.8f);
+		}
+		else{
+			prev.setVisibility(View.INVISIBLE);
+		}
+		
+		/* Affichage de la tache precedente si elle existe */
+		if(next!=null){
+			int couleur = next.getCouleur(); // recuperation de la couleur
+			nxt.setBackgroundColor(couleur);
+			nxt.setVisibility(View.VISIBLE);
+			nxt.setAlpha(0.6f);
+		}
+		else{
+			nxt.setVisibility(View.INVISIBLE);
+		}
 		
 	}
 	
