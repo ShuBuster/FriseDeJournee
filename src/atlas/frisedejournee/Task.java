@@ -122,10 +122,10 @@ public class Task {
 		Task t4 = new Task("Déjeuner", "C'est l'heure de manger !",1,12,image);
 		Task t5 = new Task("Temps libre", "On peut s'amuser librement après manger",1,13,image);
 		Task t6 = new Task("Cours de Maths", "On étudie les additions et les fractions",1,14,image);
-		Task t7 = new Task("Pause", "On peut prendre une pause entre les deux leçons pour se détendre",0.5,15,image);
+		Task t7 = new Task("Pause", "On prend une pause entre les deux leçons pour se détendre",0.5,15,image);
 		Task t8 = new Task("Français", "On étudie la conjugaison et on s'entraîne à la dictée",1,15.5,image);
-		Task t9 = new Task("Retour à la maison", "On rentre à la maison pour se reposer !",1,16,image);
-		Task t10 = new Task("Soiree", "On mange, les dents et au lit !",3.5,17,image);
+		Task t9 = new Task("Retour à la maison", "On rentre à la maison pour se reposer !",1,16.5,image);
+		Task t10 = new Task("Soiree", "On mange, les dents et au lit !",3.5,17.5,image);
 		
 		ArrayList<Task> tasks = new ArrayList<Task>();
 		tasks.add(t1);
@@ -166,8 +166,13 @@ public class Task {
 		int id = indexOfTask(myTasks, t);
 		
 		/* Renvoie la bonne activite */
-	    Log.d("tag","id vaut ="+id);
-		return myTasks.get(id+pas);
+		if((id+pas>=0) && (id+pas<myTasks.size())){
+		  return myTasks.get(id+pas);
+		}
+		/* Renvoie null si l'activite n'existe pas */
+		else{
+			return null;
+		}
 	}
 	
 	/**

@@ -91,7 +91,8 @@ public class FriseActivity extends Activity {
 		LinearLayout frise = (LinearLayout) findViewById(R.id.frise);
 
 		int color_indice = 0;
-
+        int task_indice = 0;
+		
 		for (Task myTask : myTasks) {
 
 			/* Affichage de ma tache sur la frise */
@@ -99,8 +100,13 @@ public class FriseActivity extends Activity {
 			int Xwidth = myTask.getXwidth(W, h0, h1);
 
 			/* Creation du rectangle et placement */
-			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-					Xwidth, H);
+			LinearLayout.LayoutParams layoutParams;
+			if(task_indice != myTasks.size()-1){ // Si ce n'est pas la derniere tache de la journee
+			layoutParams = new LinearLayout.LayoutParams(Xwidth, H);
+			}
+			else{ // si c'est la derniere tache de la journee
+			layoutParams = new LinearLayout.LayoutParams(Xwidth-3*(myTasks.size()-2), H);
+			}
 			layoutParams.setMargins(3, 3, 0, 0);
 			rectTask.setLayoutParams(layoutParams);
 
@@ -110,6 +116,7 @@ public class FriseActivity extends Activity {
 			frise.addView(rectTask);
 			rectTask.setVisibility(View.VISIBLE);
 			color_indice += 1;
+			task_indice += 1;
 		}
 
 		/* Met le scope a l'activite en cours */
@@ -208,11 +215,12 @@ public class FriseActivity extends Activity {
 					manual.setBackground(getResources().getDrawable(
 							R.drawable.manual)); // desenfonce le bouton
 					modeManuel = false;
-					left.setActivated(false); // desactivation des boutons
-					right.setActivated(false);
+					left.setEnabled(false); // desactivation des boutons droite et gauche
+					right.setEnabled(false);
 					left.setVisibility(View.INVISIBLE); // disparition des
-														// boutons
+														// boutons droite et gauche
 					right.setVisibility(View.INVISIBLE);
+					moveScopeToCurrentTask(); // retour du scope a l'activite courante
 				} else { // si on n'est pas en mode manuel
 
 					/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
@@ -222,8 +230,8 @@ public class FriseActivity extends Activity {
 
 					/* passage en mode manuel */
 					modeManuel = true;
-					left.setActivated(true); // activation des boutons
-					right.setActivated(true);
+					left.setEnabled(true); // activation des boutons
+					right.setEnabled(true);
 					left.setVisibility(View.VISIBLE); // affichage des boutons
 														// fleches
 					right.setVisibility(View.VISIBLE);
@@ -237,7 +245,9 @@ public class FriseActivity extends Activity {
 			public void onClick(View v) {
 
 				moveScope(-1); // deplace le scope d'une activite vers l'arriere
-				displayTask();
+				displayTask(); // affiche la tache scoped au centre
+				left.setEnabled(false); // desactive les boutons pendant l'animation du scope
+				right.setEnabled(false);
 			}
 		});
 
@@ -246,7 +256,9 @@ public class FriseActivity extends Activity {
 			public void onClick(View v) {
 
 				moveScope(1); // deplace le scope d'une activite vers l'avant
-				displayTask();
+				displayTask(); // affiche la tache scoped au centre
+				left.setEnabled(false); // desactive les boutons pendant l'animation du scope
+				right.setEnabled(false);
 
 			}
 		});
@@ -358,7 +370,7 @@ public class FriseActivity extends Activity {
 	}
 
 	/**
-	 * Deplace le scope vers l'avant ou l'arriere
+	 * Deplace le scope vers l'avant ou l'arriere avec une animation
 	 * 
 	 * @param pas
 	 *            le nombre relatif de pas en nombre d'activite a faire
@@ -383,8 +395,8 @@ public class FriseActivity extends Activity {
 				- oldScopedTask.getXbegin(W, h0, h1);
 		TranslateAnimation translate = new TranslateAnimation(0, (XDelta)
 				* (x1 / x2) + pas * (x1 / x2) * 3 + 7, 0, 0);
-		translate.setDuration(2000);
-		// translate.setStartOffset(1000);
+		translate.setDuration(1000);
+		//translate.setStartOffset(500);
 		animationSet.addAnimation(translate);
 
 		// Mise a l'echelle
@@ -392,7 +404,7 @@ public class FriseActivity extends Activity {
 		double ratio = (double) x2 / x1;
 		float ratioF = (float) ratio;
 		ScaleAnimation scale = new ScaleAnimation(1, ratioF, 1, 1);
-		scale.setDuration(2000);
+		scale.setDuration(1000);
 		animationSet.addAnimation(scale);
 
 		animationSet.setAnimationListener(new AnimationListener() {
@@ -409,6 +421,8 @@ public class FriseActivity extends Activity {
 			public void onAnimationEnd(Animation animation) {
 				replaceScope(); // replace vraiment le scope a sa nouvelle
 								// position
+				left.setEnabled(true);
+				right.setEnabled(true);
 			}
 		});
 
@@ -416,6 +430,15 @@ public class FriseActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Fait revenir le scope a la tache courante avec animation
+	 */
+	public void moveScopeToCurrentTask() {
+		Task currentTask = findCurrentTask();
+		int pas = Task.indexOfTask(myTasks,currentTask) - Task.indexOfTask(myTasks,scopedTask);
+		moveScope(pas);
+		displayTask();
+	}
 	/**
 	 * Replace le scope a la position scopedTask sans animation
 	 */
@@ -434,7 +457,7 @@ public class FriseActivity extends Activity {
 	}
 
 	/**
-	 * Affiche les informations de la scopedTask au milieu de l'ecran
+	 * Affiche les informations de la scopedTask au milieu de l'ecran et de ses taches voisines
 	 */
 	public void displayTask() {
 
@@ -471,6 +494,43 @@ public class FriseActivity extends Activity {
 		minute10.setText(splitedHour[2]);
 		minute1.setText(splitedHour[3]);
 		
+		/* Affiche les taches voisines */
+		displayNearTasks();
+	}
+	
+	/**
+	 * Affiche de part et d'autre de la tache scoped, les deux taches d'avant et d'apres
+	 */
+	public void displayNearTasks() {
+		/* Recupere les taches adjacentes */
+		Task previous = Task.findRelativeTask(myTasks, scopedTask, -1);
+		Task next = Task.findRelativeTask(myTasks, scopedTask, 1);
+		
+		ImageView prev = (ImageView) findViewById(R.id.frame_previous);
+		ImageView nxt = (ImageView) findViewById(R.id.frame_next);
+		
+		/* Affichage de la tache precedente si elle existe */
+		if(previous!=null){
+			int couleur = previous.getCouleur(); // recuperation de la couleur
+			prev.setBackgroundColor(couleur);
+			prev.setVisibility(View.VISIBLE);
+			prev.setAlpha(0.8f);
+		}
+		else{
+			prev.setVisibility(View.INVISIBLE);
+		}
+		
+		/* Affichage de la tache precedente si elle existe */
+		if(next!=null){
+			int couleur = next.getCouleur(); // recuperation de la couleur
+			nxt.setBackgroundColor(couleur);
+			nxt.setVisibility(View.VISIBLE);
+			nxt.setAlpha(0.6f);
+		}
+		else{
+			nxt.setVisibility(View.INVISIBLE);
+		}
+		
 	}
 	
 	/**
@@ -481,7 +541,7 @@ public class FriseActivity extends Activity {
 	public String[] splitHour(double hour){
 		String[] result = new String[4];
 		int heure = (int) Math.floor(hour);
-		int minute = (int) ((H - heure) * 0.6);
+		int minute = (int) ((hour - heure) * 0.6);
 		
 		int heure_dizaine = (int) Math.floor(heure/10);
 		result[0] = String.valueOf(heure_dizaine);
