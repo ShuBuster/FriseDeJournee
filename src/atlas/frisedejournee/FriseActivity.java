@@ -17,6 +17,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
@@ -81,6 +82,9 @@ public class FriseActivity extends Activity {
 				"fonts/onthemove.ttf");
 		txtView1.setTypeface(externalFont);
 
+		/* Animation du decor */
+		animateStar();		
+		
 		/* Remplissage de mes taches par lecture du fichier */
 		// Drawable image =
 		// getResources().getDrawable(R.drawable.image_dejeuner);
@@ -569,6 +573,19 @@ public class FriseActivity extends Activity {
 		return color;
 	}
 
+	/**
+	 * lance l'animation continue de l'etoile
+	 */
+	public void animateStar(){
+		Animation animation1 = AnimationUtils.loadAnimation(this, R.anim.rotate_star);
+		ImageView star = (ImageView) findViewById(R.id.etoile);
+		star.startAnimation(animation1);
+		
+		Animation animation2 = AnimationUtils.loadAnimation(this, R.anim.scale);
+		ImageView cercle = (ImageView) findViewById(R.id.cercle);
+		cercle.startAnimation(animation2);
+	}
+	
 	@Override
 	/* L'activite revient sur le devant de la scene */
 	public void onResume() {

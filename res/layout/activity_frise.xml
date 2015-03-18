@@ -23,6 +23,22 @@
             android:textSize="20sp" />
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/etoile"
+        android:layout_width="155dp"
+        android:layout_height="155dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="80dp"
+        android:background="@drawable/etoile" />
+
+    <ImageView
+        android:id="@+id/cercle"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginLeft="97dp"
+        android:background="@drawable/cercle" />
+
     <LinearLayout
         android:id="@+id/frise"
         android:layout_width="wrap_content"
@@ -40,8 +56,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/bouton_right"
         android:layout_marginTop="75dp"
-        android:background="@drawable/shadow_2_nine"
-        android:alpha="0.7" />
+        android:alpha="0.5"
+        android:background="@drawable/shadow_2_nine" />
 
     <ImageView
         android:id="@+id/frame_next"
@@ -58,8 +74,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/bouton_right"
         android:layout_marginTop="75dp"
-        android:background="@drawable/shadow_2_nine"
-        android:alpha="0.7" />
+        android:alpha="0.5"
+        android:background="@drawable/shadow_2_nine" />
 
     <ImageView
         android:id="@+id/frame_previous"
@@ -76,6 +92,7 @@
         android:layout_below="@+id/bouton_right"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+        android:alpha="0.6"
         android:background="@drawable/shadow_1_nine" />
 
     <ImageView
