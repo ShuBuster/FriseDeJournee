@@ -4,9 +4,12 @@ package atlas.frisedejournee;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
@@ -22,6 +25,15 @@ public class MenuActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		/* Passage en plein ecran */
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		View decorView = getWindow().getDecorView();
+		decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+				| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+				| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+				| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+				| View.SYSTEM_UI_FLAG_FULLSCREEN
+				| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 		setContentView(R.layout.activity_menu);
 		
 		final Button boutonGo = (Button) findViewById(R.id.go);
@@ -54,7 +66,31 @@ public class MenuActivity extends Activity {
 	    final Button boutonGo = (Button) findViewById(R.id.go);
 	    Drawable d = getResources().getDrawable(R.drawable.bouton1);
     	boutonGo.setBackground(d);
+    	executeDelayed();
 
 	}
 	
+	private void executeDelayed() {
+	    Handler handler = new Handler();
+	    handler.postDelayed(new Runnable() {
+	        @Override
+	        public void run() {
+	            // execute after 500ms
+	            hideNavBar();
+	        }
+	    }, 500);
+	}
+
+
+	private void hideNavBar() {
+	    if (Build.VERSION.SDK_INT >= 19) {
+	        View v = getWindow().getDecorView();
+	        v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+	                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+	                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+	                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+	                                | View.SYSTEM_UI_FLAG_FULLSCREEN
+	                                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+	    }
+	}
 }

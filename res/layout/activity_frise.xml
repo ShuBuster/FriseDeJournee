@@ -1,8 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/back_frise"
+    android:background="@color/blanc_casse"
     tools:context="${relativePackage}.${activityClass}" >
 
     <LinearLayout
@@ -42,21 +43,19 @@
         android:id="@+id/frise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="300dp"
+        android:layout_marginLeft="250dp"
         android:layout_marginTop="67dp"
         android:background="@drawable/frise_support"
         android:orientation="horizontal" >
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/frame_next_shadow"
-        android:layout_width="200dp"
-        android:layout_height="500dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/bouton_right"
-        android:layout_marginTop="75dp"
-        android:alpha="0.5"
-        android:background="@drawable/shadow_2_nine" />
+        android:id="@+id/separateur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/frise"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/separateur" />
 
     <ImageView
         android:id="@+id/frame_next"
@@ -64,17 +63,8 @@
         android:layout_height="420dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/bouton_right"
-        android:layout_marginTop="75dp" />
-
-    <ImageView
-        android:id="@+id/frame_previous_shadow"
-        android:layout_width="200dp"
-        android:layout_height="500dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/bouton_right"
         android:layout_marginTop="75dp"
-        android:alpha="0.5"
-        android:background="@drawable/shadow_2_nine" />
+        android:elevation="8dp" />
 
     <ImageView
         android:id="@+id/frame_previous"
@@ -82,17 +72,8 @@
         android:layout_height="420dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/bouton_right"
-        android:layout_marginTop="75dp" />
-
-    <ImageView
-        android:id="@+id/border_shadow"
-        android:layout_width="1220dp"
-        android:layout_height="730dp"
-        android:layout_below="@+id/bouton_right"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:alpha="0.6"
-        android:background="@drawable/shadow_1_nine" />
+        android:layout_marginTop="75dp"
+        android:elevation="8dp" />
 
     <ImageView
         android:id="@+id/border"
@@ -101,7 +82,8 @@
         android:layout_below="@+id/bouton_right"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:background="@color/vert1" />
+        android:background="@color/vert1"
+        android:elevation="10dp" />
 
     <ImageView
         android:id="@+id/frame"
@@ -109,7 +91,8 @@
         android:layout_height="450dp"
         android:layout_below="@+id/bouton_right"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp" />
+        android:layout_marginTop="60dp"
+        android:elevation="10dp" />
 
     <TextView
         android:id="@+id/titreTask"
@@ -205,23 +188,34 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/home" />
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/home"
+        android:elevation="12dp"
+        android:stateListAnimator="@null" />
 
     <Button
         android:id="@+id/bouton_aide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="50dp"
         android:layout_toRightOf="@+id/bouton_menu"
-        android:background="@drawable/help" />
+        android:background="@drawable/help"
+        android:elevation="12dp"
+        android:stateListAnimator="@null" />
 
     <Button
         android:id="@+id/bouton_retour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="50dp"
         android:layout_toLeftOf="@+id/bouton_menu"
-        android:background="@drawable/back" />
+        android:background="@drawable/back"
+        android:elevation="12dp"
+        android:stateListAnimator="@null" />
 
     <ImageView
         android:id="@+id/scope"
@@ -256,6 +250,5 @@
         android:layout_marginTop="110dp"
         android:background="@drawable/fleche_gauche"
         android:visibility="invisible" />
-
 
 </RelativeLayout>

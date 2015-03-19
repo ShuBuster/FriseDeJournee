@@ -9,10 +9,14 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -36,6 +40,7 @@ public class FriseActivity extends Activity {
 									// activites
 	private final int W; // largeur de la frise en px
 	private final int H; // hauteur de la frise en px
+	private final int margin; // marge entre les cases des taches
 	private boolean modeManuel = false; // mode manuel desactive au debut
 
 	Button aide = null;
@@ -56,8 +61,9 @@ public class FriseActivity extends Activity {
 		scopedTask = null;
 		h0 = 8; // debut a 8h
 		h1 = 21; // debut a 21h
-		W = 820;
-		H = 47;
+		W = 1638;
+		H = 92;
+		margin = 6;
 		colorTab = new int[11];
 		colorTab[0] = R.color.vert1;
 		colorTab[1] = R.color.vert2;
@@ -75,6 +81,15 @@ public class FriseActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		/* Passage en plein ecran */
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		View decorView = getWindow().getDecorView();
+		decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+				| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+				| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+				| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+				| View.SYSTEM_UI_FLAG_FULLSCREEN
+				| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 		setContentView(R.layout.activity_frise);
 
 		/* Changement de police du titre */
@@ -85,7 +100,7 @@ public class FriseActivity extends Activity {
 
 		/* Animation du decor */
 		animateStar();
-		
+
 		/* Remplissage de mes taches par lecture du fichier */
 		// Drawable image =
 		// getResources().getDrawable(R.drawable.image_dejeuner);
@@ -111,10 +126,10 @@ public class FriseActivity extends Activity {
 														// journee
 				layoutParams = new LinearLayout.LayoutParams(Xwidth, H);
 			} else { // si c'est la derniere tache de la journee
-				layoutParams = new LinearLayout.LayoutParams(Xwidth - 3
+				layoutParams = new LinearLayout.LayoutParams(Xwidth - margin
 						* (myTasks.size() - 2), H);
 			}
-			layoutParams.setMargins(3, 3, 0, 0);
+			layoutParams.setMargins(margin, margin, 0, 0);
 			rectTask.setLayoutParams(layoutParams);
 
 			int couleur = getResources().getColor(colorTab[color_indice]);
@@ -401,7 +416,7 @@ public class FriseActivity extends Activity {
 			int XDelta = nextScopedTask.getXbegin(W, h0, h1)
 					- oldScopedTask.getXbegin(W, h0, h1);
 			TranslateAnimation translate = new TranslateAnimation(0, (XDelta)
-					* (x1 / x2) + pas * (x1 / x2) * 3 + 7, 0, 0);
+					* (x1 / x2) + pas * (x1 / x2) * margin + 7, 0, 0);
 			translate.setDuration(1000);
 			// translate.setStartOffset(500);
 			animationSet.addAnimation(translate);
@@ -460,7 +475,7 @@ public class FriseActivity extends Activity {
 		MarginLayoutParams paramsScope = (MarginLayoutParams) scope
 				.getLayoutParams();
 		paramsScope.width = XWidth + 20;
-		paramsScope.leftMargin = 290 + XBegin + indice * 3;
+		paramsScope.leftMargin = 500 + XBegin + indice * margin;
 		scope.setLayoutParams(paramsScope);
 
 	}
@@ -596,7 +611,6 @@ public class FriseActivity extends Activity {
 		cercle.startAnimation(animation2);
 	}
 
-
 	@Override
 	/* L'activite revient sur le devant de la scene */
 	public void onResume() {
@@ -611,6 +625,35 @@ public class FriseActivity extends Activity {
 		Drawable d3 = getResources().getDrawable(R.drawable.help);
 		boutonAide.setBackground(d3);
 
+		/* Pour le plein ecran */
+		int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+				| View.SYSTEM_UI_FLAG_FULLSCREEN;
+
+		executeDelayed();
+	}
+	
+	private void executeDelayed() {
+	    Handler handler = new Handler();
+	    handler.postDelayed(new Runnable() {
+	        @Override
+	        public void run() {
+	            // execute after 500ms
+	            hideNavBar();
+	        }
+	    }, 500);
+	}
+
+
+	private void hideNavBar() {
+	    if (Build.VERSION.SDK_INT >= 19) {
+	        View v = getWindow().getDecorView();
+	        v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+	                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+	                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+	                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+	                                | View.SYSTEM_UI_FLAG_FULLSCREEN
+	                                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+	    }
 	}
 
 }
