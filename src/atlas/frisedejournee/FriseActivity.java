@@ -44,7 +44,8 @@ public class FriseActivity extends Activity {
 	Button manual = null;
 	Button right = null;
 	Button left = null;
-	RelativeLayout menuDeroulant = null;
+	LinearLayout menuDeroulant = null;
+	LinearLayout descriptionDeroulant = null;
 	boolean isOpen = false;
 
 	/**
@@ -83,7 +84,7 @@ public class FriseActivity extends Activity {
 		txtView1.setTypeface(externalFont);
 
 		/* Animation du decor */
-		animateStar();		
+		animateStar();
 		
 		/* Remplissage de mes taches par lecture du fichier */
 		// Drawable image =
@@ -95,8 +96,8 @@ public class FriseActivity extends Activity {
 		LinearLayout frise = (LinearLayout) findViewById(R.id.frise);
 
 		int color_indice = 0;
-        int task_indice = 0;
-		
+		int task_indice = 0;
+
 		for (Task myTask : myTasks) {
 
 			/* Affichage de ma tache sur la frise */
@@ -105,11 +106,13 @@ public class FriseActivity extends Activity {
 
 			/* Creation du rectangle et placement */
 			LinearLayout.LayoutParams layoutParams;
-			if(task_indice != myTasks.size()-1){ // Si ce n'est pas la derniere tache de la journee
-			layoutParams = new LinearLayout.LayoutParams(Xwidth, H);
-			}
-			else{ // si c'est la derniere tache de la journee
-			layoutParams = new LinearLayout.LayoutParams(Xwidth-3*(myTasks.size()-2), H);
+			if (task_indice != myTasks.size() - 1) { // Si ce n'est pas la
+														// derniere tache de la
+														// journee
+				layoutParams = new LinearLayout.LayoutParams(Xwidth, H);
+			} else { // si c'est la derniere tache de la journee
+				layoutParams = new LinearLayout.LayoutParams(Xwidth - 3
+						* (myTasks.size() - 2), H);
 			}
 			layoutParams.setMargins(3, 3, 0, 0);
 			rectTask.setLayoutParams(layoutParams);
@@ -179,7 +182,7 @@ public class FriseActivity extends Activity {
 		vue.setText(nomEnfant);
 
 		// on recupere le menu a derouler
-		menuDeroulant = (RelativeLayout) findViewById(R.id.menuDeroulant);
+		menuDeroulant = (LinearLayout) findViewById(R.id.menuDeroulant);
 		menuDeroulant.setVisibility(View.GONE);
 		aide = (Button) findViewById(R.id.bouton_aide);
 		// On récupère le bouton pour cacher/afficher le menu
@@ -208,7 +211,6 @@ public class FriseActivity extends Activity {
 		manual = (Button) findViewById(R.id.bouton_manual);
 		left = (Button) findViewById(R.id.bouton_left);
 		right = (Button) findViewById(R.id.bouton_right);
-		Log.d("tag", "scoped task = " + Task.indexOfTask(myTasks, scopedTask));
 
 		manual.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -219,12 +221,15 @@ public class FriseActivity extends Activity {
 					manual.setBackground(getResources().getDrawable(
 							R.drawable.manual)); // desenfonce le bouton
 					modeManuel = false;
-					left.setEnabled(false); // desactivation des boutons droite et gauche
+					left.setEnabled(false); // desactivation des boutons droite
+											// et gauche
 					right.setEnabled(false);
 					left.setVisibility(View.INVISIBLE); // disparition des
-														// boutons droite et gauche
+														// boutons droite et
+														// gauche
 					right.setVisibility(View.INVISIBLE);
-					moveScopeToCurrentTask(); // retour du scope a l'activite courante
+					moveScopeToCurrentTask(); // retour du scope a l'activite
+												// courante
 				} else { // si on n'est pas en mode manuel
 
 					/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
@@ -250,7 +255,8 @@ public class FriseActivity extends Activity {
 
 				moveScope(-1); // deplace le scope d'une activite vers l'arriere
 				displayTask(); // affiche la tache scoped au centre
-				left.setEnabled(false); // desactive les boutons pendant l'animation du scope
+				left.setEnabled(false); // desactive les boutons pendant
+										// l'animation du scope
 				right.setEnabled(false);
 			}
 		});
@@ -261,7 +267,8 @@ public class FriseActivity extends Activity {
 
 				moveScope(1); // deplace le scope d'une activite vers l'avant
 				displayTask(); // affiche la tache scoped au centre
-				left.setEnabled(false); // desactive les boutons pendant l'animation du scope
+				left.setEnabled(false); // desactive les boutons pendant
+										// l'animation du scope
 				right.setEnabled(false);
 
 			}
@@ -270,14 +277,13 @@ public class FriseActivity extends Activity {
 	}
 
 	/**
-	 * Utilisée pour ouvrir ou fermer le menu.
+	 * Utilisee pour ouvrir ou fermer le menu.
 	 * 
 	 * @return true si le menu est désormais ouvert.
 	 */
-	public boolean toggle(RelativeLayout menuDeroulant, boolean isOpen) {
+	public boolean toggle(LinearLayout menuDeroulant, boolean isOpen) {
 		int SPEED = 300;
 		// Animation de transition.
-		AnimationSet animationSet = new AnimationSet(true);
 		TranslateAnimation animation = null;
 
 		// On passe de ouvert à fermé (ou vice versa)
@@ -289,13 +295,11 @@ public class FriseActivity extends Activity {
 			animation = new TranslateAnimation(0.0f, 0.0f,
 					-menuDeroulant.getHeight(), 0.0f);
 			animation.setAnimationListener(openListener);
-			animationSet.setAnimationListener(openListener);
 		} else {
 			// Sinon, animation de translation du haut vers le bas
 			animation = new TranslateAnimation(0.0f, 0.0f, 0.0f,
 					-menuDeroulant.getHeight());
 			animation.setAnimationListener(closeListener);
-			animationSet.setAnimationListener(closeListener);
 		}
 
 		// On détermine la durée de l'animation
@@ -303,8 +307,7 @@ public class FriseActivity extends Activity {
 		// On ajoute un effet d'accélération
 		animation.setInterpolator(new AccelerateInterpolator());
 		// Enfin, on lance l'animation
-		animationSet.addAnimation(animation);
-		menuDeroulant.startAnimation(animationSet);
+		menuDeroulant.startAnimation(animation);
 
 		return isOpen;
 	}
@@ -383,54 +386,54 @@ public class FriseActivity extends Activity {
 
 		Task oldScopedTask = scopedTask;
 		Task nextScopedTask = Task.findRelativeTask(myTasks, scopedTask, pas);
-		if(nextScopedTask!=null){
-		this.scopedTask = nextScopedTask;
-		ImageView scope = (ImageView) findViewById(R.id.scope);
+		if (nextScopedTask != null) {
+			this.scopedTask = nextScopedTask;
+			ImageView scope = (ImageView) findViewById(R.id.scope);
 
-		/* Creation de l'animation */
+			/* Creation de l'animation */
 
-		final int x1 = oldScopedTask.getXwidth(W, h0, h1);
-		final int x2 = nextScopedTask.getXwidth(W, h0, h1);
+			final int x1 = oldScopedTask.getXwidth(W, h0, h1);
+			final int x2 = nextScopedTask.getXwidth(W, h0, h1);
 
-		// Translation
+			// Translation
 
-		AnimationSet animationSet = new AnimationSet(true);
-		int XDelta = nextScopedTask.getXbegin(W, h0, h1)
-				- oldScopedTask.getXbegin(W, h0, h1);
-		TranslateAnimation translate = new TranslateAnimation(0, (XDelta)
-				* (x1 / x2) + pas * (x1 / x2) * 3 + 7, 0, 0);
-		translate.setDuration(1000);
-		//translate.setStartOffset(500);
-		animationSet.addAnimation(translate);
+			AnimationSet animationSet = new AnimationSet(true);
+			int XDelta = nextScopedTask.getXbegin(W, h0, h1)
+					- oldScopedTask.getXbegin(W, h0, h1);
+			TranslateAnimation translate = new TranslateAnimation(0, (XDelta)
+					* (x1 / x2) + pas * (x1 / x2) * 3 + 7, 0, 0);
+			translate.setDuration(1000);
+			// translate.setStartOffset(500);
+			animationSet.addAnimation(translate);
 
-		// Mise a l'echelle
+			// Mise a l'echelle
 
-		double ratio = (double) x2 / x1;
-		float ratioF = (float) ratio;
-		ScaleAnimation scale = new ScaleAnimation(1, ratioF, 1, 1);
-		scale.setDuration(1000);
-		animationSet.addAnimation(scale);
+			double ratio = (double) x2 / x1;
+			float ratioF = (float) ratio;
+			ScaleAnimation scale = new ScaleAnimation(1, ratioF, 1, 1);
+			scale.setDuration(1000);
+			animationSet.addAnimation(scale);
 
-		animationSet.setAnimationListener(new AnimationListener() {
+			animationSet.setAnimationListener(new AnimationListener() {
 
-			@Override
-			public void onAnimationStart(Animation animation) {
-			}
+				@Override
+				public void onAnimationStart(Animation animation) {
+				}
 
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-			}
+				@Override
+				public void onAnimationRepeat(Animation animation) {
+				}
 
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				replaceScope(); // replace vraiment le scope a sa nouvelle
-								// position
-				left.setEnabled(true);
-				right.setEnabled(true);
-			}
-		});
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					replaceScope(); // replace vraiment le scope a sa nouvelle
+									// position
+					left.setEnabled(true);
+					right.setEnabled(true);
+				}
+			});
 
-		scope.startAnimation(animationSet);
+			scope.startAnimation(animationSet);
 		}
 	}
 
@@ -439,10 +442,12 @@ public class FriseActivity extends Activity {
 	 */
 	public void moveScopeToCurrentTask() {
 		Task currentTask = findCurrentTask();
-		int pas = Task.indexOfTask(myTasks,currentTask) - Task.indexOfTask(myTasks,scopedTask);
+		int pas = Task.indexOfTask(myTasks, currentTask)
+				- Task.indexOfTask(myTasks, scopedTask);
 		moveScope(pas);
 		displayTask();
 	}
+
 	/**
 	 * Replace le scope a la position scopedTask sans animation
 	 */
@@ -461,7 +466,8 @@ public class FriseActivity extends Activity {
 	}
 
 	/**
-	 * Affiche les informations de la scopedTask au milieu de l'ecran et de ses taches voisines
+	 * Affiche les informations de la scopedTask au milieu de l'ecran et de ses
+	 * taches voisines
 	 */
 	public void displayTask() {
 
@@ -497,75 +503,78 @@ public class FriseActivity extends Activity {
 		heure1.setText(splitedHour[1]);
 		minute10.setText(splitedHour[2]);
 		minute1.setText(splitedHour[3]);
-		
+
 		/* Affiche les taches voisines */
 		displayNearTasks();
 	}
-	
+
 	/**
-	 * Affiche de part et d'autre de la tache scoped, les deux taches d'avant et d'apres
+	 * Affiche de part et d'autre de la tache scoped, les deux taches d'avant et
+	 * d'apres
 	 */
 	public void displayNearTasks() {
 		/* Recupere les taches adjacentes */
 		Task previous = Task.findRelativeTask(myTasks, scopedTask, -1);
 		Task next = Task.findRelativeTask(myTasks, scopedTask, 1);
-		
+
 		ImageView prev = (ImageView) findViewById(R.id.frame_previous);
 		ImageView nxt = (ImageView) findViewById(R.id.frame_next);
-		
+
 		/* Affichage de la tache precedente si elle existe */
-		if(previous!=null){
+		if (previous != null) {
 			int couleur = previous.getCouleur(); // recuperation de la couleur
 			prev.setBackgroundColor(couleur);
 			prev.setVisibility(View.VISIBLE);
 			prev.setAlpha(0.8f);
-		}
-		else{
+		} else {
 			prev.setVisibility(View.INVISIBLE);
 		}
-		
+
 		/* Affichage de la tache precedente si elle existe */
-		if(next!=null){
+		if (next != null) {
 			int couleur = next.getCouleur(); // recuperation de la couleur
 			nxt.setBackgroundColor(couleur);
 			nxt.setVisibility(View.VISIBLE);
 			nxt.setAlpha(0.6f);
-		}
-		else{
+		} else {
 			nxt.setVisibility(View.INVISIBLE);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Separe les 4 chiffres qui constituent une heure
-	 * @param hour l'heure
+	 * 
+	 * @param hour
+	 *            l'heure
 	 * @return le tableau rempli avec les chiffres
 	 */
-	public String[] splitHour(double hour){
+	public String[] splitHour(double hour) {
 		String[] result = new String[4];
 		int heure = (int) Math.floor(hour);
 		int minute = (int) ((hour - heure) * 0.6);
-		
-		int heure_dizaine = (int) Math.floor(heure/10);
+
+		int heure_dizaine = (int) Math.floor(heure / 10);
 		result[0] = String.valueOf(heure_dizaine);
-		int heure_unite = heure - 10*heure_dizaine;
+		int heure_unite = heure - 10 * heure_dizaine;
 		result[1] = String.valueOf(heure_unite);
-		
-		int minute_dizaine = (int) Math.floor(minute/10);
+
+		int minute_dizaine = (int) Math.floor(minute / 10);
 		result[2] = String.valueOf(minute_dizaine);
-		int minute_unite = minute - 10*minute_dizaine;
+		int minute_unite = minute - 10 * minute_dizaine;
 		result[3] = String.valueOf(minute_unite);
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Assombrit une couleur
-	 * @param color la couleur a assombrir
+	 * 
+	 * @param color
+	 *            la couleur a assombrir
 	 * @return la couleur assombrie
 	 */
-	public int darkenColor(int color){
+	public int darkenColor(int color) {
 		float[] hsv = new float[3];
 		Color.colorToHSV(color, hsv);
 		hsv[2] *= 0.85f;
@@ -574,18 +583,20 @@ public class FriseActivity extends Activity {
 	}
 
 	/**
-	 * lance l'animation continue de l'etoile
+	 * lance l'animation continue de l'etoile et du cercle
 	 */
-	public void animateStar(){
-		Animation animation1 = AnimationUtils.loadAnimation(this, R.anim.rotate_star);
+	public void animateStar() {
+		Animation animation1 = AnimationUtils.loadAnimation(this,
+				R.anim.rotate_star);
 		ImageView star = (ImageView) findViewById(R.id.etoile);
 		star.startAnimation(animation1);
-		
+
 		Animation animation2 = AnimationUtils.loadAnimation(this, R.anim.scale);
 		ImageView cercle = (ImageView) findViewById(R.id.cercle);
 		cercle.startAnimation(animation2);
 	}
-	
+
+
 	@Override
 	/* L'activite revient sur le devant de la scene */
 	public void onResume() {

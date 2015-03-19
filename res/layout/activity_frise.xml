@@ -5,10 +5,11 @@
     android:background="@drawable/back_frise"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/menuDeroulant"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingLeft="10dip"
         android:paddingRight="10dip" >
 
@@ -16,27 +17,25 @@
             android:id="@+id/texte_aide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/orange1"
             android:textSize="20sp" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/etoile"
         android:layout_width="155dp"
         android:layout_height="155dp"
-        android:layout_marginTop="15dp"
         android:layout_marginLeft="80dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/etoile" />
 
     <ImageView
         android:id="@+id/cercle"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_marginTop="33dp"
         android:layout_marginLeft="97dp"
+        android:layout_marginTop="33dp"
         android:background="@drawable/cercle" />
 
     <LinearLayout
@@ -257,5 +256,6 @@
         android:layout_marginTop="110dp"
         android:background="@drawable/fleche_gauche"
         android:visibility="invisible" />
+
 
 </RelativeLayout>
