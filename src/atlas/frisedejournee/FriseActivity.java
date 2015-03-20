@@ -271,7 +271,7 @@ public class FriseActivity extends Activity {
 	 * @return true si le menu est désormais ouvert.
 	 */
 	public boolean toggle(RelativeLayout menuDeroulant, boolean isOpen) {
-		int SPEED = 300;
+		int SPEED = 100;
 		// Animation de transition.
 		AnimationSet animationSet = new AnimationSet(true);
 		TranslateAnimation animation = null;
@@ -283,7 +283,7 @@ public class FriseActivity extends Activity {
 		if (isOpen) {
 			// Animation de translation du bas vers le haut
 			animation = new TranslateAnimation(0.0f, 0.0f,
-					-menuDeroulant.getHeight(), 0.0f);
+					-menuDeroulant.getHeight()+20f, 0.0f);
 			animation.setAnimationListener(openListener);
 			animationSet.setAnimationListener(openListener);
 		} else {
