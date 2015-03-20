@@ -5,10 +5,11 @@
     android:background="@drawable/back_frise"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/menuDeroulant"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingLeft="10dip"
         android:paddingRight="10dip" >
 
@@ -16,12 +17,26 @@
             android:id="@+id/texte_aide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/orange1"
             android:textSize="20sp" />
-    </RelativeLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/etoile"
+        android:layout_width="155dp"
+        android:layout_height="155dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/etoile" />
+
+    <ImageView
+        android:id="@+id/cercle"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginLeft="97dp"
+        android:layout_marginTop="33dp"
+        android:background="@drawable/cercle" />
 
     <LinearLayout
         android:id="@+id/frise"
@@ -34,12 +49,32 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/frame_next_shadow"
+        android:layout_width="200dp"
+        android:layout_height="500dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/bouton_right"
+        android:layout_marginTop="75dp"
+        android:alpha="0.5"
+        android:background="@drawable/shadow_2_nine" />
+
+    <ImageView
         android:id="@+id/frame_next"
         android:layout_width="300dp"
         android:layout_height="420dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/bouton_right"
         android:layout_marginTop="75dp" />
+
+    <ImageView
+        android:id="@+id/frame_previous_shadow"
+        android:layout_width="200dp"
+        android:layout_height="500dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/bouton_right"
+        android:layout_marginTop="75dp"
+        android:alpha="0.5"
+        android:background="@drawable/shadow_2_nine" />
 
     <ImageView
         android:id="@+id/frame_previous"
@@ -51,11 +86,13 @@
 
     <ImageView
         android:id="@+id/border_shadow"
-        android:layout_width="1120dp"
-        android:layout_height="470dp"
+        android:layout_width="1220dp"
+        android:layout_height="730dp"
         android:layout_below="@+id/bouton_right"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="20dp"
+        android:alpha="0.6"
+        android:background="@drawable/shadow_1_nine" />
 
     <ImageView
         android:id="@+id/border"
@@ -219,5 +256,6 @@
         android:layout_marginTop="110dp"
         android:background="@drawable/fleche_gauche"
         android:visibility="invisible" />
+
 
 </RelativeLayout>
