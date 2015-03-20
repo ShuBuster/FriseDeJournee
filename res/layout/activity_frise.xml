@@ -38,6 +38,18 @@
         android:layout_marginLeft="97dp"
         android:layout_marginTop="33dp"
         android:background="@drawable/cercle" />
+    
+    <TextView 
+        android:id="@+id/nom_enfant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/cercle"
+        android:layout_alignRight="@id/cercle"
+        android:layout_marginBottom="43dp"
+        android:layout_marginRight="25dp"
+        android:textColor="@color/violet"
+        android:textSize="35sp"
+        android:textAlignment="center"/>
 
     <LinearLayout
         android:id="@+id/frise"
@@ -101,6 +113,7 @@
         android:layout_alignBottom="@+id/frame"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"
+        android:elevation="10dp"
         android:text=""
         android:textColor="@color/jaune1"
         android:textSize="60sp" />
@@ -111,7 +124,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/frame"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="0dp" />
+        android:layout_marginBottom="0dp"
+        android:elevation="10dp" />
 
     <LinearLayout
         android:id="@+id/heure"
@@ -121,6 +135,7 @@
         android:layout_alignTop="@+id/frame"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
+        android:elevation="10dp"
         android:orientation="horizontal" >
 
         <TextView

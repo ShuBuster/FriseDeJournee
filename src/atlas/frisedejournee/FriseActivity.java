@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 public class FriseActivity extends Activity {
 
+	private String nomEnfant; // le nom de l'enfant a qui appartient la frise
 	private ArrayList<Task> myTasks; // la liste des activites de la frise
 	private Task scopedTask; // l'activite sur laquelle se trouve le scope
 	private double h0; // l'heure a laquelle commence la frise
@@ -57,6 +58,7 @@ public class FriseActivity extends Activity {
 	 * Constructeur par defaut
 	 */
 	public FriseActivity() {
+		nomEnfant = "Romain";
 		myTasks = new ArrayList<Task>();
 		scopedTask = null;
 		h0 = 8; // debut a 8h
@@ -92,10 +94,15 @@ public class FriseActivity extends Activity {
 				| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 		setContentView(R.layout.activity_frise);
 
-		/* Changement de police du titre */
-		TextView txtView1 = (TextView) findViewById(R.id.texte);
+		/* Affichage du nom de l'enfant */
 		Typeface externalFont = Typeface.createFromAsset(getAssets(),
 				"fonts/onthemove.ttf");
+		TextView nom_enfant = (TextView) findViewById(R.id.nom_enfant);
+		nom_enfant.setText(nomEnfant);
+		nom_enfant.setTypeface(externalFont);
+		
+		/* Changement de police du titre */
+		TextView txtView1 = (TextView) findViewById(R.id.texte);
 		txtView1.setTypeface(externalFont);
 
 		/* Animation du decor */
@@ -192,9 +199,8 @@ public class FriseActivity extends Activity {
 		Resources res = getResources();
 		String nomEnfant = res.getString(R.string.aide);
 
-		TextView vue = (TextView) findViewById(R.id.texte_aide);
 
-		vue.setText(nomEnfant);
+		texte.setText(nomEnfant);
 
 		// on recupere le menu a derouler
 		menuDeroulant = (LinearLayout) findViewById(R.id.menuDeroulant);
