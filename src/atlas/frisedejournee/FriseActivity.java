@@ -2,6 +2,7 @@ package atlas.frisedejournee;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -44,6 +46,14 @@ public class FriseActivity extends Activity {
 	private final int margin; // marge entre les cases des taches
 	private boolean modeManuel = false; // mode manuel desactive au debut
 
+	TextToSpeech tts;
+
+	Button audio1 = null;
+	Button audio2 = null;
+	Button audio3 = null;
+	Button aide_retour = null;
+	Button aide_menu = null;
+	Button aide_manuel = null;
 	Button aide = null;
 	Button menu = null;
 	Button retour = null;
@@ -83,7 +93,7 @@ public class FriseActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		/* Passage en plein ecran */
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		View decorView = getWindow().getDecorView();
@@ -99,14 +109,14 @@ public class FriseActivity extends Activity {
 		Bundle bundle = getIntent().getExtras();
 		String nom = bundle.getString("nom_enfant");
 		nomEnfant = nom;
-		
+
 		/* Affichage du nom de l'enfant */
 		Typeface externalFont = Typeface.createFromAsset(getAssets(),
 				"fonts/onthemove.ttf");
 		TextView nom_enfant = (TextView) findViewById(R.id.nom_enfant);
 		nom_enfant.setText(nomEnfant);
 		nom_enfant.setTypeface(externalFont);
-		
+
 		/* Changement de police du titre */
 		TextView txtView1 = (TextView) findViewById(R.id.texte);
 		txtView1.setTypeface(externalFont);
@@ -114,12 +124,14 @@ public class FriseActivity extends Activity {
 		/* Animation du decor */
 		animateStar();
 
-		/* Remplissage des taches selon l'enfant*/
-		switch(nomEnfant){
-			case "Romain" : myTasks = Task.createTasksRomain(this);
-						    break;
-			case "Louise" : myTasks = Task.createTasksLouise(this);
-							break;
+		/* Remplissage des taches selon l'enfant */
+		switch (nomEnfant) {
+		case "Romain":
+			myTasks = Task.createTasksRomain(this);
+			break;
+		case "Louise":
+			myTasks = Task.createTasksLouise(this);
+			break;
 		}
 
 		/* Recuperation de la frise */
@@ -202,19 +214,25 @@ public class FriseActivity extends Activity {
 
 		// creation du menu deroulant de l'aide
 
-		TextView texte = (TextView) findViewById(R.id.texte_aide);
-		texte.setBackgroundColor(getResources().getColor(colorTab[4]));
-		Resources res = getResources();
-		String nomEnfant = res.getString(R.string.aide);
-
-
-		texte.setText(nomEnfant);
+		aide = (Button) findViewById(R.id.bouton_aide);
+		audio1 = (Button) findViewById(R.id.audio1);
+		audio2 = (Button) findViewById(R.id.audio2);
+		audio3 = (Button) findViewById(R.id.audio3);
+		aide_retour = (Button) findViewById(R.id.aide_retour);
+		aide_manuel = (Button) findViewById(R.id.aide_manuel);
+		aide_menu = (Button) findViewById(R.id.aide_menu);
 
 		// on recupere le menu a derouler
+		// Drawable open = getResources().getDrawable(R.drawable.help_e);
+		// Drawable close = getResources().getDrawable(R.drawable.help);
 		menuDeroulant = (LinearLayout) findViewById(R.id.menuDeroulant);
-		menuDeroulant.setVisibility(View.GONE);
+
 		aide = (Button) findViewById(R.id.bouton_aide);
-		// On récupère le bouton pour cacher/afficher le menu
+
+		// Slider menuAide = new Slider(menuDeroulant,aide,open,close);
+		// menuAide.start();
+		// a l'origine, le menu est cache
+		menuDeroulant.setVisibility(View.INVISIBLE);
 		// On rajoute un Listener sur le clic du bouton...
 		aide.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -226,15 +244,30 @@ public class FriseActivity extends Activity {
 				if (isOpen) {
 					// Si le Slider est ouvert...
 					// ... on change le bouton d'aide en mode appuye
-					Drawable d = getResources().getDrawable(R.drawable.help_e);
-					aide.setBackground(d);
+					Drawable open = getResources().getDrawable(
+							R.drawable.help_e);
+					aide.setBackground(open);
 				} else {
 					// Sinon on remet le bouton en mode "lache"
-					Drawable d = getResources().getDrawable(R.drawable.help);
-					aide.setBackground(d);
+					Drawable close = getResources()
+							.getDrawable(R.drawable.help);
+					aide.setBackground(close);
 				}
 			}
 		});
+
+		/* le texte to speech */
+
+		start("pour retourner sur ta frise", audio1);
+		start("pour retourner au menu principal", audio3);
+		start("pour choisir toi-même ton activité", audio2);
+
+		// TTSButton retour = new
+		// TTSButton(audio1,"pour retourner sur ta frise");
+		// TTSButton menu = new
+		// TTSButton(audio2,"pour retourner au menu principal");
+		// TTSButton manuel = new
+		// TTSButton(audio3,"pour choisir toi-même ton activité");
 
 		/* creation du mode manuel */
 		manual = (Button) findViewById(R.id.bouton_manual);
@@ -311,7 +344,7 @@ public class FriseActivity extends Activity {
 	 * @return true si le menu est désormais ouvert.
 	 */
 	public boolean toggle(LinearLayout menuDeroulant, boolean isOpen) {
-		int SPEED = 300;
+		int duration = 600;
 		// Animation de transition.
 		TranslateAnimation animation = null;
 
@@ -332,7 +365,7 @@ public class FriseActivity extends Activity {
 		}
 
 		// On détermine la durée de l'animation
-		animation.setDuration(SPEED);
+		animation.setDuration(duration);
 		// On ajoute un effet d'accélération
 		animation.setInterpolator(new AccelerateInterpolator());
 		// Enfin, on lance l'animation
@@ -345,7 +378,7 @@ public class FriseActivity extends Activity {
 	Animation.AnimationListener closeListener = new Animation.AnimationListener() {
 		public void onAnimationEnd(Animation animation) {
 			// On dissimule le menu
-			menuDeroulant.setVisibility(View.GONE);
+			menuDeroulant.setVisibility(View.INVISIBLE);
 		}
 
 		public void onAnimationRepeat(Animation animation) {
@@ -625,6 +658,43 @@ public class FriseActivity extends Activity {
 		cercle.startAnimation(animation2);
 	}
 
+	public void start(final String texteALire, Button ttsButton) {
+
+		tts = new TextToSpeech(getApplicationContext(),
+				new TextToSpeech.OnInitListener() {
+					public void onInit(int status) {
+						if (status != TextToSpeech.ERROR)
+							tts.setLanguage(Locale.FRANCE);
+					}
+				});
+		ttsButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				speakText(texteALire);
+			}
+		});
+	}
+
+	@Override
+	public void onPause() {
+		if (tts != null) {
+			tts.stop();
+			tts.shutdown();
+		}
+		super.onPause();
+	}
+
+	@SuppressWarnings("deprecation")
+	public void speakText(String texteALire) {
+
+		/*
+		 * Toast.makeText(getApplicationContext(), texteALire,
+		 * Toast.LENGTH_SHORT) .show();
+		 */
+		// affiche le texte qui est en train d'etre lu sous forme de toast
+		tts.speak(texteALire, TextToSpeech.QUEUE_FLUSH, null);
+	}
+
 	@Override
 	/* L'activite revient sur le devant de la scene */
 	public void onResume() {
@@ -645,29 +715,28 @@ public class FriseActivity extends Activity {
 
 		executeDelayed();
 	}
-	
+
 	private void executeDelayed() {
-	    Handler handler = new Handler();
-	    handler.postDelayed(new Runnable() {
-	        @Override
-	        public void run() {
-	            // execute after 500ms
-	            hideNavBar();
-	        }
-	    }, 500);
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				// execute after 500ms
+				hideNavBar();
+			}
+		}, 500);
 	}
 
-
 	private void hideNavBar() {
-	    if (Build.VERSION.SDK_INT >= 19) {
-	        View v = getWindow().getDecorView();
-	        v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-	                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-	                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-	                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-	                                | View.SYSTEM_UI_FLAG_FULLSCREEN
-	                                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-	    }
+		if (Build.VERSION.SDK_INT >= 19) {
+			View v = getWindow().getDecorView();
+			v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+					| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+					| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+					| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+					| View.SYSTEM_UI_FLAG_FULLSCREEN
+					| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+		}
 	}
 
 }

@@ -6,22 +6,6 @@
     android:background="@color/blanc_casse"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <LinearLayout
-        android:id="@+id/menuDeroulant"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="10dip"
-        android:paddingRight="10dip" >
-
-        <TextView
-            android:id="@+id/texte_aide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/orange1"
-            android:textSize="20sp" />
-    </LinearLayout>
 
     <ImageView
         android:id="@+id/etoile"
@@ -286,5 +270,119 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/gnar"
         android:elevation="15dp" />
+
+    <LinearLayout
+        android:id="@+id/menuDeroulant"
+        android:layout_width="600dp"
+        android:layout_height="500dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/orange1"
+        android:layout_centerHorizontal="true"
+        android:elevation="15dp" >
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/aide_retour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/back" />
+
+            <TextView
+                android:id="@+id/texteRetour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/aide_retour"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:text="pour retourner sur ta frise"
+                android:textColor="@color/bleu1"
+                android:textSize="25sp" />
+
+            <Button
+                android:id="@+id/aide_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/aide_retour"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/home" />
+
+            <TextView
+                android:id="@+id/texteMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/aide_menu"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:text="pour retourner au menu principal"
+                android:textColor="@color/bleu1"
+                android:textSize="25sp" />
+
+            <Button
+                android:id="@+id/aide_manuel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/aide_menu"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/manual" />
+
+            <TextView
+                android:id="@+id/texteManuel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/aide_manuel"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:text="pour choisir toi-même ton activité"
+                android:textColor="@color/bleu1"
+                android:textSize="25sp" />
+
+            <Button
+                android:id="@+id/audio1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/aide_retour"
+                android:layout_alignBottom="@id/aide_retour"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/audiopetit" />
+
+            <Button
+                android:id="@+id/audio2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/aide_manuel"
+                android:layout_alignBottom="@id/aide_manuel"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/audiopetit" />
+
+            <Button
+                android:id="@+id/audio3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/aide_menu"
+                android:layout_alignBottom="@id/aide_menu"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/audiopetit" />
+
+            <TextView
+                android:id="@+id/titre_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center_horizontal"
+                android:text="MENU AIDE"
+                android:textColor="@color/vert1"
+                android:textSize="50sp" />
+        </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>
