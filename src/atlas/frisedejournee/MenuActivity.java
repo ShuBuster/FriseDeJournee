@@ -53,7 +53,6 @@ public class MenuActivity extends Activity {
 	      }
 	    });
 	    
-	    Log.v("tag","Tou va bien");
 		LayoutAnimationController layout_animation = AnimationUtils.loadLayoutAnimation(getApplicationContext(),R.anim.layout_saut);
 		titre.setLayoutAnimation(layout_animation);
 	    
