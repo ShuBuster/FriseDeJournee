@@ -385,4 +385,12 @@
         </RelativeLayout>
     </LinearLayout>
 
+    <AnalogClock
+        android:id="@+id/analogClock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/etoile"
+        android:layout_below="@+id/heure"
+         />
+
 </RelativeLayout>

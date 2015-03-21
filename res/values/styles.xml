@@ -14,9 +14,13 @@
     <style name="translucide">
     <item name="android:background">@color/translucide</item>
   </style>
+  
   <style name="SpinnerTextViewItem" parent="@android:style/Widget.TextView" >
     <item name="android:textSize" >35sp</item>
     <item name="android:textColor" >@color/violet</item>
 </style>
 
+      <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <item name="android:typeface">monospace</item>
+ 	</style>
 </resources>

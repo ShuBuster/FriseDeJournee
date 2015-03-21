@@ -1,6 +1,7 @@
 package atlas.frisedejournee;
 
 
+import fonts.FontsOverride;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -40,7 +41,10 @@ public class MenuActivity extends Activity {
 				| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 		setContentView(R.layout.activity_menu);
 		
-		/* Police avant spinner */
+		/* Changement police de l'appli */
+		//FontsOverride.changeDefaultFont(this);
+		
+		/* Police du spinner */
 		Typeface externalFont = Typeface.createFromAsset(getAssets(),
 				"fonts/onthemove.ttf");
 		TextView jeSuis = (TextView) findViewById(R.id.jeSuis);

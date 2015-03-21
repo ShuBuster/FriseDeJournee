@@ -24,6 +24,8 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
@@ -60,6 +62,7 @@ public class FriseActivity extends Activity {
 	Button manual = null;
 	Button right = null;
 	Button left = null;
+	ImageView scope = null;
 	LinearLayout menuDeroulant = null;
 	LinearLayout descriptionDeroulant = null;
 	boolean isOpen = false;
@@ -450,7 +453,7 @@ public class FriseActivity extends Activity {
 		Task nextScopedTask = Task.findRelativeTask(myTasks, scopedTask, pas);
 		if (nextScopedTask != null) {
 			this.scopedTask = nextScopedTask;
-			ImageView scope = (ImageView) findViewById(R.id.scope);
+			scope = (ImageView) findViewById(R.id.scope);
 
 			/* Creation de l'animation */
 
@@ -460,20 +463,31 @@ public class FriseActivity extends Activity {
 			// Translation
 
 			AnimationSet animationSet = new AnimationSet(true);
+			animationSet.setDuration(1000);
+			//animationSet.setInterpolator(new LinearInterpolator());
+			
 			int XDelta = nextScopedTask.getXbegin(W, h0, h1)
 					- oldScopedTask.getXbegin(W, h0, h1);
-			TranslateAnimation translate = new TranslateAnimation(0, (XDelta)
-					* (x1 / x2) + pas * (x1 / x2) * margin + 7, 0, 0);
-			translate.setDuration(1000);
-			// translate.setStartOffset(500);
+			TranslateAnimation translate = null;
+			if(XDelta>=0){
+				translate = new TranslateAnimation(0, (XDelta) + pas*(x1 / x2)*margin + 7, 0, 0);
+			}
+			else{
+				translate = new TranslateAnimation(0, (XDelta)*(x1/x2) + pas*(x1 / x2)*margin + 7, 0, 0);
+			}
 			animationSet.addAnimation(translate);
 
 			// Mise a l'echelle
 
 			double ratio = (double) x2 / x1;
 			float ratioF = (float) ratio;
-			ScaleAnimation scale = new ScaleAnimation(1, ratioF, 1, 1);
-			scale.setDuration(1000);
+			ScaleAnimation scale = null;
+			if(XDelta>=0){
+				 scale = new ScaleAnimation(1f, ratioF, 1f, 1f, ScaleAnimation.RELATIVE_TO_SELF, 1f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
+			}
+			else{
+				scale = new ScaleAnimation(1f, ratioF, 1f, 1f);
+			}
 			animationSet.addAnimation(scale);
 
 			animationSet.setAnimationListener(new AnimationListener() {
@@ -488,6 +502,7 @@ public class FriseActivity extends Activity {
 
 				@Override
 				public void onAnimationEnd(Animation animation) {
+					scope.clearAnimation();
 					replaceScope(); // replace vraiment le scope a sa nouvelle
 									// position
 					left.setEnabled(true);
