@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -14,5 +14,9 @@
     <style name="translucide">
     <item name="android:background">@color/translucide</item>
   </style>
+  <style name="SpinnerTextViewItem" parent="@android:style/Widget.TextView" >
+    <item name="android:textSize" >35sp</item>
+    <item name="android:textColor" >@color/violet</item>
+</style>
 
 </resources>

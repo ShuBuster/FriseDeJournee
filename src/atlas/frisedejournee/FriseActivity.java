@@ -58,7 +58,7 @@ public class FriseActivity extends Activity {
 	 * Constructeur par defaut
 	 */
 	public FriseActivity() {
-		nomEnfant = "Romain";
+		nomEnfant = "";
 		myTasks = new ArrayList<Task>();
 		scopedTask = null;
 		h0 = 8; // debut a 8h
@@ -83,6 +83,7 @@ public class FriseActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		/* Passage en plein ecran */
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		View decorView = getWindow().getDecorView();
@@ -94,6 +95,11 @@ public class FriseActivity extends Activity {
 				| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 		setContentView(R.layout.activity_frise);
 
+		/* Recuperation du nom de l'enfant */
+		Bundle bundle = getIntent().getExtras();
+		String nom = bundle.getString("nom_enfant");
+		nomEnfant = nom;
+		
 		/* Affichage du nom de l'enfant */
 		Typeface externalFont = Typeface.createFromAsset(getAssets(),
 				"fonts/onthemove.ttf");
@@ -108,11 +114,13 @@ public class FriseActivity extends Activity {
 		/* Animation du decor */
 		animateStar();
 
-		/* Remplissage de mes taches par lecture du fichier */
-		// Drawable image =
-		// getResources().getDrawable(R.drawable.image_dejeuner);
-		// myTasks = TaskReader.read(this, "myTasks.txt");
-		myTasks = Task.createTasks(this);
+		/* Remplissage des taches selon l'enfant*/
+		switch(nomEnfant){
+			case "Romain" : myTasks = Task.createTasksRomain(this);
+						    break;
+			case "Louise" : myTasks = Task.createTasksLouise(this);
+							break;
+		}
 
 		/* Recuperation de la frise */
 		LinearLayout frise = (LinearLayout) findViewById(R.id.frise);

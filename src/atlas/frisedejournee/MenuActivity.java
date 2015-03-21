@@ -3,6 +3,7 @@ package atlas.frisedejournee;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,8 +16,11 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 public class MenuActivity extends Activity {
 
@@ -36,6 +40,21 @@ public class MenuActivity extends Activity {
 				| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 		setContentView(R.layout.activity_menu);
 		
+		/* Police avant spinner */
+		Typeface externalFont = Typeface.createFromAsset(getAssets(),
+				"fonts/onthemove.ttf");
+		TextView jeSuis = (TextView) findViewById(R.id.jeSuis);
+		jeSuis.setTypeface(externalFont);
+		
+		/* Spinner ajout des enfants */
+        String[] array_spinner=new String[2];
+        array_spinner[0]="Romain";
+        array_spinner[1]="Louise";
+        Spinner s = (Spinner) findViewById(R.id.enfant_spinner);
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this,R.layout.spinner_item_text, array_spinner);
+        s.setAdapter(adapter);
+		
+		/* Boutons et titre */
 		final Button boutonGo = (Button) findViewById(R.id.go);
 		final RelativeLayout titre = (RelativeLayout) findViewById(R.id.titre);
 	    
@@ -47,9 +66,14 @@ public class MenuActivity extends Activity {
 	    	Drawable d = getResources().getDrawable(R.drawable.bouton1e);
 	    	boutonGo.setBackground(d);
 	    	
+	    	/* Recuperation du nom de l'enfant selectione */
+	    	Spinner spinner = (Spinner)findViewById(R.id.enfant_spinner);
+	    	String nom_enfant = spinner.getSelectedItem().toString();
+	    	
 	    	/* Passage a l'autre activite */
-	        Intent secondeActivite = new Intent(MenuActivity.this, FriseActivity.class);
-	        startActivity(secondeActivite);
+	        Intent intent = new Intent(MenuActivity.this, FriseActivity.class);
+	        intent.putExtra("nom_enfant", nom_enfant);
+	        startActivity(intent);
 	      }
 	    });
 	    

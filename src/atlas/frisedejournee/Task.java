@@ -114,7 +114,39 @@ public class Task {
 	 * Cree un planning par defaut
 	 * @return
 	 */
-	public static ArrayList<Task> createTasks(Context c){
+	public static ArrayList<Task> createTasksLouise(Context c){
+		Drawable image = c.getResources().getDrawable(R.drawable.image_dejeuner);
+		Task t1 = new Task("Réveil", "C'est l'heure de se réveiller et de se préparer",1,8,image);
+		Task t2 = new Task("Accueil", "Tous les enfants arrivent à l'école",1,9,image);
+		Task t3 = new Task("Activites manuelles", "On fait des activités manuelles",2,10,image);
+		Task t4 = new Task("Déjeuner", "C'est l'heure de manger !",1,12,image);
+		Task t5 = new Task("Theatre", "On apprend a jouer la comedie",1.5,13,image);
+		Task t6 = new Task("Cours de danse", "J'apprends la danse classique",1.75,14.5,image);
+		Task t7 = new Task("Pause", "On prend une pause pour se détendre",0.75,16.25,image);
+		Task t8 = new Task("Cours de chant", "On fait des vocalises",1,17,image);
+		Task t9 = new Task("Retour à la maison", "On rentre à la maison pour se reposer !",1,18,image);
+		Task t10 = new Task("Soiree", "On mange, les dents et au lit !",2,19,image);
+		
+		ArrayList<Task> tasks = new ArrayList<Task>();
+		tasks.add(t1);
+		tasks.add(t2);
+		tasks.add(t3);
+		tasks.add(t4);
+		tasks.add(t5);
+		tasks.add(t6);
+		tasks.add(t7);
+		tasks.add(t8);
+		tasks.add(t9);
+		tasks.add(t10);
+		return tasks;
+		
+	}
+	
+	/**
+	 * Cree un planning par defaut
+	 * @return
+	 */
+	public static ArrayList<Task> createTasksRomain(Context c){
 		Drawable image = c.getResources().getDrawable(R.drawable.image_dejeuner);
 		Task t1 = new Task("Réveil", "C'est l'heure de se réveiller et de se préparer",1,8,image);
 		Task t2 = new Task("Accueil", "Tous les enfants arrivent à l'école",2,9,image);

@@ -6,5 +6,7 @@
     <string name="title_activity_frise">FriseActivity</string>
     <string name="aide">le petit enfant Romouille a une question ?</string>
     <string name="title_activity_test">TestActivity</string>
+    <string name="prenom">Mon prénom</string>
+    <string name="jeSuis">Je suis :</string>
 
 </resources>

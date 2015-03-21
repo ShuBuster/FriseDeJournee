@@ -38,8 +38,8 @@
         android:layout_marginLeft="97dp"
         android:layout_marginTop="33dp"
         android:background="@drawable/cercle" />
-    
-    <TextView 
+
+    <TextView
         android:id="@+id/nom_enfant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,9 +47,9 @@
         android:layout_alignRight="@id/cercle"
         android:layout_marginBottom="43dp"
         android:layout_marginRight="25dp"
+        android:textAlignment="center"
         android:textColor="@color/violet"
-        android:textSize="35sp"
-        android:textAlignment="center"/>
+        android:textSize="35sp" />
 
     <LinearLayout
         android:id="@+id/frise"
@@ -265,5 +265,26 @@
         android:layout_marginTop="110dp"
         android:background="@drawable/fleche_gauche"
         android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/ombre_gnar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="112dp"
+        android:background="@drawable/ellipse" />
+
+    <ImageView
+        android:id="@+id/gnar"
+        android:layout_width="280dp"
+        android:layout_height="250dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/gnar"
+        android:elevation="15dp" />
 
 </RelativeLayout>

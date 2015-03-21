@@ -174,4 +174,25 @@
             android:src="@drawable/e4" />
     </RelativeLayout>
 
+    <Spinner
+        android:id="@+id/enfant_spinner"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/go"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:background="@color/orange1"
+        android:popupBackground="@color/orange2" />
+
+    <TextView
+        android:id="@+id/jeSuis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/go"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/jeSuis"
+        android:textColor="@color/fushia"
+        android:textSize="50sp" />
+
 </RelativeLayout>
