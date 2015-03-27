@@ -674,7 +674,7 @@ public class FriseActivity extends Activity {
 	}
 
 	public void start(final String texteALire, Button ttsButton) {
-
+		Log.d("tag","OH OH");
 		tts = new TextToSpeech(getApplicationContext(),
 				new TextToSpeech.OnInitListener() {
 					public void onInit(int status) {
@@ -685,6 +685,7 @@ public class FriseActivity extends Activity {
 		ttsButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				Log.d("tag","OH");
 				speakText(texteALire);
 			}
 		});

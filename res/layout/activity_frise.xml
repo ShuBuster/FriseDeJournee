@@ -274,11 +274,11 @@
     <LinearLayout
         android:id="@+id/menuDeroulant"
         android:layout_width="600dp"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:layout_alignParentTop="true"
-        android:background="@color/orange1"
+        android:background="@color/blanc_casse"
         android:layout_centerHorizontal="true"
-        android:elevation="15dp" >
+        android:elevation="20dp" >
 
         <RelativeLayout
             android:id="@+id/relativeLayout1"
@@ -291,7 +291,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="70dp"
                 android:background="@drawable/back" />
 
             <TextView
@@ -302,7 +302,7 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center_horizontal"
                 android:text="pour retourner sur ta frise"
-                android:textColor="@color/bleu1"
+                android:textColor="@color/bleu2"
                 android:textSize="25sp" />
 
             <Button
@@ -322,7 +322,7 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center_horizontal"
                 android:text="pour retourner au menu principal"
-                android:textColor="@color/bleu1"
+                android:textColor="@color/bleu2"
                 android:textSize="25sp" />
 
             <Button
@@ -342,7 +342,7 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center_horizontal"
                 android:text="pour choisir toi-même ton activité"
-                android:textColor="@color/bleu1"
+                android:textColor="@color/bleu2"
                 android:textSize="25sp" />
 
             <Button
@@ -350,7 +350,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/aide_retour"
-                android:layout_alignBottom="@id/aide_retour"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/audiopetit" />
 
@@ -380,17 +379,10 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center_horizontal"
                 android:text="MENU AIDE"
-                android:textColor="@color/vert1"
+                android:background="@color/rose"
+                android:textColor="@color/jaune1"
                 android:textSize="50sp" />
         </RelativeLayout>
     </LinearLayout>
-
-    <AnalogClock
-        android:id="@+id/analogClock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/etoile"
-        android:layout_below="@+id/heure"
-         />
 
 </RelativeLayout>
