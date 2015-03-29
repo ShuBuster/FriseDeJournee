@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import boutons.ButtonCreator;
+import boutons.TTSButton;
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -47,7 +51,7 @@ public class FriseActivity extends Activity {
 	private final int H; // hauteur de la frise en px
 	private final int margin; // marge entre les cases des taches
 	private boolean modeManuel = false; // mode manuel desactive au debut
-
+	private boolean modeAide = false;
 	TextToSpeech tts;
 
 	Button audio1 = null;
@@ -171,6 +175,8 @@ public class FriseActivity extends Activity {
 			task_indice += 1;
 		}
 
+		//Button bouton = ButtonCreator.createBlueButton(this, "hello");
+		
 		/* Met le scope a l'activite en cours */
 		// Task currentTask = findCurrentTask();
 		Task currentTask = myTasks.get(4);
@@ -203,12 +209,11 @@ public class FriseActivity extends Activity {
 		retour.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
-				/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
+				// Changement de l'aspect du bouton lorsqu'on l'enfonce 
 				Drawable d = getResources().getDrawable(R.drawable.back_e);
 				retour.setBackground(d);
 
-				/* Passage a l'autre activite */
+				// Passage a l'autre activite 
 				Intent secondeActivite = new Intent(FriseActivity.this,
 						MenuActivity.class);
 				startActivity(secondeActivite);
@@ -217,60 +222,64 @@ public class FriseActivity extends Activity {
 
 		// creation du menu deroulant de l'aide
 
-		aide = (Button) findViewById(R.id.bouton_aide);
-		audio1 = (Button) findViewById(R.id.audio1);
-		audio2 = (Button) findViewById(R.id.audio2);
-		audio3 = (Button) findViewById(R.id.audio3);
-		aide_retour = (Button) findViewById(R.id.aide_retour);
-		aide_manuel = (Button) findViewById(R.id.aide_manuel);
-		aide_menu = (Button) findViewById(R.id.aide_menu);
-
-		// on recupere le menu a derouler
-		// Drawable open = getResources().getDrawable(R.drawable.help_e);
-		// Drawable close = getResources().getDrawable(R.drawable.help);
-		menuDeroulant = (LinearLayout) findViewById(R.id.menuDeroulant);
-
-		aide = (Button) findViewById(R.id.bouton_aide);
-
-		// Slider menuAide = new Slider(menuDeroulant,aide,open,close);
-		// menuAide.start();
-		// a l'origine, le menu est cache
-		menuDeroulant.setVisibility(View.INVISIBLE);
-		// On rajoute un Listener sur le clic du bouton...
 		aide.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View vue) {
+			public void onClick(View v) {
 
-				isOpen = toggle(menuDeroulant, isOpen);
+				ImageView glow = (ImageView) findViewById(R.id.glow_menu);
+				// glow a appliquer sur les boutons
 
-				// ...pour afficher ou cacher le menu
-				if (isOpen) {
-					// Si le Slider est ouvert...
-					// ... on change le bouton d'aide en mode appuye
-					Drawable open = getResources().getDrawable(
-							R.drawable.help_e);
-					aide.setBackground(open);
-				} else {
-					// Sinon on remet le bouton en mode "lache"
-					Drawable close = getResources()
-							.getDrawable(R.drawable.help);
-					aide.setBackground(close);
+				if (modeAide) { // on est dans le mode aide
+
+					Drawable d = getResources().getDrawable(R.drawable.help);
+					aide.setBackground(d); // desenfonce le bouton
+
+					modeAide = false; // on sort du mode aide
+					glow.setVisibility(View.INVISIBLE); // le glow disparait
+					
+
+				} else { // si on est pas en mode aide
+
+					/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
+					Drawable d = getResources().getDrawable(R.drawable.help_e);
+					aide.setBackground(d);
+
+					/* glow sur les autres boutons */
+
+					glow.setVisibility(View.VISIBLE);
+					glow.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.glow_scale));
+					
+					modeAide = true; // on passe en mode aide
+
+					// text to speech sur le bouton retour //
+					Log.d("avant tts","trou du cul");
+					
+					//TTSButton tts = new TTSButton(retour,"le petit enfant à mangé du poulet aujourd'hui ?",getApplicationContext());
+					//tts.initialisation();
+					
+					final Context ctx = getApplicationContext();
+					final String texte = "pour retourner sur la dernière activité visitée";
+					tts = new TextToSpeech(ctx,
+							new TextToSpeech.OnInitListener() {
+
+								public void onInit(int status) {
+									if (status != TextToSpeech.ERROR)
+										tts.setLanguage(Locale.FRANCE);
+								}
+							});
+
+					retour.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							
+							tts.speak(texte, TextToSpeech.QUEUE_FLUSH, null);
+
+						}
+					});
+					
 				}
 			}
 		});
-
-		/* le texte to speech */
-
-		start("pour retourner sur ta frise", audio1);
-		start("pour retourner au menu principal", audio3);
-		start("pour choisir toi-même ton activité", audio2);
-
-		// TTSButton retour = new
-		// TTSButton(audio1,"pour retourner sur ta frise");
-		// TTSButton menu = new
-		// TTSButton(audio2,"pour retourner au menu principal");
-		// TTSButton manuel = new
-		// TTSButton(audio3,"pour choisir toi-même ton activité");
 
 		/* creation du mode manuel */
 		manual = (Button) findViewById(R.id.bouton_manual);
@@ -674,7 +683,6 @@ public class FriseActivity extends Activity {
 	}
 
 	public void start(final String texteALire, Button ttsButton) {
-		Log.d("tag","OH OH");
 		tts = new TextToSpeech(getApplicationContext(),
 				new TextToSpeech.OnInitListener() {
 					public void onInit(int status) {
@@ -685,7 +693,6 @@ public class FriseActivity extends Activity {
 		ttsButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.d("tag","OH");
 				speakText(texteALire);
 			}
 		});
