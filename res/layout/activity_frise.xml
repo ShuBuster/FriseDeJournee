@@ -242,8 +242,8 @@
 
     <ImageView
         android:id="@+id/scope"
-        android:layout_width="100dp"
-        android:layout_height="73dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="58dp"
         android:scaleType="fitXY"
         android:src="@drawable/scope" />
@@ -275,19 +275,9 @@
         android:visibility="invisible" />
 
     <ImageView
-        android:id="@+id/ombre_gnar"
+        android:id="@+id/gnar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="112dp"
-        android:background="@drawable/ellipse" />
-
-    <ImageView
-        android:id="@+id/gnar"
-        android:layout_width="280dp"
-        android:layout_height="250dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp"
