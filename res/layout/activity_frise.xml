@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blanc_casse"
-    tools:context="${relativePackage}.${activityClass}" >
-
+    tools:context="${relativePackage}.${activityClass}"
+    android:clipChildren="false" >
 
     <ImageView
         android:id="@+id/etoile"
         android:layout_width="155dp"
         android:layout_height="155dp"
-        android:layout_marginLeft="80dp"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/etoile" />
 
@@ -19,18 +19,18 @@
         android:id="@+id/cercle"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_marginLeft="97dp"
+        android:layout_marginStart="97dp"
         android:layout_marginTop="33dp"
-        android:background="@drawable/cercle" />
+        android:background="@drawable/back" />
 
     <TextView
         android:id="@+id/nom_enfant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/cercle"
-        android:layout_alignRight="@id/cercle"
+        android:layout_alignEnd="@id/cercle"
         android:layout_marginBottom="43dp"
-        android:layout_marginRight="25dp"
+        android:layout_marginEnd="25dp"
         android:textAlignment="center"
         android:textColor="@color/violet"
         android:textSize="35sp" />
@@ -39,7 +39,7 @@
         android:id="@+id/frise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="250dp"
+        android:layout_marginStart="250dp"
         android:layout_marginTop="67dp"
         android:background="@drawable/frise_support"
         android:orientation="horizontal" >
@@ -57,7 +57,7 @@
         android:id="@+id/frame_next"
         android:layout_width="300dp"
         android:layout_height="420dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/bouton_right"
         android:layout_marginTop="75dp"
         android:elevation="8dp" />
@@ -66,7 +66,7 @@
         android:id="@+id/frame_previous"
         android:layout_width="300dp"
         android:layout_height="420dp"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/bouton_right"
         android:layout_marginTop="75dp"
         android:elevation="8dp" />
@@ -109,15 +109,16 @@
         android:layout_alignBottom="@+id/frame"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="0dp"
+        android:contentDescription="@drawable/image_dejeuner"
         android:elevation="10dp" />
 
     <LinearLayout
         android:id="@+id/heure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/frame"
+        android:layout_alignStart="@+id/frame"
         android:layout_alignTop="@+id/frame"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:elevation="10dp"
         android:orientation="horizontal" >
@@ -126,7 +127,7 @@
             android:id="@+id/heure_dizaine"
             android:layout_width="60dp"
             android:layout_height="80dp"
-            android:paddingLeft="15dp"
+            android:paddingStart="15dp"
             android:paddingTop="5dp"
             android:textColor="@color/blanc"
             android:textSize="50sp" />
@@ -135,8 +136,8 @@
             android:id="@+id/heure_unite"
             android:layout_width="60dp"
             android:layout_height="80dp"
-            android:layout_marginLeft="8dp"
-            android:paddingLeft="15dp"
+            android:layout_marginStart="8dp"
+            android:paddingStart="15dp"
             android:paddingTop="5dp"
             android:textColor="@color/blanc"
             android:textSize="50sp" />
@@ -144,8 +145,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:text=":"
+            android:paddingStart="5dp"
+            android:text="@string/deux_points"
             android:textColor="@color/blanc"
             android:textSize="50sp" />
 
@@ -153,8 +154,8 @@
             android:id="@+id/minute_dizaine"
             android:layout_width="60dp"
             android:layout_height="80dp"
-            android:layout_marginLeft="8dp"
-            android:paddingLeft="15dp"
+            android:layout_marginStart="8dp"
+            android:paddingStart="15dp"
             android:paddingTop="5dp"
             android:textColor="@color/blanc"
             android:textSize="50sp" />
@@ -163,8 +164,8 @@
             android:id="@+id/minute_unite"
             android:layout_width="60dp"
             android:layout_height="80dp"
-            android:layout_marginLeft="8dp"
-            android:paddingLeft="15dp"
+            android:layout_marginStart="8dp"
+            android:paddingStart="15dp"
             android:paddingTop="5dp"
             android:textColor="@color/blanc"
             android:textSize="50sp" />
@@ -176,7 +177,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:text="Ma frise de journée"
+        android:text="@string/titre_frise"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/fushia"
         android:textSize="50sp" />
@@ -198,46 +199,39 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
-        android:layout_marginLeft="50dp"
-        android:layout_toRightOf="@+id/bouton_menu"
+        android:layout_marginStart="50dp"
+        android:layout_toEndOf="@+id/bouton_menu"
         android:background="@drawable/help"
         android:elevation="12dp"
         android:stateListAnimator="@null" />
 
-   
-    <RelativeLayout 
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
-        android:layout_marginRight="50dp"
-        android:layout_toLeftOf="@+id/bouton_menu"
-        android:elevation="12dp"
-        >
-       
+        android:layout_marginEnd="50dp"
+        android:layout_toStartOf="@+id/bouton_menu"
+        android:elevation="12dp" >
+
         <ImageView
-        android:id="@+id/glow_menu"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:alpha="0.7"
-        android:background="@drawable/glow_circle"
-        android:visibility="invisible"
-        />
-        
-    <Button
-        android:id="@+id/bouton_retour"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/back"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:stateListAnimator="@null"
-         />
-    
-     
-     
+            android:id="@+id/glow_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:alpha="0.7"
+            android:background="@drawable/glow_circle"
+            android:contentDescription="@drawable/glow_circle"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/bouton_retour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back" />
     </RelativeLayout>
 
     <ImageView
@@ -245,22 +239,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="58dp"
+        android:contentDescription="@drawable/frise_target"
         android:scaleType="fitXY"
-        android:src="@drawable/scope" />
+        android:src="@drawable/frise_target" />
 
     <Button
         android:id="@+id/bouton_manual"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="45dp"
-        android:layout_toRightOf="@+id/frise"
+        android:layout_toEndOf="@+id/frise"
         android:background="@drawable/manual" />
 
     <Button
         android:id="@+id/bouton_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/frise"
+        android:layout_alignEnd="@+id/frise"
         android:layout_marginTop="110dp"
         android:background="@drawable/fleche_droite"
         android:visibility="invisible" />
@@ -269,7 +264,7 @@
         android:id="@+id/bouton_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/frise"
+        android:layout_alignStart="@+id/frise"
         android:layout_marginTop="110dp"
         android:background="@drawable/fleche_gauche"
         android:visibility="invisible" />
@@ -279,12 +274,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/gnar"
+        android:contentDescription="@drawable/gnar"
         android:elevation="15dp" />
-
-   
 
 </RelativeLayout>

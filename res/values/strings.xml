@@ -20,5 +20,8 @@
     <string name="titre_bouton">Créer des boutons très simplement</string>
     <string name="indication_bouton">Entrez le nom de votre bouton :</string>
     <string name="title_activity_glow">GlowActivity</string>
+    <string name="titre_frise">Ma frise de journée</string>
+    <string name="deux_points">:</string>
+    <string name="bouton_regarder">Regarder ta frise</string>
 
 </resources>

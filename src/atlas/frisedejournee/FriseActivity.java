@@ -80,7 +80,7 @@ public class FriseActivity extends Activity {
 		scopedTask = null;
 		h0 = 8; // debut a 8h
 		h1 = 21; // debut a 21h
-		W = 1638;
+		W = 1600;
 		H = 92;
 		margin = 6;
 		colorTab = new int[11];

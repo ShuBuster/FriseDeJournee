@@ -1,7 +1,6 @@
 package atlas.frisedejournee;
 
 
-import fonts.FontsOverride;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -9,16 +8,13 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.view.animation.Animation.AnimationListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -60,14 +56,18 @@ public class MenuActivity extends Activity {
 		
 		/* Boutons et titre */
 		final Button boutonGo = (Button) findViewById(R.id.go);
+		ImageView glow = (ImageView) findViewById(R.id.glow_go);
 		final RelativeLayout titre = (RelativeLayout) findViewById(R.id.titre);
+		boutonGo.setTypeface(externalFont);
+		glow.startAnimation(AnimationUtils.loadAnimation(this,R.anim.glow_scale_rect));
+		
 	    
 	    boutonGo.setOnClickListener(new View.OnClickListener() {
 	      @Override
 	      public void onClick(View v) {
 	    	  
 	    	/* Changement de l'aspect du bouton lorsqu'on l'enfonce */  
-	    	Drawable d = getResources().getDrawable(R.drawable.bouton1e);
+	    	Drawable d = getResources().getDrawable(R.drawable.bouton_bleu_e);
 	    	boutonGo.setBackground(d);
 	    	
 	    	/* Recuperation du nom de l'enfant selectione */
@@ -91,7 +91,7 @@ public class MenuActivity extends Activity {
 	public void onResume(){
 	    super.onResume();
 	    final Button boutonGo = (Button) findViewById(R.id.go);
-	    Drawable d = getResources().getDrawable(R.drawable.bouton1);
+	    Drawable d = getResources().getDrawable(R.drawable.bouton_bleu);
     	boutonGo.setBackground(d);
     	executeDelayed();
 
