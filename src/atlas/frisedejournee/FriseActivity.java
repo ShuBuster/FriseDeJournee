@@ -257,7 +257,7 @@ public class FriseActivity extends Activity {
 					modeAide = false; // on sort du mode aide
 					
 					ViewGroup parent = (ViewGroup) menu.getParent();
-					parent.setClipChildren(false);
+					parent.setClipChildren(true);
 					
 					if(glowRetour != null) glowRetour.clearAnimation();
 					if(glowMenu != null) glowMenu.clearAnimation();
@@ -266,9 +266,12 @@ public class FriseActivity extends Activity {
 					TTSButton.fermer(retour,getApplicationContext());
 					TTSButton.fermer(menu,getApplicationContext());
 					TTSButton.fermer(manual,getApplicationContext());
-					
+										
 					//les boutons retrouvent leurs anciens listenners
 					
+					//setAllListeners(manual,retour,menu);
+					
+					info.setEnabled(true);
 					
 				} else { // si on est pas en mode aide
 
@@ -279,8 +282,8 @@ public class FriseActivity extends Activity {
 					modeAide = true; // on passe en mode aide
 					/* glow sur les autres boutons */
 
-					ViewGroup parent = (ViewGroup) menu.getParent();
-					parent.setClipChildren(true);
+					ViewGroup parent = (ViewGroup) info.getParent();
+					parent.setClipChildren(false);
 					
 					glowRetour = GlowingButton.makeGlow(retour, getApplicationContext());
 					//glowMenu =  GlowingButton.makeGlow(menu, getApplicationContext());
@@ -299,6 +302,7 @@ public class FriseActivity extends Activity {
 									"pour passer en mode manuel et faire apparaître les flèches",
 									getApplicationContext());
 					
+					info.setEnabled(false);
 					
 				}
 			}
