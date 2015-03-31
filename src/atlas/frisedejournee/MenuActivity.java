@@ -1,6 +1,8 @@
 package atlas.frisedejournee;
 
 
+import boutons.ButtonCreator;
+import bulles.BulleCreator;
 import horloge.Clock;
 import android.app.Activity;
 import android.content.Intent;
@@ -52,6 +54,7 @@ public class MenuActivity extends Activity {
         array_spinner[0]="Romain";
         array_spinner[1]="Louise";
         Spinner s = (Spinner) findViewById(R.id.enfant_spinner);
+		BulleCreator.createBubble(s, "Choisi ton prénom dans la liste", "right", this);
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this,R.layout.spinner_item_text, array_spinner);
         s.setAdapter(adapter);
 		
@@ -62,9 +65,6 @@ public class MenuActivity extends Activity {
 		boutonGo.setTypeface(externalFont);
 		glow.startAnimation(AnimationUtils.loadAnimation(this,R.anim.glow_scale_rect));
 		
-		//RelativeLayout rl = Clock.create(titre, this, 19, 10, 0);
-		
-	    
 	    boutonGo.setOnClickListener(new View.OnClickListener() {
 	      @Override
 	      public void onClick(View v) {
