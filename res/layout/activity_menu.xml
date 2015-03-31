@@ -202,7 +202,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
         android:background="@color/orange1"
-        android:popupBackground="@color/orange2" />
+        android:popupBackground="@color/orange2"
+         />
 
     <TextView
         android:id="@+id/jeSuis"

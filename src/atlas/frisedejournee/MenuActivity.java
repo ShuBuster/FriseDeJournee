@@ -1,6 +1,9 @@
 package atlas.frisedejournee;
 
 
+import boutons.ButtonCreator;
+import bulles.BulleCreator;
+import horloge.Clock;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -8,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
@@ -51,9 +55,13 @@ public class MenuActivity extends Activity {
         array_spinner[0]="Romain";
         array_spinner[1]="Louise";
         Spinner s = (Spinner) findViewById(R.id.enfant_spinner);
+        
+		BulleCreator.createBubble(s, "Choisi ton prénom dans la liste", "right", this);
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this,R.layout.spinner_item_text, array_spinner);
         s.setAdapter(adapter);
 		
+        
+        
 		/* Boutons et titre */
 		final Button boutonGo = (Button) findViewById(R.id.go);
 		ImageView glow = (ImageView) findViewById(R.id.glow_go);
@@ -61,7 +69,6 @@ public class MenuActivity extends Activity {
 		boutonGo.setTypeface(externalFont);
 		glow.startAnimation(AnimationUtils.loadAnimation(this,R.anim.glow_scale_rect));
 		
-	    
 	    boutonGo.setOnClickListener(new View.OnClickListener() {
 	      @Override
 	      public void onClick(View v) {
@@ -70,7 +77,7 @@ public class MenuActivity extends Activity {
 	    	Drawable d = getResources().getDrawable(R.drawable.bouton_bleu_e);
 	    	boutonGo.setBackground(d);
 	    	
-	    	/* Recuperation du nom de l'enfant selectione */
+	    	/* Recuperation du nom de l'enfant selectionne */
 	    	Spinner spinner = (Spinner)findViewById(R.id.enfant_spinner);
 	    	String nom_enfant = spinner.getSelectedItem().toString();
 	    	
