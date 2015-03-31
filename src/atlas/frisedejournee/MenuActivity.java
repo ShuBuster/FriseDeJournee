@@ -1,6 +1,7 @@
 package atlas.frisedejournee;
 
 
+import horloge.Clock;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -60,6 +61,8 @@ public class MenuActivity extends Activity {
 		final RelativeLayout titre = (RelativeLayout) findViewById(R.id.titre);
 		boutonGo.setTypeface(externalFont);
 		glow.startAnimation(AnimationUtils.loadAnimation(this,R.anim.glow_scale_rect));
+		
+		//RelativeLayout rl = Clock.create(titre, this, 19, 10, 0);
 		
 	    
 	    boutonGo.setOnClickListener(new View.OnClickListener() {

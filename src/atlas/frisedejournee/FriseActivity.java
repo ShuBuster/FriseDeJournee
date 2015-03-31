@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import boutons.ButtonCreator;
-import boutons.TTSButton;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -18,24 +16,23 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 public class FriseActivity extends Activity {
@@ -47,9 +44,9 @@ public class FriseActivity extends Activity {
 	private double h1; // l'heure a laquelle se termine la frise
 	private final int[] colorTab; // les id des differentes couleurs des
 									// activites
-	private final int W; // largeur de la frise en px
-	private final int H; // hauteur de la frise en px
-	private final int margin; // marge entre les cases des taches
+	private int W; // largeur de la frise en px
+	private int H; // hauteur de la frise en px
+	private int margin; // marge entre les cases des taches
 	private boolean modeManuel = false; // mode manuel desactive au debut
 	private boolean modeAide = false;
 	TextToSpeech tts;
@@ -80,9 +77,9 @@ public class FriseActivity extends Activity {
 		scopedTask = null;
 		h0 = 8; // debut a 8h
 		h1 = 21; // debut a 21h
-		W = 1600;
-		H = 92;
-		margin = 6;
+		W = 0;
+		H = 0;
+		margin = 0;
 		colorTab = new int[11];
 		colorTab[0] = R.color.vert1;
 		colorTab[1] = R.color.vert2;
@@ -101,6 +98,43 @@ public class FriseActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		/* Determination densite ecran */
+		DisplayMetrics metrics = getResources().getDisplayMetrics();
+		int density = metrics.densityDpi;
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		
+		switch(density){
+		case DisplayMetrics.DENSITY_XHIGH :
+			Log.d("TAG", "densite= tres haute");
+			options.inTargetDensity = DisplayMetrics.DENSITY_XHIGH;
+			margin = 6;
+			break;
+		
+		case DisplayMetrics.DENSITY_HIGH :
+			Log.d("TAG", "densite= haute");
+			options.inTargetDensity = DisplayMetrics.DENSITY_HIGH;
+			margin = 6;
+			break;
+			
+		case DisplayMetrics.DENSITY_MEDIUM :
+			Log.d("TAG", "densite= moyenne");
+			options.inTargetDensity = DisplayMetrics.DENSITY_MEDIUM;
+			margin = 3;
+			break;
+			
+		default :
+			Log.d("TAG", "densite= défaut");
+			options.inTargetDensity = DisplayMetrics.DENSITY_DEFAULT;
+			break;
+		}
+		
+		int DeltaWpx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());
+		
+		Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.frise_support, options);
+		W = bmp.getWidth()- DeltaWpx;
+		Log.d("TAG", "H= "+H);
+		Log.d("TAG", "W= "+W);
+		
 		/* Passage en plein ecran */
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		View decorView = getWindow().getDecorView();
@@ -158,12 +192,12 @@ public class FriseActivity extends Activity {
 			if (task_indice != myTasks.size() - 1) { // Si ce n'est pas la
 														// derniere tache de la
 														// journee
-				layoutParams = new LinearLayout.LayoutParams(Xwidth, H);
+				layoutParams = new LinearLayout.LayoutParams(Xwidth,LayoutParams.MATCH_PARENT);
 			} else { // si c'est la derniere tache de la journee
 				layoutParams = new LinearLayout.LayoutParams(Xwidth - margin
-						* (myTasks.size() - 2), H);
+						* (myTasks.size() - 2), LayoutParams.MATCH_PARENT);
 			}
-			layoutParams.setMargins(margin, margin, 0, 0);
+			layoutParams.setMargins(margin, margin, 0, margin*4);
 			rectTask.setLayoutParams(layoutParams);
 
 			int couleur = getResources().getColor(colorTab[color_indice]);
@@ -468,7 +502,7 @@ public class FriseActivity extends Activity {
 
 			final int x1 = oldScopedTask.getXwidth(W, h0, h1);
 			final int x2 = nextScopedTask.getXwidth(W, h0, h1);
-
+			
 			// Translation
 
 			AnimationSet animationSet = new AnimationSet(true);
@@ -638,7 +672,7 @@ public class FriseActivity extends Activity {
 	public String[] splitHour(double hour) {
 		String[] result = new String[4];
 		int heure = (int) Math.floor(hour);
-		int minute = (int) ((hour - heure) * 0.6);
+		int minute = (int) ((hour - heure) * 60);
 
 		int heure_dizaine = (int) Math.floor(heure / 10);
 		result[0] = String.valueOf(heure_dizaine);
