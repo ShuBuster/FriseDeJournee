@@ -52,14 +52,12 @@ public class FriseActivity extends Activity {
 	private final int margin; // marge entre les cases des taches
 	private boolean modeManuel = false; // mode manuel desactive au debut
 	private boolean modeAide = false;
+	private Task currentTask = null;
+	
 	TextToSpeech tts;
-
-	Button audio1 = null;
-	Button audio2 = null;
-	Button audio3 = null;
-	Button aide_retour = null;
-	Button aide_menu = null;
-	Button aide_manuel = null;
+	TextView info_text = null;
+	Button audio = null;
+	Button info = null;
 	Button aide = null;
 	Button menu = null;
 	Button retour = null;
@@ -174,12 +172,13 @@ public class FriseActivity extends Activity {
 			color_indice += 1;
 			task_indice += 1;
 		}
-
+		
+		
 		//Button bouton = ButtonCreator.createBlueButton(this, "hello");
 		
 		/* Met le scope a l'activite en cours */
-		// Task currentTask = findCurrentTask();
-		Task currentTask = myTasks.get(4);
+		currentTask = findCurrentTask();
+		
 		if (!(currentTask == null)) {
 			scopedTask = currentTask;
 			replaceScope(); // place le scope sur la tahce
@@ -281,6 +280,40 @@ public class FriseActivity extends Activity {
 			}
 		});
 
+		// creation de l'information sur l'activite courante avec Gnar !
+		
+		info = (Button) findViewById(R.id.info_bouton);
+		info.setBackgroundColor(currentTask.getCouleur());
+		menuDeroulant = (LinearLayout) findViewById(R.id.info);
+		audio = (Button) findViewById(R.id.info_audio);
+		info_text = (TextView)findViewById(R.id.info_text);
+		
+		info.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View vue) {
+
+				isOpen = toggle(menuDeroulant,isOpen);
+
+				// ...pour afficher ou cacher le menu
+				if (isOpen) {
+					// Si le Slider est ouvert...
+					// ... on change le bouton en mode enfonce
+										
+					info_text.setText(currentTask.getDescription());									
+					menuDeroulant.setBackgroundColor(currentTask.getCouleur());
+					info.setBackgroundColor(currentTask.getCouleur());
+					
+					//TTSButton tts = new TTSButton(audio,info_text.toString(),getApplicationContext());
+					//tts.initialisation();	
+					
+				} else {
+					// Sinon on remet le bouton en mode "relache"
+					
+				}
+			}
+		});
+	
+		
 		/* creation du mode manuel */
 		manual = (Button) findViewById(R.id.bouton_manual);
 		left = (Button) findViewById(R.id.bouton_left);
@@ -304,6 +337,12 @@ public class FriseActivity extends Activity {
 					right.setVisibility(View.INVISIBLE);
 					moveScopeToCurrentTask(); // retour du scope a l'activite
 												// courante
+					currentTask = findCurrentTask(); //retour a l'activite courante
+					menuDeroulant.setBackgroundColor(currentTask.getCouleur());
+					info.setBackgroundColor(currentTask.getCouleur());
+					// le menu deroulant et son bouton retrouvent la couleur de l'activite actuelle
+					info_text.setText(currentTask.getDescription());
+					
 				} else { // si on n'est pas en mode manuel
 
 					/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
@@ -329,6 +368,7 @@ public class FriseActivity extends Activity {
 
 				moveScope(-1); // deplace le scope d'une activite vers l'arriere
 				displayTask(); // affiche la tache scoped au centre
+				currentTask = Task.findRelativeTask(myTasks, currentTask, -1);// la nouvelle tache actuelle
 				left.setEnabled(false); // desactive les boutons pendant
 										// l'animation du scope
 				right.setEnabled(false);
@@ -341,6 +381,7 @@ public class FriseActivity extends Activity {
 
 				moveScope(1); // deplace le scope d'une activite vers l'avant
 				displayTask(); // affiche la tache scoped au centre
+				currentTask = Task.findRelativeTask(myTasks, currentTask, 1);// la nouvelle tache actuelle
 				left.setEnabled(false); // desactive les boutons pendant
 										// l'animation du scope
 				right.setEnabled(false);
@@ -359,7 +400,7 @@ public class FriseActivity extends Activity {
 		int duration = 600;
 		// Animation de transition.
 		TranslateAnimation animation = null;
-
+		
 		// On passe de ouvert à fermé (ou vice versa)
 		isOpen = !isOpen;
 
