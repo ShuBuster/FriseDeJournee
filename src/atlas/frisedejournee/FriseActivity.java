@@ -1,14 +1,12 @@
 package atlas.frisedejournee;
 
 import glow.GlowingButton;
+
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -22,6 +20,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
@@ -70,6 +69,12 @@ public class FriseActivity extends Activity {
 	LinearLayout menuDeroulant = null;
 	LinearLayout descriptionDeroulant = null;
 	boolean isOpen = false;
+	OnClickListener retour_listenner;
+	OnClickListener menu_listenner;
+	OnClickListener manual_listenner;
+	
+	
+	
 
 	/**
 	 * Constructeur par defaut
@@ -227,12 +232,16 @@ public class FriseActivity extends Activity {
 		retour = (Button) findViewById(R.id.bouton_retour);
 
 		Drawable d = getResources().getDrawable(R.drawable.back_e);
-		retour.setOnClickListener(new NextActivityListener(retour, d,
-				FriseActivity.this, MenuActivity.class));
+		retour_listenner = new NextActivityListener(retour, d,
+				FriseActivity.this, MenuActivity.class);
+		retour.setOnClickListener(retour_listenner);
 
-		menu.setOnClickListener(new HomeActivityListener(this, menu,
-				FriseActivity.this, MenuActivity.class));
-
+		menu_listenner = new HomeActivityListener(this, menu,
+				FriseActivity.this, MenuActivity.class);
+		menu.setOnClickListener(menu_listenner);
+		
+		
+		
 		// creation du menu deroulant de l'aide
 
 		aide.setOnClickListener(new View.OnClickListener() {
@@ -255,9 +264,9 @@ public class FriseActivity extends Activity {
 					ViewGroup parent = (ViewGroup) menu.getParent();
 					parent.setClipChildren(true);
 					
-					if(glowRetour != null) glowRetour.clearAnimation();
-					if(glowMenu != null) glowMenu.clearAnimation();
-					if(glowManual != null) glowManual.clearAnimation();
+					if(glowRetour != null) GlowingButton.stopGlow(retour);
+					if(glowMenu != null) GlowingButton.stopGlow(menu);
+					if(glowManual != null) GlowingButton.stopGlow(manual);
 					
 					TTSButton.fermer(retour,getApplicationContext());
 					TTSButton.fermer(menu,getApplicationContext());
@@ -265,7 +274,9 @@ public class FriseActivity extends Activity {
 										
 					//les boutons retrouvent leurs anciens listenners
 					
-					//setAllListeners(manual,retour,menu);
+					menu.setOnClickListener(menu_listenner);
+					retour.setOnClickListener(retour_listenner);
+					manual.setOnClickListener(manual_listenner);
 					
 					info.setEnabled(true);
 					
@@ -342,7 +353,7 @@ public class FriseActivity extends Activity {
 		left = (Button) findViewById(R.id.bouton_left);
 		right = (Button) findViewById(R.id.bouton_right);
 
-		manual.setOnClickListener(new View.OnClickListener() {
+		manual_listenner = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 
@@ -387,7 +398,9 @@ public class FriseActivity extends Activity {
 				}
 
 			}
-		});
+		};
+		
+		manual.setOnClickListener(manual_listenner);
 
 		left.setOnClickListener(new View.OnClickListener() {
 			@Override
