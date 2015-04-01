@@ -68,7 +68,6 @@ public class MenuActivity extends Activity {
 	    boutonGo.setOnClickListener(new View.OnClickListener() {
 	      @Override
 	      public void onClick(View v) {
-	    	  
 	    	/* Changement de l'aspect du bouton lorsqu'on l'enfonce */  
 	    	Drawable d = getResources().getDrawable(R.drawable.bouton_bleu_e);
 	    	boutonGo.setBackground(d);
