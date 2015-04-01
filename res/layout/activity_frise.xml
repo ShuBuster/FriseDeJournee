@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blanc_casse"
-    tools:context="${relativePackage}.${activityClass}"
-    android:clipChildren="false" >
+    tools:context="${relativePackage}.${activityClass}" >
 
     <ImageView
         android:id="@+id/etoile"
@@ -60,7 +59,7 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/bouton_right"
         android:layout_marginTop="75dp"
-        android:elevation="8dp" />
+        android:elevation="6dp" />
 
     <ImageView
         android:id="@+id/frame_previous"
@@ -69,7 +68,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/bouton_right"
         android:layout_marginTop="75dp"
-        android:elevation="8dp" />
+        android:elevation="6dp" />
 
     <ImageView
         android:id="@+id/border"
@@ -79,7 +78,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:background="@color/vert1"
-        android:elevation="10dp" />
+        android:elevation="8dp" />
 
     <ImageView
         android:id="@+id/frame"
@@ -88,7 +87,7 @@
         android:layout_below="@+id/bouton_right"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
-        android:elevation="10dp" />
+        android:elevation="8dp" />
 
     <TextView
         android:id="@+id/titreTask"
@@ -97,7 +96,7 @@
         android:layout_alignBottom="@+id/frame"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"
-        android:elevation="10dp"
+        android:elevation="8dp"
         android:text=""
         android:textColor="@color/jaune1"
         android:textSize="60sp" />
@@ -110,7 +109,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="0dp"
         android:contentDescription="@drawable/image_dejeuner"
-        android:elevation="10dp" />
+        android:elevation="8dp" />
 
     <LinearLayout
         android:id="@+id/heure"
@@ -120,7 +119,7 @@
         android:layout_alignTop="@+id/frame"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:elevation="10dp"
+        android:elevation="8dp"
         android:orientation="horizontal" >
 
         <TextView
@@ -205,34 +204,17 @@
         android:elevation="12dp"
         android:stateListAnimator="@null" />
 
-    <RelativeLayout
+    <Button
+        android:id="@+id/bouton_retour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
-        android:layout_marginEnd="50dp"
-        android:layout_toStartOf="@+id/bouton_menu"
-        android:elevation="12dp" >
-
-        <ImageView
-            android:id="@+id/glow_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:alpha="0.7"
-            android:background="@drawable/glow_circle"
-            android:contentDescription="@drawable/glow_circle"
-            android:visibility="invisible" />
-
-        <Button
-            android:id="@+id/bouton_retour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/back" />
-    </RelativeLayout>
+        android:layout_marginRight="50dp"
+        android:layout_toLeftOf="@+id/bouton_menu"
+        android:background="@drawable/back"
+        android:elevation="12dp"
+        android:stateListAnimator="@null" />
 
     <ImageView
         android:id="@+id/scope"
@@ -268,6 +250,58 @@
         android:layout_marginTop="110dp"
         android:background="@drawable/fleche_gauche"
         android:visibility="invisible" />
+
+    <RelativeLayout
+        android:id="@+id/information"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/frame"
+        android:layout_alignLeft="@+id/gnar"
+        android:layout_alignRight="@id/frame"
+        android:layout_below="@+id/description_bouton"
+        android:clipChildren="true"
+        android:elevation="8dp"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/info"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/bleu1"
+            android:elevation="12dp"
+            android:orientation="vertical"
+            android:visibility="invisible" >
+
+            <TextView
+                android:id="@+id/info_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/noir"
+                android:textSize="30sp" />
+
+            <Button
+                android:id="@+id/info_audio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginBottom="0dp"
+                android:layout_marginRight="0dp"
+                android:background="@drawable/audio_petit" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <Button
+        android:id="@id/description_bouton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/frame"
+        android:layout_alignStart="@+id/gnar"
+        android:layout_alignTop="@id/frame"
+        android:elevation="10dp"
+        android:stateListAnimator="@null"
+        android:text="Que fait mon activité ?"
+        android:textColor="@color/noir"
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/gnar"

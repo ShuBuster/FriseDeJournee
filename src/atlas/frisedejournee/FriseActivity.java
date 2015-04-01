@@ -1,9 +1,11 @@
 package atlas.frisedejournee;
 
+import glow.GlowingButton;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +22,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
@@ -32,8 +35,10 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
+import boutons.HomeActivityListener;
+import boutons.NextActivityListener;
+import boutons.TTSButton;
 
 public class FriseActivity extends Activity {
 
@@ -49,14 +54,12 @@ public class FriseActivity extends Activity {
 	private int margin; // marge entre les cases des taches
 	private boolean modeManuel = false; // mode manuel desactive au debut
 	private boolean modeAide = false;
+	private Task currentTask = null;
+	
 	TextToSpeech tts;
-
-	Button audio1 = null;
-	Button audio2 = null;
-	Button audio3 = null;
-	Button aide_retour = null;
-	Button aide_menu = null;
-	Button aide_manuel = null;
+	TextView info_text = null;
+	Button audio = null;
+	Button info = null;
 	Button aide = null;
 	Button menu = null;
 	Button retour = null;
@@ -208,12 +211,10 @@ public class FriseActivity extends Activity {
 			color_indice += 1;
 			task_indice += 1;
 		}
-
-		//Button bouton = ButtonCreator.createBlueButton(this, "hello");
 		
 		/* Met le scope a l'activite en cours */
 		// Task currentTask = findCurrentTask();
-		Task currentTask = myTasks.get(4);
+		currentTask = myTasks.get(4);
 		if (!(currentTask == null)) {
 			scopedTask = currentTask;
 			replaceScope(); // place le scope sur la tahce
@@ -225,43 +226,24 @@ public class FriseActivity extends Activity {
 		menu = (Button) findViewById(R.id.bouton_menu);
 		retour = (Button) findViewById(R.id.bouton_retour);
 
-		menu.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
+		Drawable d = getResources().getDrawable(R.drawable.back_e);
+		retour.setOnClickListener(new NextActivityListener(retour, d,
+				FriseActivity.this, MenuActivity.class));
 
-				/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
-				Drawable d = getResources().getDrawable(R.drawable.home_e);
-				menu.setBackground(d);
-
-				/* Passage a l'autre activite */
-				Intent secondeActivite = new Intent(FriseActivity.this,
-						MenuActivity.class);
-				startActivity(secondeActivite);
-			}
-		});
-
-		retour.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// Changement de l'aspect du bouton lorsqu'on l'enfonce 
-				Drawable d = getResources().getDrawable(R.drawable.back_e);
-				retour.setBackground(d);
-
-				// Passage a l'autre activite 
-				Intent secondeActivite = new Intent(FriseActivity.this,
-						MenuActivity.class);
-				startActivity(secondeActivite);
-			}
-		});
+		menu.setOnClickListener(new HomeActivityListener(this, menu,
+				FriseActivity.this, MenuActivity.class));
 
 		// creation du menu deroulant de l'aide
 
 		aide.setOnClickListener(new View.OnClickListener() {
+						
+			ImageView glowRetour = null;
+			ImageView glowMenu = null;
+			ImageView glowManual = null;
+			
+			
 			@Override
 			public void onClick(View v) {
-
-				ImageView glow = (ImageView) findViewById(R.id.glow_menu);
-				// glow a appliquer sur les boutons
 
 				if (modeAide) { // on est dans le mode aide
 
@@ -269,48 +251,88 @@ public class FriseActivity extends Activity {
 					aide.setBackground(d); // desenfonce le bouton
 
 					modeAide = false; // on sort du mode aide
-					glow.setVisibility(View.INVISIBLE); // le glow disparait
 					
-
+					ViewGroup parent = (ViewGroup) menu.getParent();
+					parent.setClipChildren(true);
+					
+					if(glowRetour != null) glowRetour.clearAnimation();
+					if(glowMenu != null) glowMenu.clearAnimation();
+					if(glowManual != null) glowManual.clearAnimation();
+					
+					TTSButton.fermer(retour,getApplicationContext());
+					TTSButton.fermer(menu,getApplicationContext());
+					TTSButton.fermer(manual,getApplicationContext());
+										
+					//les boutons retrouvent leurs anciens listenners
+					
+					//setAllListeners(manual,retour,menu);
+					
+					info.setEnabled(true);
+					
 				} else { // si on est pas en mode aide
 
 					/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
 					Drawable d = getResources().getDrawable(R.drawable.help_e);
 					aide.setBackground(d);
 
+					modeAide = true; // on passe en mode aide
 					/* glow sur les autres boutons */
 
-					glow.setVisibility(View.VISIBLE);
-					glow.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.glow_scale));
+					ViewGroup parent = (ViewGroup) info.getParent();
+					parent.setClipChildren(false);
 					
-					modeAide = true; // on passe en mode aide
+					glowRetour = GlowingButton.makeGlow(retour, getApplicationContext());
+					//glowMenu =  GlowingButton.makeGlow(menu, getApplicationContext());
+					glowManual = GlowingButton.makeGlow(manual, getApplicationContext());
 
-					// text to speech sur le bouton retour //
-					Log.d("avant tts","trou du cul");
+					// text to speech sur les boutons //
+
+					TTSButton.parle(retour,
+							"pour retourner sur ta dernière activité",
+							getApplicationContext());
+
+					TTSButton.parle(menu, "pour retourner au menu principal",
+							getApplicationContext());
+					TTSButton
+							.parle(manual,
+									"pour passer en mode manuel et faire apparaître les flèches",
+									getApplicationContext());
 					
-					//TTSButton tts = new TTSButton(retour,"le petit enfant à mangé du poulet aujourd'hui ?",getApplicationContext());
-					//tts.initialisation();
+					info.setEnabled(false);
 					
-					final Context ctx = getApplicationContext();
-					final String texte = "pour retourner sur la dernière activité visitée";
-					tts = new TextToSpeech(ctx,
-							new TextToSpeech.OnInitListener() {
+				}
+			}
+		});
 
-								public void onInit(int status) {
-									if (status != TextToSpeech.ERROR)
-										tts.setLanguage(Locale.FRANCE);
-								}
-							});
+		// creation de l'information sur l'activite courante 
 
-					retour.setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							
-							tts.speak(texte, TextToSpeech.QUEUE_FLUSH, null);
+		info = (Button) findViewById(R.id.description_bouton);
+		info.setBackgroundColor(currentTask.getCouleur());
+		menuDeroulant = (LinearLayout) findViewById(R.id.info);
+		audio = (Button) findViewById(R.id.info_audio);
+		info_text = (TextView) findViewById(R.id.info_text);
+		
+		TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
 
-						}
-					});
+		info.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View vue) {
+
+				isOpen = toggle(menuDeroulant, isOpen);
+
+				// ...pour afficher ou cacher le menu
+				if (isOpen) {
+					// Si le Slider est ouvert...
+					// ... on change le bouton en mode enfonce
+
+					info_text.setText(currentTask.getDescription());
+					menuDeroulant.setBackgroundColor(currentTask.getCouleur());
+					info.setBackgroundColor(currentTask.getCouleur());
+
 					
+				} else {
+					// Sinon on remet le bouton en mode "relache"
+
 				}
 			}
 		});
@@ -338,6 +360,15 @@ public class FriseActivity extends Activity {
 					right.setVisibility(View.INVISIBLE);
 					moveScopeToCurrentTask(); // retour du scope a l'activite
 												// courante
+					currentTask = findCurrentTask(); // retour a l'activite
+														// courante
+					menuDeroulant.setBackgroundColor(currentTask.getCouleur());
+					info.setBackgroundColor(currentTask.getCouleur());
+					// le menu deroulant et son bouton retrouvent la couleur de
+					// l'activite actuelle
+					info_text.setText(currentTask.getDescription());
+					TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
+
 				} else { // si on n'est pas en mode manuel
 
 					/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
@@ -352,6 +383,7 @@ public class FriseActivity extends Activity {
 					left.setVisibility(View.VISIBLE); // affichage des boutons
 														// fleches
 					right.setVisibility(View.VISIBLE);
+					TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
 				}
 
 			}
@@ -363,9 +395,19 @@ public class FriseActivity extends Activity {
 
 				moveScope(-1); // deplace le scope d'une activite vers l'arriere
 				displayTask(); // affiche la tache scoped au centre
+				currentTask = Task.findRelativeTask(myTasks, currentTask, -1);// la
+																				// nouvelle
+																				// tache
+																				// actuelle
 				left.setEnabled(false); // desactive les boutons pendant
 										// l'animation du scope
 				right.setEnabled(false);
+				
+				info.setBackgroundColor(currentTask.getCouleur());
+				menuDeroulant.setBackgroundColor(currentTask.getCouleur());
+				info_text.setText(currentTask.getDescription());
+				TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
+				//le menu d'information sur l'activite chanege avec l'activite
 			}
 		});
 
@@ -375,9 +417,19 @@ public class FriseActivity extends Activity {
 
 				moveScope(1); // deplace le scope d'une activite vers l'avant
 				displayTask(); // affiche la tache scoped au centre
+				currentTask = Task.findRelativeTask(myTasks, currentTask, 1);// la
+																				// nouvelle
+																				// tache
+																				// actuelle
 				left.setEnabled(false); // desactive les boutons pendant
 										// l'animation du scope
 				right.setEnabled(false);
+				
+				info.setBackgroundColor(currentTask.getCouleur());
+				menuDeroulant.setBackgroundColor(currentTask.getCouleur());
+				info_text.setText(currentTask.getDescription());
+				TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
+				//le menu d'information sur l'activite chanege avec l'activite
 
 			}
 		});
@@ -716,22 +768,6 @@ public class FriseActivity extends Activity {
 		cercle.startAnimation(animation2);
 	}
 
-	public void start(final String texteALire, Button ttsButton) {
-		tts = new TextToSpeech(getApplicationContext(),
-				new TextToSpeech.OnInitListener() {
-					public void onInit(int status) {
-						if (status != TextToSpeech.ERROR)
-							tts.setLanguage(Locale.FRANCE);
-					}
-				});
-		ttsButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				speakText(texteALire);
-			}
-		});
-	}
-
 	@Override
 	public void onPause() {
 		if (tts != null) {
@@ -739,17 +775,6 @@ public class FriseActivity extends Activity {
 			tts.shutdown();
 		}
 		super.onPause();
-	}
-
-	@SuppressWarnings("deprecation")
-	public void speakText(String texteALire) {
-
-		/*
-		 * Toast.makeText(getApplicationContext(), texteALire,
-		 * Toast.LENGTH_SHORT) .show();
-		 */
-		// affiche le texte qui est en train d'etre lu sous forme de toast
-		tts.speak(texteALire, TextToSpeech.QUEUE_FLUSH, null);
 	}
 
 	@Override
