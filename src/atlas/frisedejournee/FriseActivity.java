@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.AnimatedStateListDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,10 +35,13 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import animation.Animate;
 import boutons.HomeActivityListener;
 import boutons.NextActivityListener;
 import boutons.TTSButton;
+import bulles.BulleCreator;
 
 public class FriseActivity extends Activity {
 
@@ -66,6 +70,7 @@ public class FriseActivity extends Activity {
 	Button right = null;
 	Button left = null;
 	ImageView scope = null;
+	TextView bulle_brillant = null;
 	LinearLayout menuDeroulant = null;
 	LinearLayout descriptionDeroulant = null;
 	boolean isOpen = false;
@@ -218,9 +223,14 @@ public class FriseActivity extends Activity {
 		}
 		
 		/* Met le scope a l'activite en cours */
-		// Task currentTask = findCurrentTask();
-		currentTask = myTasks.get(4);
+		currentTask = findCurrentTask();
 		if (!(currentTask == null)) {
+			scopedTask = currentTask;
+			replaceScope(); // place le scope sur la tahce
+			displayTask(); // affiche les infos de la tache
+		}
+		else{
+			currentTask = myTasks.get(4);
 			scopedTask = currentTask;
 			replaceScope(); // place le scope sur la tahce
 			displayTask(); // affiche les infos de la tache
@@ -242,8 +252,24 @@ public class FriseActivity extends Activity {
 		
 		
 		
-		// creation du menu deroulant de l'aide
+		// creation de l'aide
 
+			//Creation des bulles d'aide
+		LinearLayout heure = (LinearLayout) findViewById(R.id.heure);
+		info = (Button) findViewById(R.id.description_bouton);
+		final TextView bulle_heure = BulleCreator.createBubble(heure,"L'heure de début de l'activité", "right",false, this);
+		final TextView bulle_aide_avant = BulleCreator.createBubble(aide,"Clique sur ce bouton pour obtenir de l'aide", "right",true, this);
+		final TextView bulle_aide_apres = BulleCreator.createBubble(aide,"Clique sur ce bouton pour sortir de l'aide", "right",false, this);
+		final TextView bulle_description = BulleCreator.createBubble(info,"Ce bouton permet d'afficher"+"\n"+"une description de l'activité", "below",false, this);
+		bulle_aide_avant.setElevation(20); // met la bulle au premier plan
+		bulle_aide_avant.setOutlineProvider(null); // supprime l'ombre de l'elevation
+		bulle_aide_apres.setElevation(20);
+		bulle_aide_apres.setOutlineProvider(null);
+		bulle_heure.setElevation(20);
+		bulle_heure.setOutlineProvider(null);
+		bulle_description.setElevation(20);
+		bulle_description.setOutlineProvider(null);
+		
 		aide.setOnClickListener(new View.OnClickListener() {
 						
 			ImageView glowRetour = null;
@@ -261,7 +287,7 @@ public class FriseActivity extends Activity {
 
 					modeAide = false; // on sort du mode aide
 					
-					ViewGroup parent = (ViewGroup) menu.getParent();
+					RelativeLayout parent = (RelativeLayout) findViewById(R.id.parent_view);
 					parent.setClipChildren(true);
 					
 					if(glowRetour != null) GlowingButton.stopGlow(retour);
@@ -280,6 +306,23 @@ public class FriseActivity extends Activity {
 					
 					info.setEnabled(true);
 					
+					// Replacement du bouton aide a droite du bouton menu//
+					RelativeLayout.LayoutParams params_aide = (RelativeLayout.LayoutParams) aide.getLayoutParams();
+					params_aide.addRule(RelativeLayout.END_OF,R.id.bouton_menu);
+					aide.setLayoutParams(params_aide);
+					
+					// on replace la bulle des boutons brillants au bon endroit//
+					RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+					params.addRule(RelativeLayout.ALIGN_TOP,R.id.bouton_manual);
+					params.addRule(RelativeLayout.LEFT_OF,R.id.bouton_manual);
+					bulle_brillant.setLayoutParams(params);
+					
+					// Disparition des bulles d'aide //
+					Animate.fade_out(bulle_aide_apres, 500,false);
+					Animate.fade_out(bulle_heure, 500,false);
+					Animate.fade_out(bulle_brillant, 500,false);
+					Animate.fade_out(bulle_description, 500,false);
+					
 				} else { // si on est pas en mode aide
 
 					/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
@@ -287,15 +330,22 @@ public class FriseActivity extends Activity {
 					aide.setBackground(d);
 
 					modeAide = true; // on passe en mode aide
-					/* glow sur les autres boutons */
-
+					
+					// glow sur les autres boutons //
 					ViewGroup parent = (ViewGroup) info.getParent();
 					parent.setClipChildren(false);
 					
 					glowRetour = GlowingButton.makeGlow(retour, getApplicationContext());
-					//glowMenu =  GlowingButton.makeGlow(menu, getApplicationContext());
-					glowManual = GlowingButton.makeGlow(manual, getApplicationContext());
+					glowMenu =  GlowingButton.makeGlow(menu, getApplicationContext(),118);
+					glowManual = GlowingButton.makeGlow(manual, getApplicationContext(),117);
+					RelativeLayout parent_glowManual = (RelativeLayout) findViewById(117);
+					bulle_brillant = BulleCreator.createBubble(parent_glowManual,"Clique sur les boutons brillants pour savoir à quoi ils servent", "left",false,FriseActivity.this);
 
+					// Replacement du bouton aide a droite du bouton menu//
+					RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) aide.getLayoutParams();
+					params.addRule(RelativeLayout.END_OF,118);
+					aide.setLayoutParams(params);
+					
 					// text to speech sur les boutons //
 
 					TTSButton.parle(retour,
@@ -306,10 +356,17 @@ public class FriseActivity extends Activity {
 							getApplicationContext());
 					TTSButton
 							.parle(manual,
-									"pour passer en mode manuel et faire apparaître les flèches",
+									"pour passer en mode manuel",
 									getApplicationContext());
 					
 					info.setEnabled(false);
+					
+					// Apparitions des bulles d'aide //
+					Animate.fade_in(bulle_aide_apres, 500);
+					Animate.fade_in(bulle_heure, 500);
+					Animate.fade_in(bulle_brillant, 500);
+					Animate.fade_in(bulle_description, 500);
+					Animate.fade_out(bulle_aide_avant, 500, true);
 					
 				}
 			}
@@ -322,6 +379,9 @@ public class FriseActivity extends Activity {
 		menuDeroulant = (LinearLayout) findViewById(R.id.info);
 		audio = (Button) findViewById(R.id.info_audio);
 		info_text = (TextView) findViewById(R.id.info_text);
+		Typeface comic = Typeface.createFromAsset(getAssets(),"fonts/comic.otf");
+		info_text.setTypeface(comic);
+		info.setTypeface(comic);
 		
 		TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
 
@@ -365,20 +425,19 @@ public class FriseActivity extends Activity {
 					left.setEnabled(false); // desactivation des boutons droite
 											// et gauche
 					right.setEnabled(false);
-					left.setVisibility(View.INVISIBLE); // disparition des
-														// boutons droite et
-														// gauche
-					right.setVisibility(View.INVISIBLE);
-					moveScopeToCurrentTask(); // retour du scope a l'activite
-												// courante
-					currentTask = findCurrentTask(); // retour a l'activite
-														// courante
-					menuDeroulant.setBackgroundColor(currentTask.getCouleur());
-					info.setBackgroundColor(currentTask.getCouleur());
-					// le menu deroulant et son bouton retrouvent la couleur de
-					// l'activite actuelle
-					info_text.setText(currentTask.getDescription());
-					TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
+					Animate.pop_out(left,500,false); // Disparition des fleches
+					Animate.pop_out(right, 500,false);
+					Task actualTask = findCurrentTask();
+					if(actualTask!=null){
+						moveScopeToCurrentTask(); // retour du scope a l'activite courante
+						currentTask = actualTask; // retour a l'activite courante
+						menuDeroulant.setBackgroundColor(currentTask.getCouleur());
+						info.setBackgroundColor(currentTask.getCouleur());
+						// le menu deroulant et son bouton retrouvent la couleur de
+						// l'activite actuelle
+						info_text.setText(currentTask.getDescription());
+						TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
+					}
 
 				} else { // si on n'est pas en mode manuel
 
@@ -391,9 +450,8 @@ public class FriseActivity extends Activity {
 					modeManuel = true;
 					left.setEnabled(true); // activation des boutons
 					right.setEnabled(true);
-					left.setVisibility(View.VISIBLE); // affichage des boutons
-														// fleches
-					right.setVisibility(View.VISIBLE);
+					Animate.pop_in(left,500); // Apparition des fleches
+					Animate.pop_in(right, 500);
 					TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
 				}
 
@@ -405,44 +463,42 @@ public class FriseActivity extends Activity {
 		left.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
-				moveScope(-1); // deplace le scope d'une activite vers l'arriere
-				displayTask(); // affiche la tache scoped au centre
-				currentTask = Task.findRelativeTask(myTasks, currentTask, -1);// la
-																				// nouvelle
-																				// tache
-																				// actuelle
-				left.setEnabled(false); // desactive les boutons pendant
-										// l'animation du scope
-				right.setEnabled(false);
-				
-				info.setBackgroundColor(currentTask.getCouleur());
-				menuDeroulant.setBackgroundColor(currentTask.getCouleur());
-				info_text.setText(currentTask.getDescription());
-				TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
-				//le menu d'information sur l'activite chanege avec l'activite
+				Task leftTask = Task.findRelativeTask(myTasks, currentTask, -1);// la tache a gauche
+				if(leftTask!=null){
+					moveScope(-1); // deplace le scope d'une activite vers l'arriere
+					displayTask(); // affiche la tache scoped au centre
+					currentTask = leftTask;
+					left.setEnabled(false); // desactive les boutons pendant
+											// l'animation du scope
+					right.setEnabled(false);
+					
+					info.setBackgroundColor(currentTask.getCouleur());
+					menuDeroulant.setBackgroundColor(currentTask.getCouleur());
+					info_text.setText(currentTask.getDescription());
+					TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
+					//le menu d'information sur l'activite chanege avec l'activite
+				}
 			}
 		});
 
 		right.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
-				moveScope(1); // deplace le scope d'une activite vers l'avant
-				displayTask(); // affiche la tache scoped au centre
-				currentTask = Task.findRelativeTask(myTasks, currentTask, 1);// la
-																				// nouvelle
-																				// tache
-																				// actuelle
-				left.setEnabled(false); // desactive les boutons pendant
-										// l'animation du scope
-				right.setEnabled(false);
-				
-				info.setBackgroundColor(currentTask.getCouleur());
-				menuDeroulant.setBackgroundColor(currentTask.getCouleur());
-				info_text.setText(currentTask.getDescription());
-				TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
-				//le menu d'information sur l'activite chanege avec l'activite
+				Task rightTask = Task.findRelativeTask(myTasks, currentTask, 1);
+				if(rightTask!=null){
+					moveScope(1); // deplace le scope d'une activite vers l'avant
+					displayTask(); // affiche la tache scoped au centre
+					currentTask = rightTask;
+					left.setEnabled(false); // desactive les boutons pendant
+											// l'animation du scope
+					right.setEnabled(false);
+					
+					info.setBackgroundColor(currentTask.getCouleur());
+					menuDeroulant.setBackgroundColor(currentTask.getCouleur());
+					info_text.setText(currentTask.getDescription());
+					TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
+					//le menu d'information sur l'activite chanege avec l'activite
+				}
 
 			}
 		});

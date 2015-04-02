@@ -2,8 +2,8 @@ package atlas.frisedejournee;
 
 
 import boutons.ButtonCreator;
+import boutons.ExitApplicationListener;
 import bulles.BulleCreator;
-import horloge.Clock;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -29,6 +29,7 @@ public class MenuActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		/* Passage en plein ecran */
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		View decorView = getWindow().getDecorView();
@@ -56,7 +57,7 @@ public class MenuActivity extends Activity {
         Spinner s = (Spinner) findViewById(R.id.enfant_spinner);
         
         
-		BulleCreator.createBubble(s, "Choisi ton prénom dans la liste", "right", this);
+		BulleCreator.createBubble(s, "Choisi ton prénom dans la liste", "right",true, this);
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this,R.layout.spinner_item_text, array_spinner);
         s.setAdapter(adapter);
 		
@@ -85,9 +86,15 @@ public class MenuActivity extends Activity {
 	      }
 	    });
 	    
-		LayoutAnimationController layout_animation = AnimationUtils.loadLayoutAnimation(getApplicationContext(),R.anim.layout_saut);
+		LayoutAnimationController layout_animation = AnimationUtils.loadLayoutAnimation(this,R.anim.layout_saut);
 		titre.setLayoutAnimation(layout_animation);
 	    
+		
+		// Bouton exit //
+		Button exit = (Button) findViewById(R.id.exit);
+		ButtonCreator.setButtonStyle(this,exit,R.color.orange1,"Quitter",R.color.noir);
+		Drawable exit_pressed = ButtonCreator.createButtonPressedDrawable(R.color.orange1);
+		exit.setOnClickListener(new ExitApplicationListener(exit,exit_pressed,MenuActivity.this));
 	}
 	
 	@Override

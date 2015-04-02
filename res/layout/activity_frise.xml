@@ -3,6 +3,7 @@
     android:id="@+id/parent_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipChildren="true"
     android:background="@color/blanc_casse"
     tools:context="${relativePackage}.${activityClass}" >
 
@@ -20,7 +21,8 @@
         android:layout_height="120dp"
         android:layout_marginStart="97dp"
         android:layout_marginTop="33dp"
-        android:background="@drawable/back" />
+        android:background="@drawable/cercle"
+        android:elevation="5dp" />
 
     <TextView
         android:id="@+id/nom_enfant"
@@ -32,7 +34,8 @@
         android:layout_marginEnd="25dp"
         android:textAlignment="center"
         android:textColor="@color/violet"
-        android:textSize="35sp" />
+        android:textSize="35sp"
+        android:elevation="5dp" />
 
     <LinearLayout
         android:id="@+id/frise"
@@ -107,7 +110,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/frame"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="0dp"
+        android:layout_marginBottom="50dp"
         android:contentDescription="@drawable/image_dejeuner"
         android:elevation="8dp" />
 
@@ -198,8 +201,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
-        android:layout_marginStart="50dp"
-        android:layout_toEndOf="@+id/bouton_menu"
+        android:layout_toEndOf="@id/bouton_menu"
+        android:layout_marginStart="67dp"
         android:background="@drawable/help"
         android:elevation="12dp"
         android:stateListAnimator="@null" />
@@ -210,8 +213,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
-        android:layout_marginRight="50dp"
-        android:layout_toLeftOf="@+id/bouton_menu"
+        android:layout_marginStart="420dp"
         android:background="@drawable/back"
         android:elevation="12dp"
         android:stateListAnimator="@null" />
@@ -277,6 +279,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/noir"
+                android:padding="12dp"
                 android:textSize="30sp" />
 
             <Button
@@ -286,7 +289,7 @@
                 android:layout_gravity="right"
                 android:layout_marginBottom="0dp"
                 android:layout_marginRight="0dp"
-                android:background="@drawable/audio_petit" />
+                android:background="@drawable/sound" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -299,7 +302,8 @@
         android:layout_alignTop="@id/frame"
         android:elevation="10dp"
         android:stateListAnimator="@null"
-        android:text="Que fait mon activité ?"
+        android:text="Description"
+        android:textAllCaps="false"
         android:textColor="@color/noir"
         android:textSize="20sp" />
 
@@ -313,6 +317,6 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/gnar"
         android:contentDescription="@drawable/gnar"
-        android:elevation="15dp" />
+        android:elevation="8dp" />
 
 </RelativeLayout>
