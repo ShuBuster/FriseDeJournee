@@ -197,7 +197,7 @@ public class FriseActivity extends Activity {
 		for (Task myTask : myTasks) {
 
 			/* Affichage de ma tache sur la frise */
-			ImageView rectTask = new ImageView(getApplicationContext());
+			Button rectTask = new Button(this);
 			int Xwidth = myTask.getXwidth(W, h0, h1);
 
 			/* Creation du rectangle et placement */
@@ -217,7 +217,10 @@ public class FriseActivity extends Activity {
 			myTask.setCouleur(couleur); // on associe a la tache sa couleur
 			rectTask.setBackgroundColor(couleur);
 			frise.addView(rectTask);
-			rectTask.setVisibility(View.VISIBLE);
+			rectTask.setId(task_indice);
+			// rend le bouton clickable
+			rectTask.setOnClickListener(new TaskListener(task_indice, this));
+			
 			color_indice += 1;
 			task_indice += 1;
 		}
@@ -570,7 +573,27 @@ public class FriseActivity extends Activity {
 			menuDeroulant.setVisibility(View.VISIBLE);
 		}
 	};
+	
 
+	/**
+	 * 
+	 * @param taskId
+	 */
+	public void taskClicked(int taskId){
+		int scopedId = Task.indexOfTask(myTasks, scopedTask);
+		int deltaId = taskId - scopedId;
+		
+		moveScope(deltaId);
+		displayTask(); // affiche la tache scoped au centre
+		currentTask = scopedTask;
+		
+		info.setBackgroundColor(currentTask.getCouleur());
+		menuDeroulant.setBackgroundColor(currentTask.getCouleur());
+		info_text.setText(currentTask.getDescription());
+		TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
+		//le menu d'information sur l'activite change avec l'activite
+	}
+	
 	/**
 	 * Trouve la tache qui se deroule a l'heure actuelle
 	 * 

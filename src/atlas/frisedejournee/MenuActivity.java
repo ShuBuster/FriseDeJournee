@@ -93,7 +93,7 @@ public class MenuActivity extends Activity {
 		// Bouton exit //
 		Button exit = (Button) findViewById(R.id.exit);
 		ButtonCreator.setButtonStyle(this,exit,R.color.orange1,"Quitter",R.color.noir);
-		Drawable exit_pressed = ButtonCreator.createButtonPressedDrawable(R.color.orange1);
+		Drawable exit_pressed = ButtonCreator.createButtonPressedDrawable(this,R.color.orange1);
 		exit.setOnClickListener(new ExitApplicationListener(exit,exit_pressed,MenuActivity.this));
 	}
 	
