@@ -5,14 +5,18 @@ import glow.GlowingButton;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import divers.Couleur;
+
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.LightingColorFilter;
+import android.graphics.Point;
 import android.graphics.Typeface;
-import android.graphics.drawable.AnimatedStateListDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +24,7 @@ import android.speech.tts.TextToSpeech;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -89,7 +94,7 @@ public class FriseActivity extends Activity {
 		myTasks = new ArrayList<Task>();
 		scopedTask = null;
 		h0 = 8; // debut a 8h
-		h1 = 21; // debut a 21h
+		h1 = 21; // fin a 21h
 		W = 0;
 		H = 0;
 		margin = 0;
@@ -145,8 +150,19 @@ public class FriseActivity extends Activity {
 		
 		Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.frise_support, options);
 		W = bmp.getWidth()- DeltaWpx;
+		H = bmp.getHeight();
 		Log.d("TAG", "H= "+H);
 		Log.d("TAG", "W= "+W);
+		
+		/* Taille ecran */
+		
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int width = size.x;
+		int height = size.y;
+		Log.d("TAG", "width= "+width);
+		Log.d("TAG", "height ="+height);
 		
 		/* Passage en plein ecran */
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -188,6 +204,15 @@ public class FriseActivity extends Activity {
 			break;
 		}
 
+		/* Ajustement taille frame */
+		ImageView frame = (ImageView) findViewById(R.id.frame);
+		ImageView frame_p = (ImageView) findViewById(R.id.frame_previous);
+		ImageView frame_n = (ImageView) findViewById(R.id.frame_next);
+		setSize(frame, 2*height/3, 5*width/6);
+		setSize(frame_p, 2*height/3, width/4);
+		setSize(frame_n, 2*height/3, width/4);
+
+		
 		/* Recuperation de la frise */
 		LinearLayout frise = (LinearLayout) findViewById(R.id.frise);
 
@@ -264,14 +289,16 @@ public class FriseActivity extends Activity {
 		final TextView bulle_aide_avant = BulleCreator.createBubble(aide,"Clique sur ce bouton pour obtenir de l'aide", "right",true, this);
 		final TextView bulle_aide_apres = BulleCreator.createBubble(aide,"Clique sur ce bouton pour sortir de l'aide", "right",false, this);
 		final TextView bulle_description = BulleCreator.createBubble(info,"Ce bouton permet d'afficher"+"\n"+"une description de l'activité", "below",false, this);
-		bulle_aide_avant.setElevation(20); // met la bulle au premier plan
-		bulle_aide_avant.setOutlineProvider(null); // supprime l'ombre de l'elevation
-		bulle_aide_apres.setElevation(20);
-		bulle_aide_apres.setOutlineProvider(null);
-		bulle_heure.setElevation(20);
-		bulle_heure.setOutlineProvider(null);
-		bulle_description.setElevation(20);
-		bulle_description.setOutlineProvider(null);
+		if(Integer.valueOf(android.os.Build.VERSION.SDK)>=21){
+			bulle_aide_avant.setElevation(20); // met les bulle au premier plan
+			bulle_aide_apres.setElevation(20);
+			bulle_heure.setElevation(20);
+			bulle_description.setElevation(20);
+			bulle_aide_avant.setOutlineProvider(null); // supprime les ombres de l'elevation
+			bulle_aide_apres.setOutlineProvider(null);
+			bulle_heure.setOutlineProvider(null);
+			bulle_description.setOutlineProvider(null);
+		}
 		
 		aide.setOnClickListener(new View.OnClickListener() {
 						
@@ -737,8 +764,11 @@ public class FriseActivity extends Activity {
 
 		/* Recuperation du cadre et modification de sa couleur */
 		ImageView cadre = (ImageView) findViewById(R.id.frame);
+		GradientDrawable drawable = (GradientDrawable) cadre.getBackground();
 		int couleur = scopedTask.getCouleur(); // recuperation de la couleur
-		cadre.setBackgroundColor(couleur);
+		int couleur_clair = Couleur.lightenColor(couleur);
+		int[] colors = {couleur_clair,couleur};
+		drawable.setColor(couleur);
 
 		/* Affichage du titre de l'activite */
 		TextView titreTask = (TextView) findViewById(R.id.titreTask);
@@ -860,6 +890,13 @@ public class FriseActivity extends Activity {
 		cercle.startAnimation(animation2);
 	}
 
+	public void setSize(View view,int h, int w){
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
+		params.height = h;
+		params.width = w;
+		view.setLayoutParams(params);
+	}
+	
 	@Override
 	public void onPause() {
 		if (tts != null) {

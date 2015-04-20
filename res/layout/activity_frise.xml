@@ -3,8 +3,8 @@
     android:id="@+id/parent_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="true"
     android:background="@color/blanc_casse"
+    android:clipChildren="true"
     tools:context="${relativePackage}.${activityClass}" >
 
     <ImageView
@@ -32,10 +32,10 @@
         android:layout_alignEnd="@id/cercle"
         android:layout_marginBottom="43dp"
         android:layout_marginEnd="25dp"
+        android:elevation="5dp"
         android:textAlignment="center"
         android:textColor="@color/violet"
-        android:textSize="35sp"
-        android:elevation="5dp" />
+        android:textSize="35sp" />
 
     <LinearLayout
         android:id="@+id/frise"
@@ -57,39 +57,35 @@
 
     <ImageView
         android:id="@+id/frame_next"
-        android:layout_width="300dp"
-        android:layout_height="420dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/bouton_right"
-        android:layout_marginTop="75dp"
-        android:elevation="6dp" />
+        android:layout_marginBottom="45dp"
+        android:layout_marginTop="55dp"
+        android:elevation="6dp"
+        android:visibility="invisible" />
 
     <ImageView
         android:id="@+id/frame_previous"
-        android:layout_width="300dp"
-        android:layout_height="420dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/bouton_right"
-        android:layout_marginTop="75dp"
-        android:elevation="6dp" />
-
-    <ImageView
-        android:id="@+id/border"
-        android:layout_width="1120dp"
-        android:layout_height="470dp"
-        android:layout_below="@+id/bouton_right"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:background="@color/vert1"
-        android:elevation="8dp" />
+        android:layout_marginBottom="45dp"
+        android:layout_marginTop="55dp"
+        android:elevation="6dp"
+        android:visibility="invisible" />
 
     <ImageView
         android:id="@+id/frame"
-        android:layout_width="1100dp"
-        android:layout_height="450dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/bouton_right"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/frame"
         android:elevation="8dp" />
 
     <TextView
@@ -98,7 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/frame"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="20dp"
         android:elevation="8dp"
         android:text=""
         android:textColor="@color/jaune1"
@@ -110,7 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/frame"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="30dp"
         android:contentDescription="@drawable/image_dejeuner"
         android:elevation="8dp" />
 
@@ -193,7 +189,8 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/home"
         android:elevation="12dp"
-        android:stateListAnimator="@null" />
+        android:stateListAnimator="@null"
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/bouton_aide"
@@ -201,11 +198,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
-        android:layout_toEndOf="@id/bouton_menu"
         android:layout_marginStart="67dp"
+        android:layout_toEndOf="@id/bouton_menu"
         android:background="@drawable/help"
         android:elevation="12dp"
-        android:stateListAnimator="@null" />
+        android:stateListAnimator="@null"
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/bouton_retour"
@@ -216,7 +214,8 @@
         android:layout_marginStart="420dp"
         android:background="@drawable/back"
         android:elevation="12dp"
-        android:stateListAnimator="@null" />
+        android:stateListAnimator="@null"
+        android:visibility="invisible" />
 
     <ImageView
         android:id="@+id/scope"
@@ -261,6 +260,8 @@
         android:layout_alignLeft="@+id/gnar"
         android:layout_alignRight="@id/frame"
         android:layout_below="@+id/description_bouton"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
         android:clipChildren="true"
         android:elevation="8dp"
         android:orientation="vertical" >
@@ -269,7 +270,6 @@
             android:id="@+id/info"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@color/bleu1"
             android:elevation="12dp"
             android:orientation="vertical"
             android:visibility="invisible" >
@@ -278,8 +278,8 @@
                 android:id="@+id/info_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/noir"
                 android:padding="12dp"
+                android:textColor="@color/noir"
                 android:textSize="30sp" />
 
             <Button
@@ -300,6 +300,8 @@
         android:layout_alignEnd="@id/frame"
         android:layout_alignStart="@+id/gnar"
         android:layout_alignTop="@id/frame"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:elevation="10dp"
         android:stateListAnimator="@null"
         android:text="Description"
@@ -317,6 +319,7 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/gnar"
         android:contentDescription="@drawable/gnar"
-        android:elevation="8dp" />
+        android:elevation="8dp"
+        android:visibility="invisible" />
 
 </RelativeLayout>
