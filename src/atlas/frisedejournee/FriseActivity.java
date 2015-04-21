@@ -145,7 +145,8 @@ public class FriseActivity extends Activity {
 			options.inTargetDensity = DisplayMetrics.DENSITY_DEFAULT;
 			break;
 		}
-		
+		/* A RETIRER APRES REMPLACEMENT DU SUPPORT PAR UN XML
+		 * 
 		int DeltaWpx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());
 		
 		Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.frise_support, options);
@@ -153,7 +154,7 @@ public class FriseActivity extends Activity {
 		H = bmp.getHeight();
 		Log.d("TAG", "H= "+H);
 		Log.d("TAG", "W= "+W);
-		
+		*/
 		/* Taille ecran */
 		
 		Display display = getWindowManager().getDefaultDisplay();
@@ -212,9 +213,13 @@ public class FriseActivity extends Activity {
 		setSize(frame_p, 2*height/3, width/4);
 		setSize(frame_n, 2*height/3, width/4);
 
-		
-		/* Recuperation de la frise */
+		/* Ajustement taille frise */
 		LinearLayout frise = (LinearLayout) findViewById(R.id.frise);
+		H = height/9; // hauteur de la frise
+		W = 2*width/3; // largeur de la frise
+		setSize(frise,H,W);
+		
+		/* Remplissage de la frise */
 
 		int color_indice = 0;
 		int task_indice = 0;
@@ -223,6 +228,7 @@ public class FriseActivity extends Activity {
 
 			/* Affichage de ma tache sur la frise */
 			Button rectTask = new Button(this);
+			rectTask.setEnabled(false); //desactive au debut
 			int Xwidth = myTask.getXwidth(W, h0, h1);
 
 			/* Creation du rectangle et placement */
@@ -235,7 +241,7 @@ public class FriseActivity extends Activity {
 				layoutParams = new LinearLayout.LayoutParams(Xwidth - margin
 						* (myTasks.size() - 2), LayoutParams.MATCH_PARENT);
 			}
-			layoutParams.setMargins(margin, margin, 0, margin*4);
+			layoutParams.setMargins(margin, margin,0,margin);
 			rectTask.setLayoutParams(layoutParams);
 
 			int couleur = getResources().getColor(colorTab[color_indice]);
@@ -249,6 +255,7 @@ public class FriseActivity extends Activity {
 			color_indice += 1;
 			task_indice += 1;
 		}
+		final int nb_task = task_indice;
 		
 		/* Met le scope a l'activite en cours */
 		currentTask = findCurrentTask();
@@ -455,6 +462,11 @@ public class FriseActivity extends Activity {
 					left.setEnabled(false); // desactivation des boutons droite
 											// et gauche
 					right.setEnabled(false);
+					// desactivation des boutons des taches
+					for(int id=0;id<nb_task;id++){
+						Button task_button = (Button) findViewById(id);
+						task_button.setEnabled(false);
+					}
 					Animate.pop_out(left,500,false); // Disparition des fleches
 					Animate.pop_out(right, 500,false);
 					Task actualTask = findCurrentTask();
@@ -479,7 +491,11 @@ public class FriseActivity extends Activity {
 					/* passage en mode manuel */
 					modeManuel = true;
 					left.setEnabled(true); // activation des boutons
-					right.setEnabled(true);
+					right.setEnabled(true);					// activation des boutons des taches
+					for(int id=0;id<nb_task;id++){
+						Button task_button = (Button) findViewById(id);
+						task_button.setEnabled(true);
+					}
 					Animate.pop_in(left,500); // Apparition des fleches
 					Animate.pop_in(right, 500);
 					TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
@@ -743,15 +759,17 @@ public class FriseActivity extends Activity {
 	 * Replace le scope a la position scopedTask sans animation
 	 */
 	public void replaceScope() {
-
+		
 		ImageView scope = (ImageView) findViewById(R.id.scope);
 		int indice = Task.indexOfTask(myTasks, scopedTask);
 		int XBegin = scopedTask.getXbegin(W, h0, h1);
 		int XWidth = scopedTask.getXwidth(W, h0, h1);
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)scope.getLayoutParams();
+		params.addRule(RelativeLayout.ALIGN_START, R.id.frise);
 		MarginLayoutParams paramsScope = (MarginLayoutParams) scope
 				.getLayoutParams();
 		paramsScope.width = XWidth + 20;
-		paramsScope.leftMargin = 500 + XBegin + indice * margin;
+		paramsScope.leftMargin = XBegin + indice * margin - 7;
 		scope.setLayoutParams(paramsScope);
 
 	}

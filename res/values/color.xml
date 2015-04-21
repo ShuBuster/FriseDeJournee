@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <color name="translucide">#00000000</color>
-    <color name="blanc">#FFFFFF</color> 
+    <color name="blanc">#FFFFFF</color>
     <color name="vert1">#8CC63E</color>
     <color name="vert2">#2AB573</color>
     <color name="vert3">#38B449</color>
@@ -17,6 +18,6 @@
     <color name="violet">#504082</color>
     <color name="gris_fonce">#777777</color>
     <color name="noir">#000000</color>
-    
-    
+    <color name="bleu3">#0080FF</color>
+
 </resources>

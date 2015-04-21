@@ -7,44 +7,52 @@
     android:clipChildren="true"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <ImageView
-        android:id="@+id/etoile"
-        android:layout_width="155dp"
-        android:layout_height="155dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/etoile" />
-
-    <ImageView
-        android:id="@+id/cercle"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="97dp"
-        android:layout_marginTop="33dp"
-        android:background="@drawable/cercle"
-        android:elevation="5dp" />
-
-    <TextView
-        android:id="@+id/nom_enfant"
+    <RelativeLayout
+        android:id="@+id/embleme"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/cercle"
-        android:layout_alignEnd="@id/cercle"
-        android:layout_marginBottom="43dp"
-        android:layout_marginEnd="25dp"
-        android:elevation="5dp"
-        android:textAlignment="center"
-        android:textColor="@color/violet"
-        android:textSize="35sp" />
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15dp" >
+
+        <ImageView
+            android:id="@+id/etoile"
+            android:layout_width="155dp"
+            android:layout_height="155dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/etoile"
+            android:contentDescription="@drawable/etoile" />
+
+        <ImageView
+            android:id="@+id/cercle"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/cercle"
+            android:contentDescription="@drawable/cercle"
+            android:elevation="5dp" />
+
+        <TextView
+            android:id="@+id/nom_enfant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:elevation="5dp"
+            android:textAlignment="center"
+            android:textColor="@color/violet"
+            android:textSize="35sp" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/frise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="250dp"
+        android:layout_toEndOf="@id/embleme"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="67dp"
-        android:background="@drawable/frise_support"
-        android:orientation="horizontal" >
+        android:background="@drawable/frise"
+        android:elevation="10dp"
+        android:orientation="horizontal"
+        android:paddingEnd="2dp" >
     </LinearLayout>
 
     <ImageView
@@ -53,7 +61,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/frise"
         android:layout_marginTop="30dp"
-        android:background="@drawable/separateur" />
+        android:background="@drawable/separateur"
+        android:contentDescription="@drawable/separateur" />
 
     <ImageView
         android:id="@+id/frame_next"
@@ -257,8 +266,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/frame"
-        android:layout_alignLeft="@+id/gnar"
-        android:layout_alignRight="@id/frame"
+        android:layout_alignEnd="@id/frame"
+        android:layout_alignStart="@+id/gnar"
         android:layout_below="@+id/description_bouton"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"
@@ -300,7 +309,7 @@
         android:layout_alignEnd="@id/frame"
         android:layout_alignStart="@+id/gnar"
         android:layout_alignTop="@id/frame"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"
         android:elevation="10dp"
         android:stateListAnimator="@null"
