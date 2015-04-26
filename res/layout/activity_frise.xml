@@ -46,9 +46,9 @@
         android:id="@+id/frise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/embleme"
         android:layout_marginStart="20dp"
         android:layout_marginTop="67dp"
+        android:layout_toEndOf="@id/embleme"
         android:background="@drawable/frise"
         android:elevation="10dp"
         android:orientation="horizontal"
@@ -198,8 +198,7 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/home"
         android:elevation="12dp"
-        android:stateListAnimator="@null"
-        android:visibility="invisible" />
+        android:stateListAnimator="@null" />
 
     <Button
         android:id="@+id/bouton_aide"
@@ -211,8 +210,7 @@
         android:layout_toEndOf="@id/bouton_menu"
         android:background="@drawable/help"
         android:elevation="12dp"
-        android:stateListAnimator="@null"
-        android:visibility="invisible" />
+        android:stateListAnimator="@null" />
 
     <Button
         android:id="@+id/bouton_retour"
@@ -220,11 +218,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
-        android:layout_marginStart="420dp"
+        android:layout_marginRight="67dp"
+        android:layout_toLeftOf="@id/bouton_menu"
         android:background="@drawable/back"
         android:elevation="12dp"
-        android:stateListAnimator="@null"
-        android:visibility="invisible" />
+        android:stateListAnimator="@null" />
 
     <ImageView
         android:id="@+id/scope"
