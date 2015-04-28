@@ -50,7 +50,7 @@
         android:layout_marginTop="67dp"
         android:layout_toEndOf="@id/embleme"
         android:background="@drawable/frise"
-        android:elevation="10dp"
+        android:elevation="8dp"
         android:orientation="horizontal"
         android:paddingEnd="2dp" >
     </LinearLayout>
@@ -69,10 +69,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/bouton_right"
-        android:layout_marginBottom="45dp"
-        android:layout_marginTop="55dp"
-        android:elevation="6dp"
+        android:layout_below="@id/separateur"
+        android:layout_marginTop="20dp"
         android:visibility="invisible" />
 
     <ImageView
@@ -80,9 +78,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/bouton_right"
-        android:layout_marginBottom="45dp"
-        android:layout_marginTop="55dp"
+        android:layout_below="@id/separateur"
+        android:layout_marginTop="20dp"
         android:elevation="6dp"
         android:visibility="invisible" />
 
@@ -90,10 +87,8 @@
         android:id="@+id/frame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bouton_right"
+        android:layout_below="@id/separateur"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="40dp"
         android:background="@drawable/frame"
         android:elevation="8dp" />
 
@@ -101,7 +96,7 @@
         android:id="@+id/titreTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/frame"
+        android:layout_alignBottom="@id/frame"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:elevation="8dp"
@@ -113,9 +108,9 @@
         android:id="@+id/imageTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/frame"
+        android:layout_alignBottom="@id/frame"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="50dp"
         android:contentDescription="@drawable/image_dejeuner"
         android:elevation="8dp" />
 
@@ -123,8 +118,8 @@
         android:id="@+id/heure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/frame"
-        android:layout_alignTop="@+id/frame"
+        android:layout_alignStart="@id/frame"
+        android:layout_alignTop="@id/frame"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:elevation="8dp"
@@ -230,6 +225,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="58dp"
         android:contentDescription="@drawable/frise_target"
+        android:elevation="8dp"
         android:scaleType="fitXY"
         android:src="@drawable/frise_target" />
 
@@ -237,16 +233,17 @@
         android:id="@+id/bouton_manual"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="45dp"
-        android:layout_toEndOf="@+id/frise"
+        android:layout_toEndOf="@id/frise"
         android:background="@drawable/manual" />
 
     <Button
         android:id="@+id/bouton_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/frise"
-        android:layout_marginTop="110dp"
+        android:layout_alignEnd="@id/frise"
+        android:layout_below="@id/frise"
         android:background="@drawable/fleche_droite"
         android:visibility="invisible" />
 
@@ -254,8 +251,8 @@
         android:id="@+id/bouton_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/frise"
-        android:layout_marginTop="110dp"
+        android:layout_alignStart="@id/frise"
+        android:layout_below="@id/frise"
         android:background="@drawable/fleche_gauche"
         android:visibility="invisible" />
 
@@ -305,11 +302,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@id/frame"
-        android:layout_alignStart="@+id/gnar"
+        android:layout_alignStart="@id/gnar"
         android:layout_alignTop="@id/frame"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"
-        android:elevation="10dp"
+        android:elevation="9dp"
         android:stateListAnimator="@null"
         android:text="Description"
         android:textAllCaps="false"
@@ -317,7 +314,7 @@
         android:textSize="20sp" />
 
     <ImageView
-        android:id="@+id/gnar"
+        android:id="@id/gnar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

@@ -75,7 +75,6 @@ public class FriseActivity extends Activity {
 	Button right = null;
 	Button left = null;
 	ImageView scope = null;
-	TextView bulle_brillant = null;
 	LinearLayout menuDeroulant = null;
 	LinearLayout descriptionDeroulant = null;
 	boolean isOpen = false;
@@ -145,16 +144,7 @@ public class FriseActivity extends Activity {
 			options.inTargetDensity = DisplayMetrics.DENSITY_DEFAULT;
 			break;
 		}
-		/* A RETIRER APRES REMPLACEMENT DU SUPPORT PAR UN XML
-		 * 
-		int DeltaWpx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());
-		
-		Bitmap bmp = BitmapFactory.decodeResource(getResources(),R.drawable.frise_support, options);
-		W = bmp.getWidth()- DeltaWpx;
-		H = bmp.getHeight();
-		Log.d("TAG", "H= "+H);
-		Log.d("TAG", "W= "+W);
-		*/
+
 		/* Taille ecran */
 		
 		Display display = getWindowManager().getDefaultDisplay();
@@ -209,15 +199,19 @@ public class FriseActivity extends Activity {
 		ImageView frame = (ImageView) findViewById(R.id.frame);
 		ImageView frame_p = (ImageView) findViewById(R.id.frame_previous);
 		ImageView frame_n = (ImageView) findViewById(R.id.frame_next);
-		setSize(frame, 2*height/3, 5*width/6);
-		setSize(frame_p, 2*height/3, width/4);
-		setSize(frame_n, 2*height/3, width/4);
+		setSize(frame, 5*height/8, 5*width/6);
+		setSize(frame_p, 5*height/9, width/4);
+		setSize(frame_n, 5*height/9, width/4);
 
 		/* Ajustement taille frise */
 		LinearLayout frise = (LinearLayout) findViewById(R.id.frise);
-		H = height/9; // hauteur de la frise
+		H = height/11; // hauteur de la frise
 		W = 2*width/3; // largeur de la frise
 		setSize(frise,H,W);
+		
+		/* Ajustement taille scope */
+		ImageView scope = (ImageView) findViewById(R.id.scope);
+		setSize(scope,(int)(H*1.2),0);
 		
 		/* Remplissage de la frise */
 
@@ -352,12 +346,10 @@ public class FriseActivity extends Activity {
 					RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
 					params.addRule(RelativeLayout.ALIGN_TOP,R.id.bouton_manual);
 					params.addRule(RelativeLayout.LEFT_OF,R.id.bouton_manual);
-					bulle_brillant.setLayoutParams(params);
 					
 					// Disparition des bulles d'aide //
 					Animate.fade_out(bulle_aide_apres, 500,false);
 					Animate.fade_out(bulle_heure, 500,false);
-					Animate.fade_out(bulle_brillant, 500,false);
 					Animate.fade_out(bulle_description, 500,false);
 					
 				} else { // si on est pas en mode aide
@@ -375,8 +367,6 @@ public class FriseActivity extends Activity {
 					glowRetour = GlowingButton.makeGlow(retour, getApplicationContext());
 					glowMenu =  GlowingButton.makeGlow(menu, getApplicationContext(),118);
 					glowManual = GlowingButton.makeGlow(manual, getApplicationContext(),117);
-					RelativeLayout parent_glowManual = (RelativeLayout) findViewById(117);
-					bulle_brillant = BulleCreator.createBubble(parent_glowManual,"Clique sur les boutons brillants pour savoir à quoi ils servent", "left",false,FriseActivity.this);
 
 					// Replacement du bouton aide a droite du bouton menu//
 					RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) aide.getLayoutParams();
@@ -401,7 +391,6 @@ public class FriseActivity extends Activity {
 					// Apparitions des bulles d'aide //
 					Animate.fade_in(bulle_aide_apres, 500);
 					Animate.fade_in(bulle_heure, 500);
-					Animate.fade_in(bulle_brillant, 500);
 					Animate.fade_in(bulle_description, 500);
 					Animate.fade_out(bulle_aide_avant, 500, true);
 					
