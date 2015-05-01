@@ -471,7 +471,12 @@ public class FriseActivity extends Activity {
 					}
 
 				} else { // si on n'est pas en mode manuel
-
+					try {
+						animateHour();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
 					Drawable d = getResources()
 							.getDrawable(R.drawable.manual_e);
@@ -848,7 +853,7 @@ public class FriseActivity extends Activity {
 	 * 
 	 * @param hour
 	 *            l'heure
-	 * @return le tableau rempli avec les chiffres
+	 * @return le tableau de string rempli avec les chiffres
 	 */
 	public String[] splitHour(double hour) {
 		String[] result = new String[4];
@@ -868,6 +873,61 @@ public class FriseActivity extends Activity {
 		return result;
 	}
 
+	/**
+	 * Separe les 4 chiffres qui constituent une heure
+	 * 
+	 * @param hour
+	 *            l'heure
+	 * @return le tableau rempli avec les chiffres
+	 */
+	public int[] splitHour2(double hour) {
+		int[] result = new int[4];
+		int heure = (int) Math.floor(hour);
+		int minute = (int) ((hour - heure) * 60);
+
+		int heure_dizaine = (int) Math.floor(heure / 10);
+		result[0] =heure_dizaine;
+		int heure_unite = heure - 10 * heure_dizaine;
+		result[1] = heure_unite;
+
+		int minute_dizaine = (int) Math.floor(minute / 10);
+		result[2] = minute_dizaine;
+		int minute_unite = minute - 10 * minute_dizaine;
+		result[3] = minute_unite;
+
+		return result;
+	}
+	
+	/**
+	 * Change l'heure de l'afficheur avec une animation
+	 * @param hour l'heure a laquelle on veut mettre l'afficheur
+	 */
+	public void changeHour(double hour){
+		int[] actual = splitHour2(scopedTask.getHeureDebut());
+		int[] next = splitHour2(hour);
+		
+		for(int i=0;i<=3;i++){
+			if(actual[i]<next[i]){
+			}
+		}
+	}
+	
+	/**
+	 * Anime l'heure avec une animation d'echelle en chaîne
+	 * @throws InterruptedException 
+	 */
+	public void animateHour() throws InterruptedException{
+		View hd = findViewById(R.id.heure_dizaine);
+		View hu = findViewById(R.id.heure_unite);
+		View md = findViewById(R.id.minute_dizaine);
+		View mu = findViewById(R.id.minute_unite);
+		
+		Animate.scale(hd,1f,1.2f,500,0,false);
+		Animate.scale(hu,1f,1.2f,500,200,false);
+		Animate.scale(md,1f,1.2f,500,400,false);
+		Animate.scale(mu,1f,1.2f,500,600,false);
+	}
+	
 	/**
 	 * Assombrit une couleur
 	 * 

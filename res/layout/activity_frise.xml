@@ -207,14 +207,14 @@
         android:elevation="12dp"
         android:stateListAnimator="@null" />
 
+
     <Button
         android:id="@+id/bouton_retour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
-        android:layout_marginRight="67dp"
-        android:layout_toLeftOf="@id/bouton_menu"
+        android:layout_marginStart="420dp"
         android:background="@drawable/back"
         android:elevation="12dp"
         android:stateListAnimator="@null" />
@@ -323,7 +323,15 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/gnar"
         android:contentDescription="@drawable/gnar"
-        android:elevation="8dp"
-        android:visibility="invisible" />
+        android:elevation="8dp" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/heure"
+        android:background="@drawable/bouton"
+        android:text="Play"
+        android:textSize="30sp" />
 
 </RelativeLayout>
