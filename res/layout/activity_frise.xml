@@ -115,7 +115,7 @@
         android:elevation="8dp" />
 
     <LinearLayout
-        android:id="@+id/heure"
+        android:id="@+id/heure_fond"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@id/frame"
@@ -125,24 +125,60 @@
         android:elevation="8dp"
         android:orientation="horizontal" >
 
-        <TextView
-            android:id="@+id/heure_dizaine"
+        <LinearLayout
+            android:id="@+id/heure_dizaine_fond"
             android:layout_width="60dp"
             android:layout_height="80dp"
+            android:orientation="vertical"
             android:paddingStart="15dp"
             android:paddingTop="5dp"
             android:textColor="@color/blanc"
-            android:textSize="50sp" />
+            android:textSize="50sp" >
 
-        <TextView
-            android:id="@+id/heure_unite"
+            <TextView
+                android:id="@+id/heure_dizaine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/blanc"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/heure_dizaine_clone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/blanc"
+                android:textSize="50sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/heure_unite_fond"
             android:layout_width="60dp"
             android:layout_height="80dp"
             android:layout_marginStart="8dp"
+            android:clipChildren="true"
+            android:orientation="vertical"
             android:paddingStart="15dp"
             android:paddingTop="5dp"
-            android:textColor="@color/blanc"
-            android:textSize="50sp" />
+            android:textSize="50sp" >
+
+            <TextView
+                android:id="@+id/heure_unite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/blanc"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/heure_unite_clone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/blanc"
+                android:textSize="50sp" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"
@@ -152,25 +188,61 @@
             android:textColor="@color/blanc"
             android:textSize="50sp" />
 
-        <TextView
-            android:id="@+id/minute_dizaine"
+        <LinearLayout
+            android:id="@+id/minute_dizaine_fond"
             android:layout_width="60dp"
             android:layout_height="80dp"
             android:layout_marginStart="8dp"
+            android:orientation="vertical"
             android:paddingStart="15dp"
             android:paddingTop="5dp"
             android:textColor="@color/blanc"
-            android:textSize="50sp" />
+            android:textSize="50sp" >
 
-        <TextView
-            android:id="@+id/minute_unite"
+            <TextView
+                android:id="@+id/minute_dizaine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/blanc"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/minute_dizaine_clone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/blanc"
+                android:textSize="50sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/minute_unite_fond"
             android:layout_width="60dp"
             android:layout_height="80dp"
             android:layout_marginStart="8dp"
+            android:orientation="vertical"
             android:paddingStart="15dp"
             android:paddingTop="5dp"
             android:textColor="@color/blanc"
-            android:textSize="50sp" />
+            android:textSize="50sp" >
+
+            <TextView
+                android:id="@+id/minute_unite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/blanc"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/minute_unite_clone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textColor="@color/blanc"
+                android:textSize="50sp" />
+        </LinearLayout>
     </LinearLayout>
 
     <TextView
@@ -206,7 +278,6 @@
         android:background="@drawable/help"
         android:elevation="12dp"
         android:stateListAnimator="@null" />
-
 
     <Button
         android:id="@+id/bouton_retour"
@@ -324,14 +395,5 @@
         android:background="@drawable/gnar"
         android:contentDescription="@drawable/gnar"
         android:elevation="8dp" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="200dp"
-        android:layout_height="80dp"
-        android:layout_below="@+id/heure"
-        android:background="@drawable/bouton"
-        android:text="Play"
-        android:textSize="30sp" />
 
 </RelativeLayout>

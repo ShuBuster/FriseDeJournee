@@ -257,12 +257,14 @@ public class FriseActivity extends Activity {
 			scopedTask = currentTask;
 			replaceScope(); // place le scope sur la tahce
 			displayTask(); // affiche les infos de la tache
+			displayHour(); // afiche l'heure de la tache
 		}
 		else{
 			currentTask = myTasks.get(4);
 			scopedTask = currentTask;
 			replaceScope(); // place le scope sur la tahce
 			displayTask(); // affiche les infos de la tache
+			displayHour(); // afiche l'heure de la tache
 		}
 
 		/* creation des 3 boutons menu, aide et retour à l'activite precedente */
@@ -284,7 +286,7 @@ public class FriseActivity extends Activity {
 		// creation de l'aide
 
 			//Creation des bulles d'aide
-		LinearLayout heure = (LinearLayout) findViewById(R.id.heure);
+		LinearLayout heure = (LinearLayout) findViewById(R.id.heure_fond);
 		info = (Button) findViewById(R.id.description_bouton);
 		final TextView bulle_heure = BulleCreator.createBubble(heure,"L'heure de début de l'activité", "right",false, this);
 		final TextView bulle_aide_avant = BulleCreator.createBubble(aide,"Clique sur ce bouton pour obtenir de l'aide", "right",true, this);
@@ -474,7 +476,6 @@ public class FriseActivity extends Activity {
 					try {
 						animateHour();
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
@@ -505,7 +506,9 @@ public class FriseActivity extends Activity {
 			public void onClick(View v) {
 				Task leftTask = Task.findRelativeTask(myTasks, currentTask, -1);// la tache a gauche
 				if(leftTask!=null){
+					Task beforeTask = scopedTask;
 					moveScope(-1); // deplace le scope d'une activite vers l'arriere
+					changeHour(beforeTask.getHeureDebut());
 					displayTask(); // affiche la tache scoped au centre
 					currentTask = leftTask;
 					left.setEnabled(false); // desactive les boutons pendant
@@ -526,7 +529,9 @@ public class FriseActivity extends Activity {
 			public void onClick(View v) {
 				Task rightTask = Task.findRelativeTask(myTasks, currentTask, 1);
 				if(rightTask!=null){
+					Task beforeTask = scopedTask;
 					moveScope(1); // deplace le scope d'une activite vers l'avant
+					changeHour(beforeTask.getHeureDebut());
 					displayTask(); // affiche la tache scoped au centre
 					currentTask = rightTask;
 					left.setEnabled(false); // desactive les boutons pendant
@@ -619,9 +624,10 @@ public class FriseActivity extends Activity {
 	public void taskClicked(int taskId){
 		int scopedId = Task.indexOfTask(myTasks, scopedTask);
 		int deltaId = taskId - scopedId;
-		
+		Task beforeTask = scopedTask;
 		moveScope(deltaId);
 		displayTask(); // affiche la tache scoped au centre
+		changeHour(beforeTask.getHeureDebut());
 		currentTask = scopedTask;
 		
 		info.setBackgroundColor(currentTask.getCouleur());
@@ -745,7 +751,9 @@ public class FriseActivity extends Activity {
 		Task currentTask = findCurrentTask();
 		int pas = Task.indexOfTask(myTasks, currentTask)
 				- Task.indexOfTask(myTasks, scopedTask);
+		Task beforeTask = scopedTask;
 		moveScope(pas);
+		changeHour(beforeTask.getHeureDebut());
 		displayTask();
 	}
 
@@ -795,20 +803,15 @@ public class FriseActivity extends Activity {
 
 		/* Affiche l'heure de debut l'activite */
 		// colore les rectangles de fond
-		TextView heure10 = (TextView) findViewById(R.id.heure_dizaine);
-		TextView heure1 = (TextView) findViewById(R.id.heure_unite);
-		TextView minute10 = (TextView) findViewById(R.id.minute_dizaine);
-		TextView minute1 = (TextView) findViewById(R.id.minute_unite);
-		heure10.setBackgroundColor(darkenColor(scopedTask.getCouleur()));
-		heure1.setBackgroundColor(darkenColor(scopedTask.getCouleur()));
-		minute10.setBackgroundColor(darkenColor(scopedTask.getCouleur()));
-		minute1.setBackgroundColor(darkenColor(scopedTask.getCouleur()));
-		// rempli les cases avec l'heure
-		String[] splitedHour = splitHour(scopedTask.getHeureDebut());
-		heure10.setText(splitedHour[0]);
-		heure1.setText(splitedHour[1]);
-		minute10.setText(splitedHour[2]);
-		minute1.setText(splitedHour[3]);
+		LinearLayout heure10 = (LinearLayout) findViewById(R.id.heure_dizaine_fond);
+		LinearLayout heure1 = (LinearLayout) findViewById(R.id.heure_unite_fond);
+		LinearLayout minute10 = (LinearLayout) findViewById(R.id.minute_dizaine_fond);
+		LinearLayout minute1 = (LinearLayout) findViewById(R.id.minute_unite_fond);
+		int color = darkenColor(scopedTask.getCouleur());
+		heure10.setBackgroundColor(color);
+		heure1.setBackgroundColor(color);
+		minute10.setBackgroundColor(color);
+		minute1.setBackgroundColor(color);
 
 		/* Affiche les taches voisines */
 		displayNearTasks();
@@ -848,6 +851,21 @@ public class FriseActivity extends Activity {
 
 	}
 
+	/**
+	 * Affiche l'heure de l'activite actuellement scoped
+	 */
+	public void displayHour(){
+		TextView heure101 = (TextView) findViewById(R.id.heure_dizaine);
+		TextView heure11 = (TextView) findViewById(R.id.heure_unite);
+		TextView minute101 = (TextView) findViewById(R.id.minute_dizaine);
+		TextView minute11 = (TextView) findViewById(R.id.minute_unite);
+		String[] splitedHour = splitHour(scopedTask.getHeureDebut());
+		heure101.setText(splitedHour[0]);
+		heure11.setText(splitedHour[1]);
+		minute101.setText(splitedHour[2]);
+		minute11.setText(splitedHour[3]);
+	}
+	
 	/**
 	 * Separe les 4 chiffres qui constituent une heure
 	 * 
@@ -900,15 +918,50 @@ public class FriseActivity extends Activity {
 	
 	/**
 	 * Change l'heure de l'afficheur avec une animation
-	 * @param hour l'heure a laquelle on veut mettre l'afficheur
+	 * @param hour l'heure a laquelle se trouve actuellement l'afficheur
 	 */
 	public void changeHour(double hour){
-		int[] actual = splitHour2(scopedTask.getHeureDebut());
-		int[] next = splitHour2(hour);
+		int[] next = splitHour2(scopedTask.getHeureDebut());
+		int[] actual = splitHour2(hour);
+		int toY =20;
 		
 		for(int i=0;i<=3;i++){
 			if(actual[i]<next[i]){
+				toY = -60;
 			}
+			else if (actual[i]>next[i]){
+				toY = +60;
+			}
+			else if(actual[i]==next[i]){
+				continue; // ne rienf aire pour celui-ci
+			}
+			TextView view = null;
+			TextView view_clone = null;
+			switch(i){
+				case 0:
+					view = (TextView) findViewById(R.id.heure_dizaine);
+					view_clone = (TextView) findViewById(R.id.heure_dizaine_clone);
+					break;
+				case 1:	
+					view = (TextView) findViewById(R.id.heure_unite);
+					view_clone = (TextView) findViewById(R.id.heure_unite_clone);
+					break;
+				case 2:	
+					view = (TextView) findViewById(R.id.minute_dizaine);
+					view_clone = (TextView) findViewById(R.id.minute_dizaine_clone);
+					break;
+				case 3:	
+					view = (TextView) findViewById(R.id.minute_unite);
+					view_clone = (TextView) findViewById(R.id.minute_unite_clone);
+					break;
+			}
+			view_clone.setText(String.valueOf(actual[i]));
+			Animate.translate(view_clone,0,-toY, 0,0, 1000);
+			view.setText(String.valueOf(next[i]));
+			Animate.translate(view,0, -toY, 0, 0, 1000);
+			
+			
+			
 		}
 	}
 	
