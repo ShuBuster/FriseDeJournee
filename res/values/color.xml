@@ -16,8 +16,9 @@
     <color name="fushia">#D91B5B</color>
     <color name="blanc_casse">#E8E3DA</color>
     <color name="violet">#504082</color>
+    <color name="violet2">#691A99</color>
     <color name="gris_fonce">#777777</color>
     <color name="noir">#000000</color>
     <color name="bleu3">#0080FF</color>
-
+
 </resources>

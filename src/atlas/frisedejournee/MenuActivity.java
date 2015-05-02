@@ -22,10 +22,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import animation.Animate;
 
 public class MenuActivity extends Activity {
 
-	RelativeLayout titre = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class MenuActivity extends Activity {
 		/* Changement police de l'appli */
 		// FontsOverride.changeDefaultFont(this);
 
-		/* Police du spinner */
+		/* Police du texte avant spinner */
 		Typeface externalFont = Typeface.createFromAsset(getAssets(),
 				"fonts/intsh.ttf");
 		TextView jeSuis = (TextView) findViewById(R.id.jeSuis);
@@ -61,12 +61,8 @@ public class MenuActivity extends Activity {
 
 		/* Police du spinner */
 		Spinner mySpinner = (Spinner) findViewById(R.id.enfant_spinner);
-		MyArrayAdapter mySpinnerArrayAdapter = new MyArrayAdapter(this,
-				R.layout.my_spinner_style);
-		mySpinnerArrayAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		mySpinner.setAdapter(mySpinnerArrayAdapter);
-
+		
+		
 		/* Spinner ajout des enfants */
 		String[] array_spinner = new String[2];
 		array_spinner[0] = "Romain";
@@ -81,11 +77,8 @@ public class MenuActivity extends Activity {
 
 		/* Boutons et titre */
 		final Button boutonGo = (Button) findViewById(R.id.go);
-		ImageView glow = (ImageView) findViewById(R.id.glow_go);
 		final RelativeLayout titre = (RelativeLayout) findViewById(R.id.titre);
 		boutonGo.setTypeface(externalFont);
-		glow.startAnimation(AnimationUtils.loadAnimation(this,
-				R.anim.glow_scale_rect));
 
 		boutonGo.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -104,12 +97,13 @@ public class MenuActivity extends Activity {
 						FriseActivity.class);
 				intent.putExtra("nom_enfant", nom_enfant);
 				startActivity(intent);
+			    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
 			}
 		});
-
-		LayoutAnimationController layout_animation = AnimationUtils
-				.loadLayoutAnimation(this, R.anim.layout_saut);
-		titre.setLayoutAnimation(layout_animation);
+		//Animation titre
+		//LayoutAnimationController layout_animation = AnimationUtils
+		//		.loadLayoutAnimation(this, R.anim.layout_saut);
+		//titre.setLayoutAnimation(layout_animation);
 
 		// Bouton exit //
 		Button exit = (Button) findViewById(R.id.exit);
@@ -119,6 +113,24 @@ public class MenuActivity extends Activity {
 				R.color.orange1);
 		exit.setOnClickListener(new ExitApplicationListener(exit, exit_pressed,
 				MenuActivity.this));
+		
+		/* Apparition du logo bouton */
+		Button logo_bouton = (Button) findViewById(R.id.logo_bouton);
+		Animate.fade_in(logo_bouton,1000);
+		logo_bouton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				/* Arrivée du menu par le haut et le bas*/
+				RelativeLayout slide_top = (RelativeLayout) findViewById(R.id.slide_top);
+				slide_top.setVisibility(View.VISIBLE);
+				Animate.translateDecelerate(slide_top, 0, -190, 0, 0, 2000);
+				RelativeLayout slide_bottom = (RelativeLayout) findViewById(R.id.slide_bottom);
+				slide_bottom.setVisibility(View.VISIBLE);
+				Animate.translateDecelerate(slide_bottom, 0, 600, 0, 0, 4000);
+			}
+		});
+	
 	}
 
 	@Override
@@ -155,25 +167,4 @@ public class MenuActivity extends Activity {
 		}
 	}
 
-	private class MyArrayAdapter extends ArrayAdapter {
-
-		public MyArrayAdapter(Context context, int textViewResourceId) {
-			super(context, textViewResourceId);
-		}
-
-		public TextView getView(int position, View convertView, ViewGroup parent) {
-			TextView v = (TextView) super.getView(position, convertView, parent);
-			Typeface myFont = Typeface.createFromAsset(getAssets(),"fonts/comic.otf");
-			v.setTypeface(myFont);
-			return v;
-		}
-
-		public TextView getDropDownView(int position, View convertView,ViewGroup parent) {
-			TextView v = (TextView) super.getView(position, convertView, parent);
-			Typeface myFont = Typeface.createFromAsset(getAssets(),"fonts/comic.otf");
-			v.setTypeface(myFont);
-			return v;
-		}
-
-	}
 }
