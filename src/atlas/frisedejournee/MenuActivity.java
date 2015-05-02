@@ -1,10 +1,10 @@
 package atlas.frisedejournee;
 
-
 import boutons.ButtonCreator;
 import boutons.ExitApplicationListener;
 import bulles.BulleCreator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -25,11 +26,11 @@ import android.widget.TextView;
 public class MenuActivity extends Activity {
 
 	RelativeLayout titre = null;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		/* Passage en plein ecran */
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		View decorView = getWindow().getDecorView();
@@ -40,95 +41,139 @@ public class MenuActivity extends Activity {
 				| View.SYSTEM_UI_FLAG_FULLSCREEN
 				| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 		setContentView(R.layout.activity_menu);
-		
+
 		/* Changement police de l'appli */
-		//FontsOverride.changeDefaultFont(this);
-		
+		// FontsOverride.changeDefaultFont(this);
+
 		/* Police du spinner */
 		Typeface externalFont = Typeface.createFromAsset(getAssets(),
-				"fonts/onthemove.ttf");
+				"fonts/intsh.ttf");
 		TextView jeSuis = (TextView) findViewById(R.id.jeSuis);
 		jeSuis.setTypeface(externalFont);
-		
+
+		/* Police du titre menu */
+		TextView titre_menu = (TextView) findViewById(R.id.texte_menu);
+		titre_menu.setTypeface(externalFont);
+
+		/* Police du sous-titre */
+		TextView sous_titre = (TextView) findViewById(R.id.sous_titre);
+		sous_titre.setTypeface(externalFont);
+
+		/* Police du spinner */
+		Spinner mySpinner = (Spinner) findViewById(R.id.enfant_spinner);
+		MyArrayAdapter mySpinnerArrayAdapter = new MyArrayAdapter(this,
+				R.layout.my_spinner_style);
+		mySpinnerArrayAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		mySpinner.setAdapter(mySpinnerArrayAdapter);
+
 		/* Spinner ajout des enfants */
-        String[] array_spinner=new String[2];
-        array_spinner[0]="Romain";
-        array_spinner[1]="Louise";
-        Spinner s = (Spinner) findViewById(R.id.enfant_spinner);
-        
-        
-		BulleCreator.createBubble(s, "Choisi ton prénom dans la liste", "right",true, this);
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this,R.layout.spinner_item_text, array_spinner);
-        s.setAdapter(adapter);
-		
+		String[] array_spinner = new String[2];
+		array_spinner[0] = "Romain";
+		array_spinner[1] = "Louise";
+		Spinner s = (Spinner) findViewById(R.id.enfant_spinner);
+
+		BulleCreator.createBubble(s, "Choisi ton prénom dans la liste",
+				"right", true, this);
+		ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
+				this, R.layout.spinner_item_text, array_spinner);
+		s.setAdapter(adapter);
+
 		/* Boutons et titre */
 		final Button boutonGo = (Button) findViewById(R.id.go);
 		ImageView glow = (ImageView) findViewById(R.id.glow_go);
 		final RelativeLayout titre = (RelativeLayout) findViewById(R.id.titre);
 		boutonGo.setTypeface(externalFont);
-		glow.startAnimation(AnimationUtils.loadAnimation(this,R.anim.glow_scale_rect));
-		
-	    boutonGo.setOnClickListener(new View.OnClickListener() {
-	      @Override
-	      public void onClick(View v) {
-	    	/* Changement de l'aspect du bouton lorsqu'on l'enfonce */  
-	    	Drawable d = getResources().getDrawable(R.drawable.bouton_bleu_e);
-	    	boutonGo.setBackground(d);
-	    	
-	    	/* Recuperation du nom de l'enfant selectione */
-	    	Spinner spinner = (Spinner)findViewById(R.id.enfant_spinner);
-	    	String nom_enfant = spinner.getSelectedItem().toString();
-	    	
-	    	/* Passage a l'autre activite */
-	        Intent intent = new Intent(MenuActivity.this, FriseActivity.class);
-	        intent.putExtra("nom_enfant", nom_enfant);
-	        startActivity(intent);
-	      }
-	    });
-	    
-		LayoutAnimationController layout_animation = AnimationUtils.loadLayoutAnimation(this,R.anim.layout_saut);
+		glow.startAnimation(AnimationUtils.loadAnimation(this,
+				R.anim.glow_scale_rect));
+
+		boutonGo.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
+				Drawable d = getResources().getDrawable(
+						R.drawable.bouton_bleu_e);
+				boutonGo.setBackground(d);
+
+				/* Recuperation du nom de l'enfant selectione */
+				Spinner spinner = (Spinner) findViewById(R.id.enfant_spinner);
+				String nom_enfant = spinner.getSelectedItem().toString();
+
+				/* Passage a l'autre activite */
+				Intent intent = new Intent(MenuActivity.this,
+						FriseActivity.class);
+				intent.putExtra("nom_enfant", nom_enfant);
+				startActivity(intent);
+			}
+		});
+
+		LayoutAnimationController layout_animation = AnimationUtils
+				.loadLayoutAnimation(this, R.anim.layout_saut);
 		titre.setLayoutAnimation(layout_animation);
-	    
-		
+
 		// Bouton exit //
 		Button exit = (Button) findViewById(R.id.exit);
-		ButtonCreator.setButtonStyle(this,exit,R.color.orange1,"Quitter",R.color.noir);
-		Drawable exit_pressed = ButtonCreator.createButtonPressedDrawable(this,R.color.orange1);
-		exit.setOnClickListener(new ExitApplicationListener(exit,exit_pressed,MenuActivity.this));
+		ButtonCreator.setButtonStyle(this, exit, R.color.orange1, "Quitter",
+				R.color.noir);
+		Drawable exit_pressed = ButtonCreator.createButtonPressedDrawable(this,
+				R.color.orange1);
+		exit.setOnClickListener(new ExitApplicationListener(exit, exit_pressed,
+				MenuActivity.this));
 	}
-	
+
 	@Override
 	/* L'activite revient sur le devant de la scene */
-	public void onResume(){
-	    super.onResume();
-	    final Button boutonGo = (Button) findViewById(R.id.go);
-	    Drawable d = getResources().getDrawable(R.drawable.bouton_bleu);
-    	boutonGo.setBackground(d);
-    	executeDelayed();
+	public void onResume() {
+		super.onResume();
+		final Button boutonGo = (Button) findViewById(R.id.go);
+		Drawable d = getResources().getDrawable(R.drawable.bouton_bleu);
+		boutonGo.setBackground(d);
+		executeDelayed();
 
 	}
-	
+
 	private void executeDelayed() {
-	    Handler handler = new Handler();
-	    handler.postDelayed(new Runnable() {
-	        @Override
-	        public void run() {
-	            // execute after 500ms
-	            hideNavBar();
-	        }
-	    }, 500);
+		Handler handler = new Handler();
+		handler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				// execute after 500ms
+				hideNavBar();
+			}
+		}, 500);
 	}
-
 
 	private void hideNavBar() {
-	    if (Build.VERSION.SDK_INT >= 19) {
-	        View v = getWindow().getDecorView();
-	        v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-	                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-	                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-	                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-	                                | View.SYSTEM_UI_FLAG_FULLSCREEN
-	                                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-	    }
+		if (Build.VERSION.SDK_INT >= 19) {
+			View v = getWindow().getDecorView();
+			v.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+					| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+					| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+					| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+					| View.SYSTEM_UI_FLAG_FULLSCREEN
+					| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+		}
+	}
+
+	private class MyArrayAdapter extends ArrayAdapter {
+
+		public MyArrayAdapter(Context context, int textViewResourceId) {
+			super(context, textViewResourceId);
+		}
+
+		public TextView getView(int position, View convertView, ViewGroup parent) {
+			TextView v = (TextView) super.getView(position, convertView, parent);
+			Typeface myFont = Typeface.createFromAsset(getAssets(),"fonts/comic.otf");
+			v.setTypeface(myFont);
+			return v;
+		}
+
+		public TextView getDropDownView(int position, View convertView,ViewGroup parent) {
+			TextView v = (TextView) super.getView(position, convertView, parent);
+			Typeface myFont = Typeface.createFromAsset(getAssets(),"fonts/comic.otf");
+			v.setTypeface(myFont);
+			return v;
+		}
+
 	}
 }
