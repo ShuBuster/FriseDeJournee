@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
@@ -151,7 +152,7 @@ public class FriseActivity extends Activity {
 		Point size = new Point();
 		display.getSize(size);
 		int width = size.x;
-		int height = size.y;
+		final int height = size.y; // hauteur de l'ecran en px
 		Log.d("TAG", "width= "+width);
 		Log.d("TAG", "height ="+height);
 		
@@ -548,6 +549,54 @@ public class FriseActivity extends Activity {
 			}
 		});
 
+		final ImageView logo = (ImageView) findViewById(R.id.logo_image);
+		logo.setVisibility(View.VISIBLE);
+		AlphaAnimation alpha1 = new AlphaAnimation(0, 1);
+		alpha1.setDuration(500);
+		alpha1.setFillAfter(true);
+		alpha1.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				AlphaAnimation alpha2 = new AlphaAnimation(1, 0);
+				alpha2.setDuration(200);
+				alpha2.setFillAfter(true);
+				alpha2.setAnimationListener(new AnimationListener() {
+					
+					@Override
+					public void onAnimationStart(Animation animation) {
+					}
+					
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+					}
+					
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						/*Apparition de l'activité */
+						RelativeLayout slide_top = (RelativeLayout) findViewById(R.id.slide_top);
+						slide_top.setVisibility(View.VISIBLE);
+						Animate.translateDecelerate(slide_top, 0, -height/3, 0, 0, 1000);
+						RelativeLayout slide_bottom = (RelativeLayout) findViewById(R.id.slide_bottom);
+						slide_bottom.setVisibility(View.VISIBLE);
+						Animate.translateDecelerate(slide_bottom, 0, 3*height/4, 0, 0, 1500);
+					}
+				});
+				logo.startAnimation(alpha2);
+				
+			}
+		});
+		logo.startAnimation(alpha1);
+		
 	}
 
 	/**
@@ -923,17 +972,19 @@ public class FriseActivity extends Activity {
 	public void changeHour(double hour){
 		int[] next = splitHour2(scopedTask.getHeureDebut());
 		int[] actual = splitHour2(hour);
-		int toY =20;
+		int toY =0;
+		LinearLayout fond = (LinearLayout) findViewById(R.id.heure_dizaine_fond);
+		int h = fond.getHeight();
 		
 		for(int i=0;i<=3;i++){
 			if(actual[i]<next[i]){
-				toY = -60;
+				toY = -h;
 			}
 			else if (actual[i]>next[i]){
-				toY = +60;
+				toY = +h;
 			}
 			else if(actual[i]==next[i]){
-				continue; // ne rienf aire pour celui-ci
+				continue; // ne rienf faire pour celui-ci
 			}
 			TextView view = null;
 			TextView view_clone = null;

@@ -6,16 +6,21 @@ import bulles.BulleCreator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LayoutAnimationController;
+import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,11 +31,19 @@ import animation.Animate;
 
 public class MenuActivity extends Activity {
 
-
+	int H; // hauteur de l'ecran en px
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		/* Taille ecran */
+		
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		H = size.y;
+		
 		/* Passage en plein ecran */
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		View decorView = getWindow().getDecorView();
@@ -90,14 +103,40 @@ public class MenuActivity extends Activity {
 
 				/* Recuperation du nom de l'enfant selectione */
 				Spinner spinner = (Spinner) findViewById(R.id.enfant_spinner);
-				String nom_enfant = spinner.getSelectedItem().toString();
+				final String nom_enfant = spinner.getSelectedItem().toString();
 
-				/* Passage a l'autre activite */
-				Intent intent = new Intent(MenuActivity.this,
-						FriseActivity.class);
-				intent.putExtra("nom_enfant", nom_enfant);
-				startActivity(intent);
-			    overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
+				/* animation rideau sur l'ecran violet */
+				RelativeLayout slide_top = (RelativeLayout) findViewById(R.id.slide_top);
+				Animate.translateDecelerate(slide_top, 0, 0, 0, -H/3, 700);
+				
+				RelativeLayout slide_bottom = (RelativeLayout) findViewById(R.id.slide_bottom);
+				TranslateAnimation trans = new TranslateAnimation(0, 0, 0, 3*H/4);
+				trans.setDuration(1000);
+				trans.setFillAfter(true);
+				trans.setInterpolator(new DecelerateInterpolator());
+				trans.setAnimationListener(new Animation.AnimationListener() {
+					
+					@Override
+					public void onAnimationStart(Animation animation) {
+					}
+					
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+					}
+					
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						/* Passage a l'autre activite */
+						Intent intent = new Intent(MenuActivity.this,
+								FriseActivity.class);
+						intent.putExtra("nom_enfant", nom_enfant);
+						startActivity(intent);
+						overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
+						
+					}
+				});
+				slide_bottom.startAnimation(trans);
+
 			}
 		});
 		//Animation titre
@@ -115,7 +154,7 @@ public class MenuActivity extends Activity {
 				MenuActivity.this));
 		
 		/* Apparition du logo bouton */
-		Button logo_bouton = (Button) findViewById(R.id.logo_bouton);
+		final Button logo_bouton = (Button) findViewById(R.id.logo_bouton);
 		Animate.fade_in(logo_bouton,1000);
 		logo_bouton.setOnClickListener(new View.OnClickListener() {
 			
@@ -124,10 +163,11 @@ public class MenuActivity extends Activity {
 				/* Arrivée du menu par le haut et le bas*/
 				RelativeLayout slide_top = (RelativeLayout) findViewById(R.id.slide_top);
 				slide_top.setVisibility(View.VISIBLE);
-				Animate.translateDecelerate(slide_top, 0, -190, 0, 0, 2000);
+				Animate.translateDecelerate(slide_top, 0, -H/3, 0, 0, 1000);
 				RelativeLayout slide_bottom = (RelativeLayout) findViewById(R.id.slide_bottom);
 				slide_bottom.setVisibility(View.VISIBLE);
-				Animate.translateDecelerate(slide_bottom, 0, 600, 0, 0, 4000);
+				Animate.translateDecelerate(slide_bottom, 0, 3*H/4, 0, 0, 1500);
+				Animate.fade_out(logo_bouton, 500, true);
 			}
 		});
 	
