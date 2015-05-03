@@ -110,8 +110,8 @@ public class MenuActivity extends Activity {
 				Animate.translateDecelerate(slide_top, 0, 0, 0, -H/3, 700);
 				
 				RelativeLayout slide_bottom = (RelativeLayout) findViewById(R.id.slide_bottom);
-				TranslateAnimation trans = new TranslateAnimation(0, 0, 0, 3*H/4);
-				trans.setDuration(1000);
+				TranslateAnimation trans = new TranslateAnimation(0, 0, 0, H*1.1f);
+				trans.setDuration(1300);
 				trans.setFillAfter(true);
 				trans.setInterpolator(new DecelerateInterpolator());
 				trans.setAnimationListener(new Animation.AnimationListener() {
@@ -166,7 +166,7 @@ public class MenuActivity extends Activity {
 				Animate.translateDecelerate(slide_top, 0, -H/3, 0, 0, 1000);
 				RelativeLayout slide_bottom = (RelativeLayout) findViewById(R.id.slide_bottom);
 				slide_bottom.setVisibility(View.VISIBLE);
-				Animate.translateDecelerate(slide_bottom, 0, 3*H/4, 0, 0, 1500);
+				Animate.translateDecelerate(slide_bottom, 0, H*1.1f, 0, 0, 1800);
 				Animate.fade_out(logo_bouton, 500, true);
 			}
 		});

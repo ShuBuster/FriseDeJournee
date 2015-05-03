@@ -588,7 +588,7 @@ public class FriseActivity extends Activity {
 						Animate.translateDecelerate(slide_top, 0, -height/3, 0, 0, 1000);
 						RelativeLayout slide_bottom = (RelativeLayout) findViewById(R.id.slide_bottom);
 						slide_bottom.setVisibility(View.VISIBLE);
-						Animate.translateDecelerate(slide_bottom, 0, 3*height/4, 0, 0, 1500);
+						Animate.translateDecelerate(slide_bottom, 0, height*1.1f, 0, 0, 1800);
 					}
 				});
 				logo.startAnimation(alpha2);
