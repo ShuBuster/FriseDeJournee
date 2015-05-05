@@ -1,18 +1,13 @@
 package atlas.frisedejournee;
 
-import glow.GlowingButton;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import divers.Couleur;
-
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.LightingColorFilter;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -23,7 +18,6 @@ import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,11 +37,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import animation.Animate;
 import boutons.HomeActivityListener;
 import boutons.NextActivityListener;
 import boutons.TTSButton;
-import bulles.BulleCreator;
+
+import composants.Animate;
+import composants.BulleCreator;
+import composants.Couleur;
+import composants.GlowingButton;
 
 public class FriseActivity extends Activity {
 

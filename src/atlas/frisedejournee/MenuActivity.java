@@ -1,8 +1,11 @@
 package atlas.frisedejournee;
 
+import composants.Animate;
+import composants.AnimatedText;
+import composants.BulleCreator;
+
 import boutons.ButtonCreator;
 import boutons.ExitApplicationListener;
-import bulles.BulleCreator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,10 +27,10 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import animation.Animate;
 
 public class MenuActivity extends Activity {
 
@@ -90,7 +93,6 @@ public class MenuActivity extends Activity {
 
 		/* Boutons et titre */
 		final Button boutonGo = (Button) findViewById(R.id.go);
-		final RelativeLayout titre = (RelativeLayout) findViewById(R.id.titre);
 		boutonGo.setTypeface(externalFont);
 
 		boutonGo.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +172,16 @@ public class MenuActivity extends Activity {
 				Animate.fade_out(logo_bouton, 500, true);
 			}
 		});
+		// test animation titre
+		LinearLayout layout_titre = (LinearLayout) findViewById(R.id.titre);
+		int[] colors = {R.color.bleu1,R.color.bleu2,R.color.bleu3,R.color.vert1};
+		try {
+			AnimatedText.addAnimatedTest(this, layout_titre,"Test",colors, 50);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	
 	}
 
