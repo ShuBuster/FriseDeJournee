@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/violet2"
+    android:background="@color/purple6"
     android:clipChildren="false"
     tools:context="${relativePackage}.${activityClass}" >
 
@@ -25,11 +25,11 @@
 
         <LinearLayout
             android:id="@+id/titre"
-            android:layout_marginTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="110dip"
-            android:orientation="horizontal"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal" />
 
         <TextView
             android:id="@+id/texte_menu"
@@ -39,7 +39,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:text="-MENU- "
-            android:textColor="@color/bleu3"
+            android:textColor="@color/blue4"
             android:textSize="50sp" />
     </RelativeLayout>
 
@@ -52,42 +52,11 @@
         android:visibility="invisible" >
 
         <TextView
-            android:id="@+id/sous_titre"
+            android:id="@+id/jeSuis"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="250dp"
-            android:paddingEnd="3dp"
-            android:text="Que veux-tu faire ?"
-            android:textColor="@color/fushia"
-            android:textSize="40sp" />
-
-        <Button
-            android:id="@+id/go"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/sous_titre"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/bouton_bleu"
-            android:elevation="10dp"
-            android:paddingBottom="5dp"
-            android:shadowColor="@color/noir"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="7"
-            android:text="@string/bouton_regarder"
-            android:textAllCaps="false"
-            android:textColor="@color/jaune1"
-            android:textSize="50sp" />
-
-        <TextView
-            android:id="@+id/jeSuis"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/go"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
             android:text="@string/jeSuis"
             android:textColor="@color/fushia"
             android:textSize="40sp" />
@@ -102,13 +71,50 @@
             android:background="@color/orange1"
             android:popupBackground="@color/orange2" />
 
+        <TextView
+            android:id="@+id/sous_titre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+			android:layout_below="@id/enfant_spinner"
+			android:layout_marginTop="50dp"
+            android:paddingEnd="3dp"
+            android:text="Que veux-tu faire ?"
+            android:textColor="@color/fushia"
+            android:textSize="40sp" />
+
+        <Button
+            android:id="@+id/go"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sous_titre"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:elevation="15dp"
+            android:paddingBottom="5dp"
+            android:shadowColor="@color/noir"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="7"
+            android:text="@string/bouton_regarder"
+            android:textAllCaps="false"
+            android:textColor="@color/jaune1"
+            android:textSize="50sp" />
+
         <Button
             android:id="@+id/exit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/enfant_spinner"
+            android:layout_below="@+id/go"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="44dp" />
+            android:layout_marginTop="44dp"
+            android:elevation="15dp"
+            android:shadowColor="@color/noir"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="7"
+            android:text="Quitter"
+            android:textAllCaps="false" />
 
         <ImageView
             android:id="@+id/gnar"

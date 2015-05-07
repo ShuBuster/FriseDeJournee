@@ -92,16 +92,16 @@ public class MenuActivity extends Activity {
 		s.setAdapter(adapter);
 
 		/* Boutons et titre */
+		Drawable bouton_go_d = ButtonCreator.createButtonRoundedDrawable(getResources().getColor(R.color.light_blue3));
 		final Button boutonGo = (Button) findViewById(R.id.go);
+		boutonGo.setBackground(bouton_go_d);
 		boutonGo.setTypeface(externalFont);
+		boutonGo.setPadding(100, 50, 100, 50);
 
 		boutonGo.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
-				Drawable d = getResources().getDrawable(
-						R.drawable.bouton_bleu_e);
-				boutonGo.setBackground(d);
 
 				/* Recuperation du nom de l'enfant selectione */
 				Spinner spinner = (Spinner) findViewById(R.id.enfant_spinner);
@@ -148,11 +148,12 @@ public class MenuActivity extends Activity {
 
 		// Bouton exit //
 		Button exit = (Button) findViewById(R.id.exit);
-		ButtonCreator.setButtonStyle(this, exit, R.color.orange1, "Quitter",
-				R.color.noir);
-		Drawable exit_pressed = ButtonCreator.createButtonPressedDrawable(this,
-				R.color.orange1);
-		exit.setOnClickListener(new ExitApplicationListener(exit, exit_pressed,
+		Drawable exit_d = ButtonCreator.createButtonRoundedDrawable(getResources().getColor(R.color.amber5));
+		exit.setBackground(exit_d);
+		exit.setTypeface(externalFont);
+		exit.setTextSize(30);
+		exit.setPadding(150, 30, 150, 30);
+		exit.setOnClickListener(new ExitApplicationListener(exit, exit_d,
 				MenuActivity.this));
 		
 		/* Apparition du logo bouton */
@@ -174,9 +175,9 @@ public class MenuActivity extends Activity {
 		});
 		// test animation titre
 		LinearLayout layout_titre = (LinearLayout) findViewById(R.id.titre);
-		int[] colors = {R.color.bleu1,R.color.bleu2,R.color.bleu3,R.color.vert1};
+		int[] colors = {R.color.light_green3,R.color.light_green4,R.color.light_green5,R.color.green4,R.color.green5,R.color.blue3,R.color.blue5,R.color.red2,R.color.pink2,R.color.pink3,R.color.red3,R.color.pink4,R.color.red4,R.color.red5,};
 		try {
-			AnimatedText.addAnimatedTest(this, layout_titre,"Test",colors, 50);
+			AnimatedText.addAnimatedTest(this, layout_titre,"Frise de journee",colors, 80);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -190,8 +191,6 @@ public class MenuActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		final Button boutonGo = (Button) findViewById(R.id.go);
-		Drawable d = getResources().getDrawable(R.drawable.bouton_bleu);
-		boutonGo.setBackground(d);
 		executeDelayed();
 
 	}
