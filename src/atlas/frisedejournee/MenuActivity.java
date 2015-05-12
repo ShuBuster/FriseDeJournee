@@ -57,7 +57,7 @@ public class MenuActivity extends Activity {
         Spinner s = (Spinner) findViewById(R.id.enfant_spinner);
         
         
-		BulleCreator.createBubble(s, "Choisi ton prénom dans la liste", "right",true, this);
+		BulleCreator.createBubble(s, "Choisis ton prénom dans la liste", "right",true, this);
         ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this,R.layout.spinner_item_text, array_spinner);
         s.setAdapter(adapter);
 		
