@@ -1,26 +1,45 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
-
     <!-- Application theme. -->
     <style name="translucide">
-    <item name="android:background">@color/translucide</item>
-  </style>
-  
-  <style name="SpinnerTextViewItem" parent="@android:style/Widget.TextView" >
-    <item name="android:textSize" >35sp</item>
-    <item name="android:textColor" >@color/deep_purple6</item>
-</style>
+        <item name="android:background">@color/translucide</item>
+    </style>
 
-      <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-    <item name="android:typeface">monospace</item>
- 	</style>
+    <style name="SpinnerTextViewItem" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">35sp</item>
+        <item name="android:textColor">@color/deep_purple6</item>
+    </style>
+
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:typeface">monospace</item>
+    </style>
+
+    <style name="topPannel">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/blanc_casse</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+
+    <style name="bottomPannel">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">@color/blanc_casse</item>
+        <item name="android:visibility">invisible</item>
+    </style>
+
+    <style name="wrapped">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    
+    <style name="textShadow" parent="@style/wrapped">
+        <item name="android:shadowColor">@color/noir</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:shadowRadius">7</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+
 </resources>
