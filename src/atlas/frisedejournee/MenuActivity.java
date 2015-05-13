@@ -4,6 +4,7 @@ import composants.Animate;
 import composants.AnimatedGnar;
 import composants.AnimatedText;
 import composants.BulleCreator;
+import composants.FontsOverride;
 
 import boutons.ButtonCreator;
 import boutons.ExitApplicationListener;
@@ -59,9 +60,6 @@ public class MenuActivity extends Activity {
 				| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 		setContentView(R.layout.activity_menu);
 
-		/* Changement police de l'appli */
-		// FontsOverride.changeDefaultFont(this);
-
 		/* Police du texte avant spinner */
 		Typeface externalFont = Typeface.createFromAsset(getAssets(),
 				"fonts/intsh.ttf");
@@ -78,22 +76,23 @@ public class MenuActivity extends Activity {
 
 		/* Police du spinner */
 		Spinner mySpinner = (Spinner) findViewById(R.id.enfant_spinner);
+		mySpinner.setBackground(getResources().getDrawable(R.drawable.spinner_back));
+		mySpinner.setPadding(20, 10, 20, 10);
 		
 		
 		/* Spinner ajout des enfants */
 		String[] array_spinner = new String[2];
 		array_spinner[0] = "Romain";
 		array_spinner[1] = "Louise";
-		Spinner s = (Spinner) findViewById(R.id.enfant_spinner);
 
-		BulleCreator.createBubble(s, "Choisi ton prénom dans la liste",
+		BulleCreator.createBubble(mySpinner, "Choisi ton prénom dans la liste",
 				"right", true, this);
 		ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
 				this, R.layout.spinner_item_text, array_spinner);
-		s.setAdapter(adapter);
+		mySpinner.setAdapter(adapter);
 
 		/* Boutons et titre */
-		Drawable bouton_go_d = ButtonCreator.createButtonRoundedDrawable(getResources().getColor(R.color.light_blue3),1f);
+		Drawable bouton_go_d = ButtonCreator.roundedDrawable(getResources().getColor(R.color.light_blue3),1f);
 		final Button boutonGo = (Button) findViewById(R.id.go);
 		boutonGo.setBackground(bouton_go_d);
 		boutonGo.setTypeface(externalFont);
@@ -102,7 +101,7 @@ public class MenuActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
-				Drawable bouton_go_pressed = ButtonCreator.createButtonPressedRoundedDrawable(getResources().getColor(R.color.light_blue3));
+				Drawable bouton_go_pressed = ButtonCreator.pressedRoundedDrawable(getResources().getColor(R.color.light_blue3),1f);
 				boutonGo.setBackground(bouton_go_pressed);
 				
 				/* Recuperation du nom de l'enfant selectione */
@@ -150,8 +149,8 @@ public class MenuActivity extends Activity {
 
 		// Bouton exit //
 		Button exit = (Button) findViewById(R.id.exit);
-		Drawable exit_d = ButtonCreator.createButtonRoundedDrawable(getResources().getColor(R.color.amber5),0.5f);
-		Drawable exit_pressed = ButtonCreator.createButtonPressedRoundedDrawable(getResources().getColor(R.color.amber5));
+		Drawable exit_d = ButtonCreator.roundedDrawable(getResources().getColor(R.color.amber5),0.5f);
+		Drawable exit_pressed = ButtonCreator.pressedRoundedDrawable(getResources().getColor(R.color.amber5),0.5f);
 		exit.setBackground(exit_d);
 		exit.setTypeface(externalFont);
 		exit.setTextSize(30);
@@ -179,7 +178,7 @@ public class MenuActivity extends Activity {
 		// Animation titre
 		LinearLayout layout_titre = (LinearLayout) findViewById(R.id.titre);
 		int[] colors = {R.color.light_green3,R.color.light_green4,R.color.light_green5,R.color.green4,R.color.green5,R.color.blue3,R.color.blue5,R.color.red2,R.color.pink2,R.color.pink3,R.color.red3,R.color.pink4,R.color.red4,R.color.red5,};
-		AnimatedText.addAnimatedTest(this, layout_titre,"Frise de journee",colors, 80);
+		AnimatedText.addAnimatedText(this, layout_titre,"Frise de journee",colors, 80);
 		
 		// Animation Gnar
 		RelativeLayout gnar = (RelativeLayout) findViewById(R.id.gnar);
@@ -196,7 +195,7 @@ public class MenuActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		final Button boutonGo = (Button) findViewById(R.id.go);
-		Drawable bouton_go_d = ButtonCreator.createButtonRoundedDrawable(getResources().getColor(R.color.light_blue3),1f);
+		Drawable bouton_go_d = ButtonCreator.roundedDrawable(getResources().getColor(R.color.light_blue3),1f);
 		boutonGo.setBackground(bouton_go_d);
 		executeDelayed();
 
