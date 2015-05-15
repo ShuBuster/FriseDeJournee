@@ -17,7 +17,7 @@
   
   <style name="SpinnerTextViewItem" parent="@android:style/Widget.TextView" >
     <item name="android:textSize" >35sp</item>
-    <item name="android:textColor" >@color/violet</item>
+    <item name="android:textColor" >@color/deep_purple6</item>
 </style>
 
       <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">

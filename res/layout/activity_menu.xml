@@ -2,226 +2,139 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/back_menu"
+    android:background="@color/purple6"
     android:clipChildren="false"
     tools:context="${relativePackage}.${activityClass}" >
 
     <Button
-        android:id="@+id/go"
+        android:id="@+id/logo_bouton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:background="@drawable/bouton_bleu"
-        android:elevation="10dp"
-        android:paddingBottom="5dp"
-        android:shadowColor="@color/noir"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="7"
-        android:text="@string/bouton_regarder"
-        android:textAllCaps="false"
-        android:textColor="@color/jaune1"
-        android:textSize="50sp" />
-
-    <ImageView
-        android:id="@+id/glow_go"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:alpha="0.7"
-        android:background="@drawable/glow_shadow"
-        android:contentDescription="@drawable/glow_shadow" />
+        android:layout_centerInParent="true"
+        android:background="@drawable/logo_app"
+        android:visibility="invisible" />
 
     <RelativeLayout
-        android:id="@+id/titre"
-        android:layout_width="wrap_content"
-        android:layout_height="110dip"
-        android:layout_centerHorizontal="true" >
+        android:id="@+id/slide_top"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blanc_casse"
+        android:elevation="20dp"
+        android:paddingBottom="10dp"
+        android:visibility="invisible" >
 
-        <ImageView
-            android:id="@+id/f"
+        <LinearLayout
+            android:id="@+id/titre"
+            android:layout_width="wrap_content"
+            android:layout_height="110dip"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal" />
+
+        <TextView
+            android:id="@+id/texte_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="31dp"
-            android:layout_marginTop="50dip"
-            android:contentDescription="@drawable/f"
-            android:src="@drawable/f" />
-
-        <ImageView
-            android:id="@+id/r"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/f"
-            android:layout_alignStart="@+id/f"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="50dip"
-            android:contentDescription="@drawable/r"
-            android:src="@drawable/r" />
-
-        <ImageView
-            android:id="@+id/i"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/r"
-            android:layout_alignStart="@+id/r"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="50dip"
-            android:contentDescription="@drawable/i"
-            android:src="@drawable/i" />
-
-        <ImageView
-            android:id="@+id/s"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/i"
-            android:layout_alignStart="@+id/i"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="50dip"
-            android:contentDescription="@drawable/s"
-            android:src="@drawable/s" />
-
-        <ImageView
-            android:id="@+id/e"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/s"
-            android:layout_alignStart="@+id/s"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="50dip"
-            android:contentDescription="@drawable/e"
-            android:src="@drawable/e" />
-
-        <ImageView
-            android:id="@+id/d"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/e"
-            android:layout_alignStart="@+id/e"
-            android:layout_marginStart="55dp"
-            android:layout_marginTop="50dip"
-            android:contentDescription="@drawable/d"
-            android:src="@drawable/d" />
-
-        <ImageView
-            android:id="@+id/e2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/d"
-            android:layout_alignStart="@+id/d"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="50dip"
-            android:contentDescription="@drawable/e2"
-            android:src="@drawable/e2" />
-
-        <ImageView
-            android:id="@+id/j"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/e2"
-            android:layout_alignStart="@+id/e2"
-            android:layout_marginStart="55dp"
-            android:layout_marginTop="50dip"
-            android:contentDescription="@drawable/j"
-            android:src="@drawable/j" />
-
-        <ImageView
-            android:id="@+id/o"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/j"
-            android:layout_alignStart="@+id/j"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="50dip"
-            android:contentDescription="@drawable/o"
-            android:src="@drawable/o" />
-
-        <ImageView
-            android:id="@+id/u"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/o"
-            android:layout_alignStart="@+id/o"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="50dip"
-            android:contentDescription="@drawable/u"
-            android:src="@drawable/u" />
-
-        <ImageView
-            android:id="@+id/r2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/u"
-            android:layout_alignStart="@+id/u"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="50dip"
-            android:contentDescription="@drawable/r2"
-            android:src="@drawable/r2" />
-
-        <ImageView
-            android:id="@+id/n"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/r2"
-            android:layout_alignStart="@+id/r2"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="50dip"
-            android:contentDescription="@drawable/n"
-            android:src="@drawable/n" />
-
-        <ImageView
-            android:id="@+id/e3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/n"
-            android:layout_alignStart="@+id/n"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="50dip"
-            android:contentDescription="@drawable/e3"
-            android:src="@drawable/e3" />
-
-        <ImageView
-            android:id="@+id/e4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/e3"
-            android:layout_alignStart="@+id/e3"
-            android:layout_marginStart="35dp"
-            android:layout_marginTop="50dip"
-            android:contentDescription="@drawable/e4"
-            android:src="@drawable/e4" />
+            android:layout_below="@id/titre"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="-MENU- "
+            android:textColor="@color/blue4"
+            android:textSize="50sp" />
     </RelativeLayout>
 
-    <Spinner
-        android:id="@+id/enfant_spinner"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/go"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
-        android:background="@color/orange1"
-        android:popupBackground="@color/orange2"
-         />
+    <RelativeLayout
+        android:id="@+id/slide_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/blanc_casse"
+        android:elevation="1dp"
+        android:visibility="invisible" >
 
-    <TextView
-        android:id="@+id/jeSuis"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/go"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="@string/jeSuis"
-        android:textColor="@color/fushia"
-        android:textSize="50sp" />
+        <TextView
+            android:id="@+id/jeSuis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="250dp"
+            android:text="@string/jeSuis"
+            android:textColor="@color/fushia"
+            android:textSize="40sp" />
 
-    <Button
-        android:id="@+id/exit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/enfant_spinner"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="44dp" />
+        <Spinner
+            android:id="@+id/enfant_spinner"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/jeSuis"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:background="@color/orange1"
+            android:popupBackground="@color/orange2" />
+
+        <TextView
+            android:id="@+id/sous_titre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+			android:layout_below="@id/enfant_spinner"
+			android:layout_marginTop="50dp"
+            android:paddingEnd="3dp"
+            android:text="Que veux-tu faire ?"
+            android:textColor="@color/fushia"
+            android:textSize="40sp" />
+
+        <Button
+            android:id="@+id/go"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sous_titre"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:elevation="15dp"
+            android:paddingBottom="5dp"
+            android:shadowColor="@color/noir"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="7"
+            android:text="@string/bouton_regarder"
+            android:textAllCaps="false"
+            android:textColor="@color/jaune1"
+            android:textSize="50sp" />
+
+        <Button
+            android:id="@+id/exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/go"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="44dp"
+            android:elevation="15dp"
+            android:shadowColor="@color/noir"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="7"
+            android:text="Quitter"
+            android:textAllCaps="false" />
+
+        <ImageView
+            android:id="@+id/gnar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="40dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/gnar" />
+
+        <ImageView
+            android:id="@+id/baby_gnar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="40dp"
+            android:layout_marginStart="100dp"
+            android:background="@drawable/baby_gnar" />
+    </RelativeLayout>
 
 </RelativeLayout>
