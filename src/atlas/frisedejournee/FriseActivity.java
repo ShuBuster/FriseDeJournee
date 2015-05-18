@@ -364,7 +364,7 @@ public class FriseActivity extends Activity {
 					ViewGroup parent = (ViewGroup) info.getParent();
 					parent.setClipChildren(false);
 					
-					glowRetour = GlowingButton.makeGlow(retour, getApplicationContext());
+					glowRetour = GlowingButton.makeGlow(retour, getApplicationContext(),116);
 					glowMenu =  GlowingButton.makeGlow(menu, getApplicationContext(),118);
 					glowManual = GlowingButton.makeGlow(manual, getApplicationContext(),117);
 

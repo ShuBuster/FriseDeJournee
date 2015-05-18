@@ -8,20 +8,16 @@
 
     <Button
         android:id="@+id/logo_bouton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/wrapped"
         android:layout_centerInParent="true"
         android:background="@drawable/logo_app"
         android:visibility="invisible" />
 
     <RelativeLayout
         android:id="@+id/slide_top"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/blanc_casse"
+        style="@style/topPannel"
         android:elevation="20dp"
-        android:paddingBottom="10dp"
-        android:visibility="invisible" >
+        android:paddingBottom="10dp" >
 
         <LinearLayout
             android:id="@+id/titre"
@@ -33,8 +29,7 @@
 
         <TextView
             android:id="@+id/texte_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/wrapped"
             android:layout_below="@id/titre"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
@@ -45,18 +40,39 @@
 
     <RelativeLayout
         android:id="@+id/slide_bottom"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@color/blanc_casse"
-        android:elevation="1dp"
-        android:visibility="invisible" >
+        style="@style/bottomPannel"
+        android:clipChildren="false"
+        android:elevation="1dp" >
+
+        <TextView
+            android:id="@+id/sous_titre"
+            style="@style/wrapped"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="250dp"
+            android:paddingEnd="3dp"
+            android:text="Que veux-tu faire ?"
+            android:textColor="@color/fushia"
+            android:textSize="40sp" />
+        
+        
+        <Button
+            android:id="@+id/go"
+            style="@style/textShadow"
+            android:layout_below="@id/sous_titre"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:elevation="15dp"
+            android:paddingBottom="5dp"
+            android:text="@string/bouton_regarder"
+            android:textColor="@color/jaune1"
+            android:textSize="50sp" />
 
         <TextView
             android:id="@+id/jeSuis"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/wrapped"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="250dp"
+            android:layout_marginTop="35dp"
+            android:layout_below="@id/go"
             android:text="@string/jeSuis"
             android:textColor="@color/fushia"
             android:textSize="40sp" />
@@ -68,73 +84,34 @@
             android:layout_below="@+id/jeSuis"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
-            android:background="@color/orange1"
-            android:popupBackground="@color/orange2" />
+            android:popupBackground="@color/red2"
+            android:spinnerMode="dropdown"/>
 
-        <TextView
-            android:id="@+id/sous_titre"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-			android:layout_below="@id/enfant_spinner"
-			android:layout_marginTop="50dp"
-            android:paddingEnd="3dp"
-            android:text="Que veux-tu faire ?"
-            android:textColor="@color/fushia"
-            android:textSize="40sp" />
-
-        <Button
-            android:id="@+id/go"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/sous_titre"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
-            android:elevation="15dp"
-            android:paddingBottom="5dp"
-            android:shadowColor="@color/noir"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="7"
-            android:text="@string/bouton_regarder"
-            android:textAllCaps="false"
-            android:textColor="@color/jaune1"
-            android:textSize="50sp" />
 
         <Button
             android:id="@+id/exit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/go"
+            style="@style/textShadow"
+            android:layout_below="@+id/enfant_spinner"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="44dp"
             android:elevation="15dp"
-            android:shadowColor="@color/noir"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="7"
-            android:text="Quitter"
-            android:textAllCaps="false" />
+            android:text="Quitter" />
 
-        <ImageView
+        <RelativeLayout
             android:id="@+id/gnar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/wrapped"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="40dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/gnar" />
+            android:layout_marginEnd="20dp" />
 
-        <ImageView
+        <RelativeLayout
             android:id="@+id/baby_gnar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/wrapped"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="40dp"
-            android:layout_marginStart="100dp"
-            android:background="@drawable/baby_gnar" />
+            android:layout_marginStart="100dp" />
     </RelativeLayout>
 
 </RelativeLayout>
