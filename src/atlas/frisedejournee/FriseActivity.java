@@ -45,7 +45,9 @@ import composants.Animate;
 import composants.AnimatedGnar;
 import composants.BulleCreator;
 import composants.Couleur;
+import composants.Fonts;
 import composants.GlowingButton;
+import composants.Screen;
 
 public class FriseActivity extends Activity {
 
@@ -145,24 +147,12 @@ public class FriseActivity extends Activity {
 		}
 
 		/* Taille ecran */
-		
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		int width = size.x;
-		final int height = size.y; // hauteur de l'ecran en px
-		Log.d("TAG", "width= "+width);
-		Log.d("TAG", "height ="+height);
+		int[] size = Screen.getSize(this);
+		int width = size[0];
+		final int height = size[1]; // hauteur de l'ecran en px
 		
 		/* Passage en plein ecran */
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		View decorView = getWindow().getDecorView();
-		decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-				| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-				| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-				| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-				| View.SYSTEM_UI_FLAG_FULLSCREEN
-				| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+		Screen.fullScreen(this);
 		setContentView(R.layout.activity_frise);
 
 		/* Recuperation du nom de l'enfant */
@@ -171,15 +161,13 @@ public class FriseActivity extends Activity {
 		nomEnfant = nom;
 
 		/* Affichage du nom de l'enfant */
-		Typeface externalFont = Typeface.createFromAsset(getAssets(),
-				"fonts/onthemove.ttf");
 		TextView nom_enfant = (TextView) findViewById(R.id.nom_enfant);
+		Fonts.setFont(this, nom_enfant, "onthemove.ttf");
 		nom_enfant.setText(nomEnfant);
-		nom_enfant.setTypeface(externalFont);
 
 		/* Changement de police du titre */
 		TextView txtView1 = (TextView) findViewById(R.id.texte);
-		txtView1.setTypeface(externalFont);
+		Fonts.setFont(this, txtView1, "onthemove.ttf");
 
 		/* Animation du decor */
 		animateStar();
