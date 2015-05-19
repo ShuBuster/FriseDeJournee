@@ -1,15 +1,6 @@
 package atlas.frisedejournee;
 
-import composants.Animate;
-import composants.AnimatedGnar;
-import composants.AnimatedText;
-import composants.BulleCreator;
-import composants.FontsOverride;
-
-import boutons.ButtonCreator;
-import boutons.ExitApplicationListener;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Typeface;
@@ -18,21 +9,25 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LayoutAnimationController;
 import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import boutons.ButtonCreator;
+import boutons.ExitApplicationListener;
+
+import composants.Animate;
+import composants.AnimatedGnar;
+import composants.AnimatedText;
+import composants.BulleCreator;
 
 public class MenuActivity extends Activity {
 
@@ -41,6 +36,7 @@ public class MenuActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		final Activity a = this;
 
 		/* Taille ecran */
 		
@@ -85,14 +81,27 @@ public class MenuActivity extends Activity {
 		array_spinner[0] = "Romain";
 		array_spinner[1] = "Louise";
 
-		BulleCreator.createBubble(mySpinner, "Choisi ton prénom dans la liste",
+		final TextView bulle = BulleCreator.createBubble(mySpinner, "Choisis ton prénom dans la liste",
 				"right", true, this);
 		ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
 				this, R.layout.spinner_item_text, array_spinner);
 		mySpinner.setAdapter(adapter);
 
+		/* Clic sur spinner */
+		mySpinner.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+		            BulleCreator.destroyBubble(bulle, a);
+		        }
+				executeDelayed();
+		        return false;
+			}
+		});
+		
 		/* Boutons et titre */
-		Drawable bouton_go_d = ButtonCreator.roundedDrawable(getResources().getColor(R.color.light_blue3),1f);
+		Drawable bouton_go_d = ButtonCreator.roundedDrawable(this,getResources().getColor(R.color.light_blue3),1f);
 		final Button boutonGo = (Button) findViewById(R.id.go);
 		boutonGo.setBackground(bouton_go_d);
 		boutonGo.setTypeface(externalFont);
@@ -101,7 +110,7 @@ public class MenuActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
-				Drawable bouton_go_pressed = ButtonCreator.pressedRoundedDrawable(getResources().getColor(R.color.light_blue3),1f);
+				Drawable bouton_go_pressed = ButtonCreator.pressedRoundedDrawable(a,getResources().getColor(R.color.light_blue3),1f);
 				boutonGo.setBackground(bouton_go_pressed);
 				
 				/* Recuperation du nom de l'enfant selectione */
@@ -149,8 +158,8 @@ public class MenuActivity extends Activity {
 
 		// Bouton exit //
 		Button exit = (Button) findViewById(R.id.exit);
-		Drawable exit_d = ButtonCreator.roundedDrawable(getResources().getColor(R.color.amber5),0.5f);
-		Drawable exit_pressed = ButtonCreator.pressedRoundedDrawable(getResources().getColor(R.color.amber5),0.5f);
+		Drawable exit_d = ButtonCreator.roundedDrawable(this,getResources().getColor(R.color.amber5),0.5f);
+		Drawable exit_pressed = ButtonCreator.pressedRoundedDrawable(this,getResources().getColor(R.color.amber5),0.5f);
 		exit.setBackground(exit_d);
 		exit.setTypeface(externalFont);
 		exit.setTextSize(30);
@@ -195,7 +204,7 @@ public class MenuActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		final Button boutonGo = (Button) findViewById(R.id.go);
-		Drawable bouton_go_d = ButtonCreator.roundedDrawable(getResources().getColor(R.color.light_blue3),1f);
+		Drawable bouton_go_d = ButtonCreator.roundedDrawable(this,getResources().getColor(R.color.light_blue3),1f);
 		boutonGo.setBackground(bouton_go_d);
 		executeDelayed();
 

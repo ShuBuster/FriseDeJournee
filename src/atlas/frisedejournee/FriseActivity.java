@@ -42,6 +42,7 @@ import boutons.NextActivityListener;
 import boutons.TTSButton;
 
 import composants.Animate;
+import composants.AnimatedGnar;
 import composants.BulleCreator;
 import composants.Couleur;
 import composants.GlowingButton;
@@ -290,7 +291,7 @@ public class FriseActivity extends Activity {
 		final TextView bulle_aide_avant = BulleCreator.createBubble(aide,"Clique sur ce bouton pour obtenir de l'aide", "right",true, this);
 		final TextView bulle_aide_apres = BulleCreator.createBubble(aide,"Clique sur ce bouton pour sortir de l'aide", "right",false, this);
 		final TextView bulle_description = BulleCreator.createBubble(info,"Ce bouton permet d'afficher"+"\n"+"une description de l'activité", "below",false, this);
-		if(Integer.valueOf(android.os.Build.VERSION.SDK)>=21){
+		if(Build.VERSION.SDK_INT>=21){
 			bulle_aide_avant.setElevation(20); // met les bulle au premier plan
 			bulle_aide_apres.setElevation(20);
 			bulle_heure.setElevation(20);
@@ -311,14 +312,15 @@ public class FriseActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				if (modeAide) { // on est dans le mode aide
+				if (modeAide) { // on sort du mode aide
 
 					Drawable d = getResources().getDrawable(R.drawable.help);
 					aide.setBackground(d); // desenfonce le bouton
 
 					modeAide = false; // on sort du mode aide
 					
-					RelativeLayout parent = (RelativeLayout) findViewById(R.id.parent_view);
+					ViewGroup parent = (ViewGroup) info.getParent();
+					//RelativeLayout parent = (RelativeLayout) findViewById(R.id.information);
 					parent.setClipChildren(true);
 					
 					if(glowRetour != null) GlowingButton.stopGlow(retour);
@@ -352,7 +354,7 @@ public class FriseActivity extends Activity {
 					Animate.fade_out(bulle_heure, 500,false);
 					Animate.fade_out(bulle_description, 500,false);
 					
-				} else { // si on est pas en mode aide
+				} else { // on entre en mode aide
 
 					/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
 					Drawable d = getResources().getDrawable(R.drawable.help_e);
@@ -361,8 +363,6 @@ public class FriseActivity extends Activity {
 					modeAide = true; // on passe en mode aide
 					
 					// glow sur les autres boutons //
-					ViewGroup parent = (ViewGroup) info.getParent();
-					parent.setClipChildren(false);
 					
 					glowRetour = GlowingButton.makeGlow(retour, getApplicationContext(),116);
 					glowMenu =  GlowingButton.makeGlow(menu, getApplicationContext(),118);
@@ -593,6 +593,10 @@ public class FriseActivity extends Activity {
 			}
 		});
 		logo.startAnimation(alpha1);
+		
+		/* Gnar anime */
+		RelativeLayout gnar = (RelativeLayout) findViewById(R.id.gnar);
+		AnimatedGnar.addAnimatedGnar(this, gnar);
 		
 	}
 
