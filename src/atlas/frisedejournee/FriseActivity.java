@@ -4,11 +4,12 @@ package atlas.frisedejournee;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -18,12 +19,10 @@ import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
-import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -93,23 +92,27 @@ public class FriseActivity extends Activity {
 		nomEnfant = "";
 		myTasks = new ArrayList<Task>();
 		scopedTask = null;
-		h0 = 8; // debut a 8h
-		h1 = 21; // fin a 21h
+		h0 = 8; // debut a 8h par defaut
+		h1 = 21; // fin a 21h par defaut
 		W = 0;
 		H = 0;
 		margin = 0;
-		colorTab = new int[11];
-		colorTab[0] = R.color.vert1;
-		colorTab[1] = R.color.vert2;
-		colorTab[2] = R.color.vert3;
-		colorTab[3] = R.color.bleu1;
-		colorTab[4] = R.color.bleu2;
-		colorTab[5] = R.color.jaune1;
-		colorTab[6] = R.color.orange1;
-		colorTab[7] = R.color.orange2;
-		colorTab[8] = R.color.orange3;
-		colorTab[9] = R.color.rose;
-		colorTab[10] = R.color.fushia;
+		colorTab = new int[15];
+		colorTab[11] = R.color.deep_orange3;
+		colorTab[12] = R.color.orange3;
+		colorTab[13] = R.color.amber3;
+		colorTab[14] = R.color.yellow3;
+		colorTab[0] = R.color.light_green3;
+		colorTab[1] = R.color.green3;
+		colorTab[2] = R.color.teal3;
+		colorTab[3] = R.color.cyan3;
+		colorTab[4] = R.color.light_blue3;
+		colorTab[5] = R.color.blue3;
+		colorTab[6] = R.color.indigo3;
+		colorTab[7] = R.color.deep_purple3;
+		colorTab[8] = R.color.purple3;
+		colorTab[9] = R.color.pink3;
+		colorTab[10] = R.color.red3;
 	}
 
 	@Override
@@ -155,10 +158,10 @@ public class FriseActivity extends Activity {
 		Screen.fullScreen(this);
 		setContentView(R.layout.activity_frise);
 
-		/* Recuperation du nom de l'enfant */
-		Bundle bundle = getIntent().getExtras();
-		String nom = bundle.getString("nom_enfant");
-		nomEnfant = nom;
+		// recuperation de l'emploi du temps
+		Intent i = getIntent();
+		EmploiDuTemps emploi = (EmploiDuTemps)i.getSerializableExtra("emploi");
+		nomEnfant = emploi.getNomEnfant();
 
 		/* Affichage du nom de l'enfant */
 		TextView nom_enfant = (TextView) findViewById(R.id.nom_enfant);
@@ -173,6 +176,9 @@ public class FriseActivity extends Activity {
 		animateStar();
 
 		/* Remplissage des taches selon l'enfant */
+		myTasks = emploi.getEmploi();
+		setHourBounds();
+		/*
 		switch (nomEnfant) {
 		case "Romain":
 			myTasks = Task.createTasksRomain(this);
@@ -242,12 +248,12 @@ public class FriseActivity extends Activity {
 		currentTask = findCurrentTask();
 		if (!(currentTask == null)) {
 			scopedTask = currentTask;
-			replaceScope(); // place le scope sur la tahce
+			replaceScope(); // place le scope sur la tache
 			displayTask(); // affiche les infos de la tache
 			displayHour(); // afiche l'heure de la tache
 		}
 		else{
-			currentTask = myTasks.get(4);
+			currentTask = myTasks.get(0);
 			scopedTask = currentTask;
 			replaceScope(); // place le scope sur la tahce
 			displayTask(); // affiche les infos de la tache
@@ -586,6 +592,21 @@ public class FriseActivity extends Activity {
 		RelativeLayout gnar = (RelativeLayout) findViewById(R.id.gnar);
 		AnimatedGnar.addAnimatedGnar(this, gnar);
 		
+		// Sommaire
+		LinearLayout liste_activite = (LinearLayout) findViewById(R.id.liste_activite);
+		for(Task task : myTasks){
+			TextView txt_activite = new TextView(getApplicationContext());
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			params.setMarginStart(50);
+			txt_activite.setLayoutParams(params);
+			txt_activite.setText(task.getNom()+"  "+formatHour(task.getHeureDebut())+" - "+formatHour(task.getHeureFin()));
+			txt_activite.setTextColor(getResources().getColor(R.color.indigo5));
+			txt_activite.setTextSize(25f);
+			liste_activite.addView(txt_activite);
+		}
+		
+		//Sortie du sommaire
+		
 	}
 
 	/**
@@ -837,7 +858,8 @@ public class FriseActivity extends Activity {
 
 		/* Affichage de l'image de l'activite */
 		ImageView imageTask = (ImageView) findViewById(R.id.imageTask);
-		imageTask.setBackground(scopedTask.getImage());
+		//imageTask.setBackground(getDrawable(scopedTask.getImage()));
+		imageTask.setImageDrawable(getDrawable(scopedTask.getImage()));
 
 		/* Affiche l'heure de debut l'activite */
 		// colore les rectangles de fond
@@ -927,6 +949,16 @@ public class FriseActivity extends Activity {
 		result[3] = String.valueOf(minute_unite);
 
 		return result;
+	}
+	
+	/**
+	 * Transforme une heure de type 12,5 en 12h30
+	 * @param hour
+	 * @return
+	 */
+	public String formatHour(double hour){
+		String[] split = splitHour(hour);
+		return split[0]+split[1]+"h"+split[2]+split[3];
 	}
 
 	/**
@@ -1108,6 +1140,14 @@ public class FriseActivity extends Activity {
 					| View.SYSTEM_UI_FLAG_FULLSCREEN
 					| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 		}
+	}
+	
+	public void setHourBounds(){
+		Task first_task = myTasks.get(0);
+		h0 = first_task.getHeureDebut();
+		Task last_task = myTasks.get(myTasks.size()-1);
+		h1 = last_task.getHeureDebut()+last_task.getDuree();
+		
 	}
 
 }

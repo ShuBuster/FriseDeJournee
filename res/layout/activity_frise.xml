@@ -7,22 +7,21 @@
     android:clipChildren="true"
     tools:context="${relativePackage}.${activityClass}" >
 
-        <ImageView 
+    <ImageView
         android:id="@+id/logo_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="@drawable/logo_app"
-        android:visibility="invisible"
-        />
-    
+        android:visibility="invisible" />
+
     <RelativeLayout
         android:id="@+id/slide_top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/blanc_casse"
-        android:visibility="invisible"
-        android:elevation="20dp" >
+        android:elevation="20dp"
+        android:visibility="invisible" >
 
         <TextView
             android:id="@+id/texte"
@@ -118,7 +117,7 @@
             android:layout_alignStart="@id/frise"
             android:layout_below="@id/frise"
             android:background="@drawable/fleche_gauche"
-            android:visibility="invisible" /> />
+            android:visibility="invisible" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -176,7 +175,8 @@
             android:layout_alignBottom="@id/frame"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="50dp"
-            android:contentDescription="@drawable/image_dejeuner"
+            android:layout_marginTop="240dp"
+            android:adjustViewBounds="true"
             android:elevation="8dp" />
 
         <LinearLayout
@@ -403,14 +403,37 @@
 
         <RelativeLayout
             android:id="@id/gnar"
-            android:clipChildren="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="20dp"
             android:layout_marginEnd="20dp"
+            android:clipChildren="false"
             android:elevation="8dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/slide_left"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:background="@color/blanc_casse"
+        android:visibility="invisible" >
+
+        <TextView
+            android:id="@+id/sommaire"
+            style="@style/textShadow"
+            android:text="Sommaire"
+            android:textSize="20sp"
+            android:textColor="@color/yellow3" />
+
+        <LinearLayout
+            android:id="@+id/liste_activite"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sommaire"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical" />
     </RelativeLayout>
 
 </RelativeLayout>

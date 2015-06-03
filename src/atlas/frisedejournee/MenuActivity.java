@@ -1,5 +1,8 @@
 package atlas.frisedejournee;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
@@ -7,6 +10,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -32,6 +36,7 @@ import composants.BulleCreator;
 public class MenuActivity extends Activity {
 
 	int H; // hauteur de l'ecran en px
+	ArrayList<EmploiDuTemps> emplois = new ArrayList<EmploiDuTemps>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +80,14 @@ public class MenuActivity extends Activity {
 		mySpinner.setBackground(getResources().getDrawable(R.drawable.spinner_back));
 		mySpinner.setPadding(20, 10, 20, 10);
 		
+		// Importation des emplois du temps
+		chargerEmplois();
 		
 		/* Spinner ajout des enfants */
-		String[] array_spinner = new String[2];
-		array_spinner[0] = "Romain";
-		array_spinner[1] = "Louise";
+		String[] array_spinner = new String[emplois.size()];
+		for(int i=0;i<emplois.size();i++){
+			array_spinner[i] = emplois.get(i).getNomEnfant();
+		}
 
 		final TextView bulle = BulleCreator.createBubble(mySpinner, "Choisis ton prénom dans la liste",
 				"right", true, this);
@@ -115,7 +123,7 @@ public class MenuActivity extends Activity {
 				
 				/* Recuperation du nom de l'enfant selectione */
 				Spinner spinner = (Spinner) findViewById(R.id.enfant_spinner);
-				final String nom_enfant = spinner.getSelectedItem().toString();
+				final int indice = spinner.getSelectedItemPosition();
 
 				/* animation rideau sur l'ecran violet */
 				RelativeLayout slide_top = (RelativeLayout) findViewById(R.id.slide_top);
@@ -139,9 +147,10 @@ public class MenuActivity extends Activity {
 					@Override
 					public void onAnimationEnd(Animation animation) {
 						/* Passage a l'autre activite */
-						Intent intent = new Intent(MenuActivity.this,
+						Intent intent = new Intent(getApplicationContext(),
 								FriseActivity.class);
-						intent.putExtra("nom_enfant", nom_enfant);
+						EmploiDuTemps emploi = emplois.get(indice);
+						intent.putExtra("emploi", emploi);
 						startActivity(intent);
 						overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
 						
@@ -151,10 +160,6 @@ public class MenuActivity extends Activity {
 
 			}
 		});
-		//Animation titre
-		//LayoutAnimationController layout_animation = AnimationUtils
-		//		.loadLayoutAnimation(this, R.anim.layout_saut);
-		//titre.setLayoutAnimation(layout_animation);
 
 		// Bouton exit //
 		Button exit = (Button) findViewById(R.id.exit);
@@ -196,7 +201,6 @@ public class MenuActivity extends Activity {
 		// Animation mini Gnar
 		RelativeLayout mini_gnar = (RelativeLayout) findViewById(R.id.baby_gnar);
 		AnimatedGnar.addAnimatedMiniGnar(this, mini_gnar);
-	
 	}
 
 	@Override
@@ -231,6 +235,48 @@ public class MenuActivity extends Activity {
 					| View.SYSTEM_UI_FLAG_FULLSCREEN
 					| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 		}
+	}
+	
+	/* Checks if external storage is available to at least read */
+	public boolean isExternalStorageReadable() {
+	    String state = Environment.getExternalStorageState();
+	    if (Environment.MEDIA_MOUNTED.equals(state) ||
+	        Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+	        return true;
+	    }
+	    return false;
+	}
+	
+	/**
+	 * Lit le fichier frise.txt
+	 * @param texte
+	 */
+	public File readFriseFile() {
+		try{
+			if(isExternalStorageReadable()){
+				File sdCard = Environment.getExternalStorageDirectory();
+				File directory = new File (sdCard.getAbsolutePath() + "/FilesFrise");
+				directory.mkdirs();
+				File file = new File(directory, "frise.txt");
+				if(file.exists()){
+					return file;
+				}
+				else{
+					return null;
+				}
+			}
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * Ajoute les emplois du temps présents sur le fichier texte
+	 */
+	public void chargerEmplois(){
+		File frise = readFriseFile();
+		this.emplois = TaskReader.read(frise,this);
 	}
 
 }
