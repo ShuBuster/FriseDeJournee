@@ -91,6 +91,17 @@ public class Task implements Serializable{
 	}
 	
 	/**
+	 * Donne la position en pixel du debut de l'activite sur la frise
+	 * @param W longueur de la frise en pixel
+	 * @param h0 heure de debut de la frise
+	 * @param h1 heure de fin de la frise
+	 * @return la position du debut
+	 */
+	public static int getXHour(int W, double h0, double h1,double heure){
+		return (int) ((W/(h1-h0))*heure - (h0*W)/(h1-h0));
+	}
+	
+	/**
 	 * Donne la largeur en pixel de l'activite sur la frise
 	 * @param W longueur de la frise en pixel
 	 * @param h0 heure de debut de la frise

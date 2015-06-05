@@ -23,17 +23,6 @@
         android:elevation="20dp"
         android:visibility="invisible" >
 
-        <TextView
-            android:id="@+id/texte"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:text="@string/titre_frise"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/fushia"
-            android:textSize="50sp" />
-
         <RelativeLayout
             android:id="@+id/embleme"
             android:layout_width="wrap_content"

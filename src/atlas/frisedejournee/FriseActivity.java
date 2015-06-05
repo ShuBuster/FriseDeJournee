@@ -4,7 +4,6 @@ package atlas.frisedejournee;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
 import android.content.Intent;
@@ -167,10 +166,6 @@ public class FriseActivity extends Activity {
 		TextView nom_enfant = (TextView) findViewById(R.id.nom_enfant);
 		Fonts.setFont(this, nom_enfant, "onthemove.ttf");
 		nom_enfant.setText(nomEnfant);
-
-		/* Changement de police du titre */
-		TextView txtView1 = (TextView) findViewById(R.id.texte);
-		Fonts.setFont(this, txtView1, "onthemove.ttf");
 
 		/* Animation du decor */
 		animateStar();
@@ -607,6 +602,20 @@ public class FriseActivity extends Activity {
 		
 		//Sortie du sommaire
 		
+		
+		//Affichage des temps forts
+		RelativeLayout parent = (RelativeLayout) findViewById(R.id.parent_view);
+		for(double temps_fort :emploi.getMarqueTemps()){
+			int x_pos = Task.getXHour(W, h0, h1, temps_fort);
+			TextView txt_temps = new TextView(this);
+			txt_temps.setText(formatHour(temps_fort));
+			txt_temps.setTextColor(getResources().getColor(R.color.fushia));
+			txt_temps.setTextSize(15f);
+			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+			params.addRule(RelativeLayout.ALIGN_START, frise.getId());
+			params.setMargins(x_pos, 10, 0, 0);
+			parent.addView(txt_temps, params);
+		}
 	}
 
 	/**
