@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -59,10 +58,10 @@ public class FriseActivity extends Activity {
 	private int W; // largeur de la frise en px
 	private int H; // hauteur de la frise en px
 	private int margin; // marge entre les cases des taches
-	private boolean modeManuel = false; // mode manuel desactive au debut
 	private boolean modeAide = false;
 	private boolean sommaire_open = false;
 	private Task currentTask = null;
+	private int nbTask =0;
 	
 	TextToSpeech tts;
 	TextView info_text = null;
@@ -71,9 +70,6 @@ public class FriseActivity extends Activity {
 	Button aide = null;
 	Button menu = null;
 	Button retour = null;
-	Button manual = null;
-	Button right = null;
-	Button left = null;
 	ImageView scope = null;
 	LinearLayout menuDeroulant = null;
 	LinearLayout descriptionDeroulant = null;
@@ -98,21 +94,21 @@ public class FriseActivity extends Activity {
 		H = 0;
 		margin = 0;
 		colorTab = new int[15];
-		colorTab[11] = R.color.deep_orange3;
-		colorTab[12] = R.color.orange3;
-		colorTab[13] = R.color.amber3;
-		colorTab[14] = R.color.yellow3;
-		colorTab[0] = R.color.light_green3;
-		colorTab[1] = R.color.green3;
-		colorTab[2] = R.color.teal3;
-		colorTab[3] = R.color.cyan3;
-		colorTab[4] = R.color.light_blue3;
-		colorTab[5] = R.color.blue3;
-		colorTab[6] = R.color.indigo3;
-		colorTab[7] = R.color.deep_purple3;
-		colorTab[8] = R.color.purple3;
-		colorTab[9] = R.color.pink3;
-		colorTab[10] = R.color.red3;
+		colorTab[11] = R.color.deep_orange2;
+		colorTab[12] = R.color.orange2;
+		colorTab[13] = R.color.amber2;
+		colorTab[14] = R.color.yellow2;
+		colorTab[0] = R.color.light_green2;
+		colorTab[1] = R.color.green2;
+		colorTab[2] = R.color.teal2;
+		colorTab[3] = R.color.cyan2;
+		colorTab[4] = R.color.light_blue2;
+		colorTab[5] = R.color.blue2;
+		colorTab[6] = R.color.indigo2;
+		colorTab[7] = R.color.deep_purple2;
+		colorTab[8] = R.color.purple2;
+		colorTab[9] = R.color.pink2;
+		colorTab[10] = R.color.red2;
 	}
 
 	@Override
@@ -174,15 +170,6 @@ public class FriseActivity extends Activity {
 		/* Remplissage des taches selon l'enfant */
 		myTasks = emploi.getEmploi();
 		setHourBounds();
-		/*
-		switch (nomEnfant) {
-		case "Romain":
-			myTasks = Task.createTasksRomain(this);
-			break;
-		case "Louise":
-			myTasks = Task.createTasksLouise(this);
-			break;
-		}
 
 		/* Ajustement taille frame */
 		ImageView frame = (ImageView) findViewById(R.id.frame);
@@ -211,14 +198,11 @@ public class FriseActivity extends Activity {
 
 			/* Affichage de ma tache sur la frise */
 			Button rectTask = new Button(this);
-			rectTask.setEnabled(false); //desactive au debut
 			int Xwidth = myTask.getXwidth(W, h0, h1);
 
 			/* Creation du rectangle et placement */
 			LinearLayout.LayoutParams layoutParams;
-			if (task_indice != myTasks.size() - 1) { // Si ce n'est pas la
-														// derniere tache de la
-														// journee
+			if (task_indice != myTasks.size() - 1) {
 				layoutParams = new LinearLayout.LayoutParams(Xwidth,LayoutParams.MATCH_PARENT);
 			} else { // si c'est la derniere tache de la journee
 				layoutParams = new LinearLayout.LayoutParams(Xwidth - margin
@@ -238,7 +222,7 @@ public class FriseActivity extends Activity {
 			color_indice += 1;
 			task_indice += 1;
 		}
-		final int nb_task = task_indice;
+		nbTask = task_indice;
 		
 		/* Met le scope a l'activite en cours */
 		currentTask = findCurrentTask();
@@ -280,7 +264,7 @@ public class FriseActivity extends Activity {
 		final TextView bulle_heure = BulleCreator.createBubble(heure,"L'heure de début de l'activité", "right",false, this);
 		final TextView bulle_aide_avant = BulleCreator.createBubble(aide,"Clique sur ce bouton pour obtenir de l'aide", "right",true, this);
 		final TextView bulle_aide_apres = BulleCreator.createBubble(aide,"Clique sur ce bouton pour sortir de l'aide", "right",false, this);
-		final TextView bulle_description = BulleCreator.createBubble(info,"Ce bouton permet d'afficher"+"\n"+"une description de l'activité", "below",false, this);
+		final TextView bulle_description = BulleCreator.createBubble(info,"Pour afficher"+"\n"+"une description de l'activité", "below",false, this);
 		if(Build.VERSION.SDK_INT>=21){
 			bulle_aide_avant.setElevation(20); // met les bulle au premier plan
 			bulle_aide_apres.setElevation(20);
@@ -296,8 +280,6 @@ public class FriseActivity extends Activity {
 						
 			ImageView glowRetour = null;
 			ImageView glowMenu = null;
-			ImageView glowManual = null;
-			
 			
 			@Override
 			public void onClick(View v) {
@@ -315,17 +297,14 @@ public class FriseActivity extends Activity {
 					
 					if(glowRetour != null) GlowingButton.stopGlow(retour);
 					if(glowMenu != null) GlowingButton.stopGlow(menu);
-					if(glowManual != null) GlowingButton.stopGlow(manual);
 					
 					TTSButton.fermer(retour,getApplicationContext());
 					TTSButton.fermer(menu,getApplicationContext());
-					TTSButton.fermer(manual,getApplicationContext());
 										
 					//les boutons retrouvent leurs anciens listenners
 					
 					menu.setOnClickListener(menu_listenner);
 					retour.setOnClickListener(retour_listenner);
-					manual.setOnClickListener(manual_listenner);
 					
 					info.setEnabled(true);
 					
@@ -333,11 +312,6 @@ public class FriseActivity extends Activity {
 					RelativeLayout.LayoutParams params_aide = (RelativeLayout.LayoutParams) aide.getLayoutParams();
 					params_aide.addRule(RelativeLayout.END_OF,R.id.bouton_menu);
 					aide.setLayoutParams(params_aide);
-					
-					// on replace la bulle des boutons brillants au bon endroit//
-					RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
-					params.addRule(RelativeLayout.ALIGN_TOP,R.id.bouton_manual);
-					params.addRule(RelativeLayout.LEFT_OF,R.id.bouton_manual);
 					
 					// Disparition des bulles d'aide //
 					Animate.fade_out(bulle_aide_apres, 500,false);
@@ -356,7 +330,6 @@ public class FriseActivity extends Activity {
 					
 					glowRetour = GlowingButton.makeGlow(retour, getApplicationContext(),116);
 					glowMenu =  GlowingButton.makeGlow(menu, getApplicationContext(),118);
-					glowManual = GlowingButton.makeGlow(manual, getApplicationContext(),117);
 
 					// Replacement du bouton aide a droite du bouton menu//
 					RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) aide.getLayoutParams();
@@ -371,10 +344,6 @@ public class FriseActivity extends Activity {
 
 					TTSButton.parle(menu, "pour retourner au menu principal",
 							getApplicationContext());
-					TTSButton
-							.parle(manual,
-									"pour passer en mode manuel",
-									getApplicationContext());
 					
 					info.setEnabled(false);
 					
@@ -395,9 +364,8 @@ public class FriseActivity extends Activity {
 		menuDeroulant = (LinearLayout) findViewById(R.id.info);
 		audio = (Button) findViewById(R.id.info_audio);
 		info_text = (TextView) findViewById(R.id.info_text);
-		Typeface comic = Typeface.createFromAsset(getAssets(),"fonts/comic.otf");
-		info_text.setTypeface(comic);
-		info.setTypeface(comic);
+		Fonts.setFont(this, info_text, "comic.otf");
+		Fonts.setFont(this, info, "comic.otf");
 		
 		TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
 
@@ -424,118 +392,8 @@ public class FriseActivity extends Activity {
 			}
 		});
 
-		/* creation du mode manuel */
-		manual = (Button) findViewById(R.id.bouton_manual);
-		left = (Button) findViewById(R.id.bouton_left);
-		right = (Button) findViewById(R.id.bouton_right);
-
-		manual_listenner = new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-				if (modeManuel) { // si on est en mode manuel
-
-					manual.setBackground(getResources().getDrawable(
-							R.drawable.manual)); // desenfonce le bouton
-					modeManuel = false;
-					left.setEnabled(false); // desactivation des boutons droite
-											// et gauche
-					right.setEnabled(false);
-					// desactivation des boutons des taches
-					for(int id=0;id<nb_task;id++){
-						Button task_button = (Button) findViewById(id);
-						task_button.setEnabled(false);
-					}
-					Animate.pop_out(left,500,false); // Disparition des fleches
-					Animate.pop_out(right, 500,false);
-					Task actualTask = findCurrentTask();
-					if(actualTask!=null){
-						moveScopeToCurrentTask(); // retour du scope a l'activite courante
-						currentTask = actualTask; // retour a l'activite courante
-						menuDeroulant.setBackgroundColor(currentTask.getCouleur());
-						info.setBackgroundColor(currentTask.getCouleur());
-						// le menu deroulant et son bouton retrouvent la couleur de
-						// l'activite actuelle
-						info_text.setText(currentTask.getDescription());
-						TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
-					}
-
-				} else { // si on n'est pas en mode manuel
-					try {
-						animateHour();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
-					Drawable d = getResources()
-							.getDrawable(R.drawable.manual_e);
-					manual.setBackground(d);
-
-					/* passage en mode manuel */
-					modeManuel = true;
-					left.setEnabled(true); // activation des boutons
-					right.setEnabled(true);					// activation des boutons des taches
-					for(int id=0;id<nb_task;id++){
-						Button task_button = (Button) findViewById(id);
-						task_button.setEnabled(true);
-					}
-					Animate.pop_in(left,500); // Apparition des fleches
-					Animate.pop_in(right, 500);
-					TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
-				}
-
-			}
-		};
+		// Ecran logo
 		
-		manual.setOnClickListener(manual_listenner);
-
-		left.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Task leftTask = Task.findRelativeTask(myTasks, currentTask, -1);// la tache a gauche
-				if(leftTask!=null){
-					Task beforeTask = scopedTask;
-					moveScope(-1); // deplace le scope d'une activite vers l'arriere
-					changeHour(beforeTask.getHeureDebut());
-					displayTask(); // affiche la tache scoped au centre
-					currentTask = leftTask;
-					left.setEnabled(false); // desactive les boutons pendant
-											// l'animation du scope
-					right.setEnabled(false);
-					
-					info.setBackgroundColor(currentTask.getCouleur());
-					menuDeroulant.setBackgroundColor(currentTask.getCouleur());
-					info_text.setText(currentTask.getDescription());
-					TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
-					//le menu d'information sur l'activite chanege avec l'activite
-				}
-			}
-		});
-
-		right.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Task rightTask = Task.findRelativeTask(myTasks, currentTask, 1);
-				if(rightTask!=null){
-					Task beforeTask = scopedTask;
-					moveScope(1); // deplace le scope d'une activite vers l'avant
-					changeHour(beforeTask.getHeureDebut());
-					displayTask(); // affiche la tache scoped au centre
-					currentTask = rightTask;
-					left.setEnabled(false); // desactive les boutons pendant
-											// l'animation du scope
-					right.setEnabled(false);
-					
-					info.setBackgroundColor(currentTask.getCouleur());
-					menuDeroulant.setBackgroundColor(currentTask.getCouleur());
-					info_text.setText(currentTask.getDescription());
-					TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
-					//le menu d'information sur l'activite chanege avec l'activite
-				}
-
-			}
-		});
-
 		final ImageView logo = (ImageView) findViewById(R.id.logo_image);
 		logo.setVisibility(View.VISIBLE);
 		AlphaAnimation alpha1 = new AlphaAnimation(0, 1);
@@ -628,17 +486,18 @@ public class FriseActivity extends Activity {
 		});
 		
 		
-		//Affichage des temps forts
+		//Affichage des temps forts TODO
 		RelativeLayout parent = (RelativeLayout) findViewById(R.id.slide_top);
 		for(double temps_fort :emploi.getMarqueTemps()){
 			int x_pos = Task.getXHour(W, h0, h1, temps_fort);
 			TextView txt_temps = new TextView(this);
 			txt_temps.setText(formatHour(temps_fort));
 			txt_temps.setTextColor(getResources().getColor(R.color.fushia));
-			txt_temps.setTextSize(15f);
+			txt_temps.setTextSize(35f);
+			Fonts.setFont(this, txt_temps, "intsh.ttf");
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
 			params.addRule(RelativeLayout.ALIGN_START, frise.getId());
-			params.setMargins(x_pos, 10, 0, 0);
+			params.setMargins(x_pos-margin*3, margin*10, 0, 0);
 			parent.addView(txt_temps, params);
 		}
 	}
@@ -715,6 +574,9 @@ public class FriseActivity extends Activity {
 	 * @param taskId
 	 */
 	public void taskClicked(int taskId){
+		Button rectTask = (Button) findViewById(taskId);
+		int couleur = getResources().getColor(colorTab[taskId]);
+		rectTask.setBackgroundColor(Couleur.lightenColor(couleur));
 		int scopedId = Task.indexOfTask(myTasks, scopedTask);
 		int deltaId = taskId - scopedId;
 		Task beforeTask = scopedTask;
@@ -771,7 +633,9 @@ public class FriseActivity extends Activity {
 	 *            le nombre relatif de pas en nombre d'activite a faire
 	 */
 	public void moveScope(final int pas) {
-
+		setEnableTaskButton(false);
+		int scopedId = Task.indexOfTask(myTasks, scopedTask);
+		final int taskId = pas +scopedId;
 		Task oldScopedTask = scopedTask;
 		Task nextScopedTask = Task.findRelativeTask(myTasks, scopedTask, pas);
 		if (nextScopedTask != null) {
@@ -825,11 +689,12 @@ public class FriseActivity extends Activity {
 
 				@Override
 				public void onAnimationEnd(Animation animation) {
+					Button rectTask = (Button) findViewById(taskId);
+					int couleur = getResources().getColor(colorTab[taskId]);
+					rectTask.setBackgroundColor(couleur);
+					setEnableTaskButton(true);
 					scope.clearAnimation();
-					replaceScope(); // replace vraiment le scope a sa nouvelle
-									// position
-					left.setEnabled(true);
-					right.setEnabled(true);
+					replaceScope(); // replace vraiment le scope a sa nouvelle position
 				}
 			});
 
@@ -881,13 +746,11 @@ public class FriseActivity extends Activity {
 		int couleur = scopedTask.getCouleur(); // recuperation de la couleur
 		int couleur_clair = Couleur.lightenColor(couleur);
 		int[] colors = {couleur_clair,couleur};
-		drawable.setColor(couleur);
+		drawable.setColors(colors);
 
 		/* Affichage du titre de l'activite */
 		TextView titreTask = (TextView) findViewById(R.id.titreTask);
-		Typeface externalFont = Typeface.createFromAsset(getAssets(),
-				"fonts/onthemove.ttf");
-		titreTask.setTypeface(externalFont);
+		Fonts.setFont(this, titreTask, "intsh.ttf");
 		titreTask.setText(scopedTask.getNom());
 
 		/* Affichage de l'image de l'activite */
@@ -928,7 +791,7 @@ public class FriseActivity extends Activity {
 			int couleur = previous.getCouleur(); // recuperation de la couleur
 			prev.setBackgroundColor(couleur);
 			prev.setVisibility(View.VISIBLE);
-			prev.setAlpha(0.8f);
+			prev.setAlpha(0.95f);
 		} else {
 			prev.setVisibility(View.INVISIBLE);
 		}
@@ -938,7 +801,7 @@ public class FriseActivity extends Activity {
 			int couleur = next.getCouleur(); // recuperation de la couleur
 			nxt.setBackgroundColor(couleur);
 			nxt.setVisibility(View.VISIBLE);
-			nxt.setAlpha(0.6f);
+			nxt.setAlpha(0.95f);
 		} else {
 			nxt.setVisibility(View.INVISIBLE);
 		}
@@ -1145,11 +1008,7 @@ public class FriseActivity extends Activity {
 		final Button boutonAide = (Button) findViewById(R.id.bouton_aide);
 		Drawable d3 = getResources().getDrawable(R.drawable.help);
 		boutonAide.setBackground(d3);
-
-		/* Pour le plein ecran */
-		int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-				| View.SYSTEM_UI_FLAG_FULLSCREEN;
-
+		
 		executeDelayed();
 	}
 
@@ -1182,6 +1041,13 @@ public class FriseActivity extends Activity {
 		Task last_task = myTasks.get(myTasks.size()-1);
 		h1 = last_task.getHeureDebut()+last_task.getDuree();
 		
+	}
+	
+	public void setEnableTaskButton(boolean b){
+		for(int i=0;i<nbTask;i++){
+			Button rectTask = (Button) findViewById(i);
+			rectTask.setEnabled(b);
+		}
 	}
 
 }

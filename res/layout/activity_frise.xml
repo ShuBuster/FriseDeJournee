@@ -3,7 +3,7 @@
     android:id="@+id/parent_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple6"
+    android:background="@color/purple4"
     android:clipChildren="true"
     tools:context="${relativePackage}.${activityClass}" >
 
@@ -80,33 +80,7 @@
             android:elevation="8dp"
             android:scaleType="fitXY"
             android:src="@drawable/frise_target" />
-
-        <Button
-            android:id="@+id/bouton_manual"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="45dp"
-            android:layout_toEndOf="@id/frise"
-            android:background="@drawable/manual" />
-
-        <Button
-            android:id="@+id/bouton_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@id/frise"
-            android:layout_below="@id/frise"
-            android:background="@drawable/fleche_droite"
-            android:visibility="invisible" />
-
-        <Button
-            android:id="@+id/bouton_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@id/frise"
-            android:layout_below="@id/frise"
-            android:background="@drawable/fleche_gauche"
-            android:visibility="invisible" />
+        
     </RelativeLayout>
 
     <RelativeLayout
@@ -155,7 +129,7 @@
             android:elevation="8dp"
             android:text=""
             android:textColor="@color/jaune1"
-            android:textSize="60sp" />
+            android:textSize="70sp" />
 
         <ImageView
             android:id="@+id/imageTask"

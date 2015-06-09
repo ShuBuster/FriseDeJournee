@@ -111,7 +111,7 @@ public class MenuActivity extends Activity {
 		});
 		
 		/* Boutons et titre */
-		Drawable bouton_go_d = ButtonCreator.roundedDrawable(this,getResources().getColor(R.color.light_green2),1f);
+		Drawable bouton_go_d = ButtonCreator.roundedDrawable(this,getResources().getColor(R.color.light_blue3),1f);
 		final Button boutonGo = (Button) findViewById(R.id.go);
 		boutonGo.setBackground(bouton_go_d);
 		boutonGo.setTypeface(externalFont);
@@ -120,7 +120,7 @@ public class MenuActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
-				Drawable bouton_go_pressed = ButtonCreator.pressedRoundedDrawable(a,getResources().getColor(R.color.light_green3),1f);
+				Drawable bouton_go_pressed = ButtonCreator.pressedRoundedDrawable(a,getResources().getColor(R.color.light_blue3),1f);
 				boutonGo.setBackground(bouton_go_pressed);
 				
 				/* Recuperation du nom de l'enfant selectione */
@@ -222,7 +222,7 @@ public class MenuActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		final Button boutonGo = (Button) findViewById(R.id.go);
-		Drawable bouton_go_d = ButtonCreator.roundedDrawable(this,getResources().getColor(R.color.light_green3),1f);
+		Drawable bouton_go_d = ButtonCreator.roundedDrawable(this,getResources().getColor(R.color.light_blue3),1f);
 		boutonGo.setBackground(bouton_go_d);
 		executeDelayed();
 

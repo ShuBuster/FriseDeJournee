@@ -16,6 +16,7 @@ public class TaskListener implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		frise.taskClicked(taskID);
+		
 	}
 
 };
