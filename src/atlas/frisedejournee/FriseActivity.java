@@ -61,6 +61,7 @@ public class FriseActivity extends Activity {
 	private int margin; // marge entre les cases des taches
 	private boolean modeManuel = false; // mode manuel desactive au debut
 	private boolean modeAide = false;
+	private boolean sommaire_open = false;
 	private Task currentTask = null;
 	
 	TextToSpeech tts;
@@ -150,7 +151,7 @@ public class FriseActivity extends Activity {
 
 		/* Taille ecran */
 		int[] size = Screen.getSize(this);
-		int width = size[0];
+		final int width = size[0];
 		final int height = size[1]; // hauteur de l'ecran en px
 		
 		/* Passage en plein ecran */
@@ -596,15 +597,39 @@ public class FriseActivity extends Activity {
 			txt_activite.setLayoutParams(params);
 			txt_activite.setText(task.getNom()+"  "+formatHour(task.getHeureDebut())+" - "+formatHour(task.getHeureFin()));
 			txt_activite.setTextColor(getResources().getColor(R.color.indigo5));
-			txt_activite.setTextSize(25f);
+			txt_activite.setTextSize(20f);
 			liste_activite.addView(txt_activite);
 		}
 		
 		//Sortie du sommaire
+		final RelativeLayout slide_right = (RelativeLayout) findViewById(R.id.slide_right);
+		final Button sommaire = (Button) findViewById(R.id.bouton_sommaire);
+		setSize(slide_right, height/2,width/4);
+		slide_right.setTranslationX(width/4);
+		sommaire.setTranslationX(width/4);
+		sommaire.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(!sommaire_open){
+					Animate.translateDecelerate(slide_right, 0, 0, -width/4, 0, 1000);
+					//Animate.translateDecelerate(sommaire, 0, 0, -width/4, 0, 1000);
+					sommaire.setTranslationX(0);
+					sommaire_open = true;
+				}
+				else{
+					Animate.translateDecelerate(slide_right, -width/4, 0, 0, 0, 1000);
+					//Animate.translateDecelerate(sommaire, -width/4, 0, 0, 0, 1000);
+					sommaire.setTranslationX(width/4);
+					sommaire_open = false;
+				}
+				
+			}
+		});
 		
 		
 		//Affichage des temps forts
-		RelativeLayout parent = (RelativeLayout) findViewById(R.id.parent_view);
+		RelativeLayout parent = (RelativeLayout) findViewById(R.id.slide_top);
 		for(double temps_fort :emploi.getMarqueTemps()){
 			int x_pos = Task.getXHour(W, h0, h1, temps_fort);
 			TextView txt_temps = new TextView(this);

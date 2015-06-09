@@ -16,7 +16,9 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
@@ -109,7 +111,7 @@ public class MenuActivity extends Activity {
 		});
 		
 		/* Boutons et titre */
-		Drawable bouton_go_d = ButtonCreator.roundedDrawable(this,getResources().getColor(R.color.light_blue3),1f);
+		Drawable bouton_go_d = ButtonCreator.roundedDrawable(this,getResources().getColor(R.color.light_green2),1f);
 		final Button boutonGo = (Button) findViewById(R.id.go);
 		boutonGo.setBackground(bouton_go_d);
 		boutonGo.setTypeface(externalFont);
@@ -118,7 +120,7 @@ public class MenuActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
-				Drawable bouton_go_pressed = ButtonCreator.pressedRoundedDrawable(a,getResources().getColor(R.color.light_blue3),1f);
+				Drawable bouton_go_pressed = ButtonCreator.pressedRoundedDrawable(a,getResources().getColor(R.color.light_green3),1f);
 				boutonGo.setBackground(bouton_go_pressed);
 				
 				/* Recuperation du nom de l'enfant selectione */
@@ -174,20 +176,32 @@ public class MenuActivity extends Activity {
 		/* Apparition du logo bouton */
 		final Button logo_bouton = (Button) findViewById(R.id.logo_bouton);
 		Animate.fade_in(logo_bouton,1000);
-		logo_bouton.setOnClickListener(new View.OnClickListener() {
+		AlphaAnimation alpha = new AlphaAnimation(0, 1);
+		alpha.setDuration(1000);
+		alpha.setAnimationListener(new AnimationListener() {
 			
 			@Override
-			public void onClick(View v) {
+			public void onAnimationStart(Animation animation) {
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
 				/* Arrivée du menu par le haut et le bas*/
 				RelativeLayout slide_top = (RelativeLayout) findViewById(R.id.slide_top);
 				slide_top.setVisibility(View.VISIBLE);
-				Animate.translateDecelerate(slide_top, 0, -H/3, 0, 0, 1000);
+				Animate.translateDecelerate(slide_top, 0, -H/3, 0, 0, 1000,200);
 				RelativeLayout slide_bottom = (RelativeLayout) findViewById(R.id.slide_bottom);
 				slide_bottom.setVisibility(View.VISIBLE);
-				Animate.translateDecelerate(slide_bottom, 0, H*1.1f, 0, 0, 1800);
+				Animate.translateDecelerate(slide_bottom, 0, H*1.1f, 0, 0, 1800,600);
 				Animate.fade_out(logo_bouton, 500, true);
 			}
 		});
+		logo_bouton.startAnimation(alpha);
 		
 		// Animation titre
 		LinearLayout layout_titre = (LinearLayout) findViewById(R.id.titre);
@@ -208,7 +222,7 @@ public class MenuActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		final Button boutonGo = (Button) findViewById(R.id.go);
-		Drawable bouton_go_d = ButtonCreator.roundedDrawable(this,getResources().getColor(R.color.light_blue3),1f);
+		Drawable bouton_go_d = ButtonCreator.roundedDrawable(this,getResources().getColor(R.color.light_green3),1f);
 		boutonGo.setBackground(bouton_go_d);
 		executeDelayed();
 
