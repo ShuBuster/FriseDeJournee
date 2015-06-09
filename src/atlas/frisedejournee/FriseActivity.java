@@ -35,7 +35,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import boutons.HomeActivityListener;
-import boutons.NextActivityListener;
 import boutons.TTSButton;
 
 import composants.Animate;
@@ -69,12 +68,10 @@ public class FriseActivity extends Activity {
 	Button info = null;
 	Button aide = null;
 	Button menu = null;
-	Button retour = null;
 	ImageView scope = null;
 	LinearLayout menuDeroulant = null;
 	LinearLayout descriptionDeroulant = null;
 	boolean isOpen = false;
-	OnClickListener retour_listenner;
 	OnClickListener menu_listenner;
 	OnClickListener manual_listenner;
 	
@@ -124,7 +121,7 @@ public class FriseActivity extends Activity {
 		case DisplayMetrics.DENSITY_XHIGH :
 			Log.d("TAG", "densite= tres haute");
 			options.inTargetDensity = DisplayMetrics.DENSITY_XHIGH;
-			margin = 6;
+			margin = 12;
 			break;
 		
 		case DisplayMetrics.DENSITY_HIGH :
@@ -182,7 +179,7 @@ public class FriseActivity extends Activity {
 		/* Ajustement taille frise */
 		LinearLayout frise = (LinearLayout) findViewById(R.id.frise);
 		H = height/11; // hauteur de la frise
-		W = 2*width/3; // largeur de la frise
+		W = 3*width/4; // largeur de la frise
 		setSize(frise,H,W);
 		
 		/* Ajustement taille scope */
@@ -205,10 +202,9 @@ public class FriseActivity extends Activity {
 			if (task_indice != myTasks.size() - 1) {
 				layoutParams = new LinearLayout.LayoutParams(Xwidth,LayoutParams.MATCH_PARENT);
 			} else { // si c'est la derniere tache de la journee
-				layoutParams = new LinearLayout.LayoutParams(Xwidth - margin
-						* (myTasks.size() - 2), LayoutParams.MATCH_PARENT);
+				layoutParams = new LinearLayout.LayoutParams(Xwidth - margin*5, LayoutParams.MATCH_PARENT);
 			}
-			layoutParams.setMargins(margin, margin,0,margin);
+			layoutParams.setMargins(margin, margin,0,margin); 
 			rectTask.setLayoutParams(layoutParams);
 
 			int couleur = getResources().getColor(colorTab[color_indice]);
@@ -243,13 +239,6 @@ public class FriseActivity extends Activity {
 		/* creation des 3 boutons menu, aide et retour à l'activite precedente */
 		aide = (Button) findViewById(R.id.bouton_aide);
 		menu = (Button) findViewById(R.id.bouton_menu);
-		retour = (Button) findViewById(R.id.bouton_retour);
-
-		Drawable d = getResources().getDrawable(R.drawable.back_e);
-		retour_listenner = new NextActivityListener(retour, d,
-				FriseActivity.this, MenuActivity.class);
-		retour.setOnClickListener(retour_listenner);
-
 		menu_listenner = new HomeActivityListener(this, menu,
 				FriseActivity.this, MenuActivity.class);
 		menu.setOnClickListener(menu_listenner);
@@ -261,9 +250,10 @@ public class FriseActivity extends Activity {
 			//Creation des bulles d'aide
 		LinearLayout heure = (LinearLayout) findViewById(R.id.heure_fond);
 		info = (Button) findViewById(R.id.description_bouton);
+		View aide_parent = findViewById(R.id.aide_parent);
 		final TextView bulle_heure = BulleCreator.createBubble(heure,"L'heure de début de l'activité", "right",false, this);
-		final TextView bulle_aide_avant = BulleCreator.createBubble(aide,"Clique sur ce bouton pour obtenir de l'aide", "right",true, this);
-		final TextView bulle_aide_apres = BulleCreator.createBubble(aide,"Clique sur ce bouton pour sortir de l'aide", "right",false, this);
+		final TextView bulle_aide_avant = BulleCreator.createBubble(aide_parent,"Clique sur ce bouton pour obtenir de l'aide", "right",true, this);
+		final TextView bulle_aide_apres = BulleCreator.createBubble(aide_parent,"Clique sur ce bouton pour sortir de l'aide", "right",false, this);
 		final TextView bulle_description = BulleCreator.createBubble(info,"Pour afficher"+"\n"+"une description de l'activité", "below",false, this);
 		if(Build.VERSION.SDK_INT>=21){
 			bulle_aide_avant.setElevation(20); // met les bulle au premier plan
@@ -278,7 +268,6 @@ public class FriseActivity extends Activity {
 		
 		aide.setOnClickListener(new View.OnClickListener() {
 						
-			ImageView glowRetour = null;
 			ImageView glowMenu = null;
 			
 			@Override
@@ -295,16 +284,13 @@ public class FriseActivity extends Activity {
 					//RelativeLayout parent = (RelativeLayout) findViewById(R.id.information);
 					parent.setClipChildren(true);
 					
-					if(glowRetour != null) GlowingButton.stopGlow(retour);
 					if(glowMenu != null) GlowingButton.stopGlow(menu);
 					
-					TTSButton.fermer(retour,getApplicationContext());
 					TTSButton.fermer(menu,getApplicationContext());
 										
 					//les boutons retrouvent leurs anciens listenners
 					
 					menu.setOnClickListener(menu_listenner);
-					retour.setOnClickListener(retour_listenner);
 					
 					info.setEnabled(true);
 					
@@ -328,7 +314,6 @@ public class FriseActivity extends Activity {
 					
 					// glow sur les autres boutons //
 					
-					glowRetour = GlowingButton.makeGlow(retour, getApplicationContext(),116);
 					glowMenu =  GlowingButton.makeGlow(menu, getApplicationContext(),118);
 
 					// Replacement du bouton aide a droite du bouton menu//
@@ -337,10 +322,6 @@ public class FriseActivity extends Activity {
 					aide.setLayoutParams(params);
 					
 					// text to speech sur les boutons //
-
-					TTSButton.parle(retour,
-							"pour retourner sur ta dernière activité",
-							getApplicationContext());
 
 					TTSButton.parle(menu, "pour retourner au menu principal",
 							getApplicationContext());
@@ -364,8 +345,10 @@ public class FriseActivity extends Activity {
 		menuDeroulant = (LinearLayout) findViewById(R.id.info);
 		audio = (Button) findViewById(R.id.info_audio);
 		info_text = (TextView) findViewById(R.id.info_text);
-		Fonts.setFont(this, info_text, "comic.otf");
-		Fonts.setFont(this, info, "comic.otf");
+		info_text.setTextColor(getResources().getColor(R.color.yellow3));
+		info.setTextColor(getResources().getColor(R.color.yellow3));
+		Fonts.setFont(this, info_text, "intsh.ttf");
+		Fonts.setFont(this, info, "intsh.ttf");
 		
 		TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
 
@@ -379,15 +362,16 @@ public class FriseActivity extends Activity {
 				if (isOpen) {
 					// Si le Slider est ouvert...
 					// ... on change le bouton en mode enfonce
-
-					info_text.setText(currentTask.getDescription());
+					
+					info_text.setText(currentTask.getDescription()+"\nDuree : "+formatHour(currentTask.getDuree()));
 					menuDeroulant.setBackgroundColor(currentTask.getCouleur());
-					info.setBackgroundColor(currentTask.getCouleur());
-
+					info.setBackgroundColor(Couleur.lightenColor(currentTask.getCouleur()));
+					info.setTextColor(getResources().getColor(R.color.yellow5));
 					
 				} else {
 					// Sinon on remet le bouton en mode "relache"
-
+					info.setBackgroundColor(currentTask.getCouleur());
+					info.setTextColor(getResources().getColor(R.color.jaune1));
 				}
 			}
 		});
@@ -434,6 +418,9 @@ public class FriseActivity extends Activity {
 						RelativeLayout slide_bottom = (RelativeLayout) findViewById(R.id.slide_bottom);
 						slide_bottom.setVisibility(View.VISIBLE);
 						Animate.translateDecelerate(slide_bottom, 0, height*1.1f, 0, 0, 1800);
+						Button sommaire = (Button) findViewById(R.id.bouton_sommaire);
+						sommaire.setVisibility(View.VISIBLE);
+						Animate.translateDecelerate(sommaire, 0, height*1.1f, 0, 0, 1800);
 					}
 				});
 				logo.startAnimation(alpha2);
@@ -453,32 +440,42 @@ public class FriseActivity extends Activity {
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			params.setMarginStart(50);
 			txt_activite.setLayoutParams(params);
-			txt_activite.setText(task.getNom()+"  "+formatHour(task.getHeureDebut())+" - "+formatHour(task.getHeureFin()));
-			txt_activite.setTextColor(getResources().getColor(R.color.indigo5));
-			txt_activite.setTextSize(20f);
+			txt_activite.setText(formatHour(task.getHeureDebut())+" - "+formatHour(task.getHeureFin())+"   "+task.getNom());
+			txt_activite.setTextColor(getResources().getColor(R.color.fushia));
+			txt_activite.setTextSize(30f);
+			Fonts.setFont(this, txt_activite, "intsh.ttf");
 			liste_activite.addView(txt_activite);
 		}
 		
 		//Sortie du sommaire
 		final RelativeLayout slide_right = (RelativeLayout) findViewById(R.id.slide_right);
 		final Button sommaire = (Button) findViewById(R.id.bouton_sommaire);
-		setSize(slide_right, height/2,width/4);
-		slide_right.setTranslationX(width/4);
-		sommaire.setTranslationX(width/4);
+		Fonts.setFont(this, sommaire, "intsh.ttf");
+		sommaire.setTextSize(20f);
+		setSize(slide_right,0,width/3);
+		slide_right.setTranslationX(width/3);
+		sommaire.setTranslationX(width/3);
 		sommaire.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				if(!sommaire_open){
-					Animate.translateDecelerate(slide_right, 0, 0, -width/4, 0, 1000);
+					Animate.translateDecelerate(slide_right, 0, 0, -width/3, 0, 1000);
 					//Animate.translateDecelerate(sommaire, 0, 0, -width/4, 0, 1000);
 					sommaire.setTranslationX(0);
+					sommaire.setBackgroundColor(getResources().getColor(R.color.bleu_lagon));
+					sommaire.setTextColor(getResources().getColor(R.color.indigo3));
 					sommaire_open = true;
 				}
 				else{
-					Animate.translateDecelerate(slide_right, -width/4, 0, 0, 0, 1000);
+					Animate.translateDecelerate(slide_right, -width/3, 0, 0, 0, 1000);
 					//Animate.translateDecelerate(sommaire, -width/4, 0, 0, 0, 1000);
-					sommaire.setTranslationX(width/4);
+					sommaire.setTranslationX(width/3);
+					Task next = Task.findRelativeTask(myTasks, scopedTask, 1);
+					if(next!=null){
+						sommaire.setBackgroundColor(next.getCouleur());
+					}
+					sommaire.setTextColor(getResources().getColor(R.color.blanc));
 					sommaire_open = false;
 				}
 				
@@ -486,18 +483,18 @@ public class FriseActivity extends Activity {
 		});
 		
 		
-		//Affichage des temps forts TODO
+		//Affichage des temps forts
 		RelativeLayout parent = (RelativeLayout) findViewById(R.id.slide_top);
 		for(double temps_fort :emploi.getMarqueTemps()){
 			int x_pos = Task.getXHour(W, h0, h1, temps_fort);
 			TextView txt_temps = new TextView(this);
-			txt_temps.setText(formatHour(temps_fort));
+			txt_temps.setText(" "+formatHour(temps_fort)+" ");
 			txt_temps.setTextColor(getResources().getColor(R.color.fushia));
 			txt_temps.setTextSize(35f);
 			Fonts.setFont(this, txt_temps, "intsh.ttf");
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
 			params.addRule(RelativeLayout.ALIGN_START, frise.getId());
-			params.setMargins(x_pos-margin*3, margin*10, 0, 0);
+			params.setMargins(x_pos-margin,margin*4, 0, 0);
 			parent.addView(txt_temps, params);
 		}
 	}
@@ -584,10 +581,15 @@ public class FriseActivity extends Activity {
 		displayTask(); // affiche la tache scoped au centre
 		changeHour(beforeTask.getHeureDebut());
 		currentTask = scopedTask;
+		if(isOpen){
+			info.setBackgroundColor(Couleur.lightenColor(currentTask.getCouleur()));
+		}
+		else{
+			info.setBackgroundColor(currentTask.getCouleur());
+		}
 		
-		info.setBackgroundColor(currentTask.getCouleur());
 		menuDeroulant.setBackgroundColor(currentTask.getCouleur());
-		info_text.setText(currentTask.getDescription());
+		info_text.setText(currentTask.getDescription()+"\nDuree : "+formatHour(currentTask.getDuree()));
 		TTSButton.parle(audio,currentTask.getDescription(),getApplicationContext());
 		//le menu d'information sur l'activite change avec l'activite
 	}
@@ -751,7 +753,7 @@ public class FriseActivity extends Activity {
 		/* Affichage du titre de l'activite */
 		TextView titreTask = (TextView) findViewById(R.id.titreTask);
 		Fonts.setFont(this, titreTask, "intsh.ttf");
-		titreTask.setText(scopedTask.getNom());
+		titreTask.setText(" "+scopedTask.getNom()+" ");
 
 		/* Affichage de l'image de l'activite */
 		ImageView imageTask = (ImageView) findViewById(R.id.imageTask);
@@ -764,7 +766,7 @@ public class FriseActivity extends Activity {
 		LinearLayout heure1 = (LinearLayout) findViewById(R.id.heure_unite_fond);
 		LinearLayout minute10 = (LinearLayout) findViewById(R.id.minute_dizaine_fond);
 		LinearLayout minute1 = (LinearLayout) findViewById(R.id.minute_unite_fond);
-		int color = darkenColor(scopedTask.getCouleur());
+		int color = scopedTask.getCouleur();
 		heure10.setBackgroundColor(color);
 		heure1.setBackgroundColor(color);
 		minute10.setBackgroundColor(color);
@@ -800,10 +802,15 @@ public class FriseActivity extends Activity {
 		if (next != null) {
 			int couleur = next.getCouleur(); // recuperation de la couleur
 			nxt.setBackgroundColor(couleur);
+			Button sommaire = (Button) findViewById(R.id.bouton_sommaire);
+			sommaire.setBackgroundColor(couleur);
 			nxt.setVisibility(View.VISIBLE);
 			nxt.setAlpha(0.95f);
 		} else {
 			nxt.setVisibility(View.INVISIBLE);
+			int couleur = scopedTask.getCouleur();
+			Button sommaire = (Button) findViewById(R.id.bouton_sommaire);
+			sommaire.setBackgroundColor(couleur);
 		}
 
 	}
@@ -981,8 +988,18 @@ public class FriseActivity extends Activity {
 
 	public void setSize(View view,int h, int w){
 		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
-		params.height = h;
-		params.width = w;
+		if(h==0){
+			params.height = LayoutParams.WRAP_CONTENT;
+		}
+		else{
+			params.height = h;
+		}
+		if(w==0){
+			params.width = LayoutParams.WRAP_CONTENT;
+		}
+		else{
+			params.width = w;
+		}
 		view.setLayoutParams(params);
 	}
 	
@@ -999,9 +1016,6 @@ public class FriseActivity extends Activity {
 	/* L'activite revient sur le devant de la scene */
 	public void onResume() {
 		super.onResume();
-		final Button boutonRetour = (Button) findViewById(R.id.bouton_retour);
-		Drawable d1 = getResources().getDrawable(R.drawable.back);
-		boutonRetour.setBackground(d1);
 		final Button boutonMenu = (Button) findViewById(R.id.bouton_menu);
 		Drawable d2 = getResources().getDrawable(R.drawable.home);
 		boutonMenu.setBackground(d2);
