@@ -1,24 +1,24 @@
 package atlas.frisedejournee;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-
 
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
-public class Task {
+@SuppressWarnings("serial")
+public class Task implements Serializable{
 
 	private String nom; // nom de l'activite
 	private String description; // description de l'activite en quelques mots
 	private double duree; // duree de l'activite en heure
 	private double heureDebut; // heure du debut de l'activite
-	private Drawable image; // une image illustrant l'activite
+	private int image; // une image illustrant l'activite
 	private int couleur; // la couleur de l'activite dans la frise
 	
 	public Task(String nom, String description, double duree, double heureDebut,
-			Drawable image) {
+			int image) {
 		this.nom = nom;
 		this.description = description;
 		this.duree = duree;
@@ -43,7 +43,11 @@ public class Task {
 		return heureDebut;
 	}
 
-	public Drawable getImage() {
+	public double getHeureFin() {
+		return heureDebut+duree;
+	}
+	
+	public int getImage() {
 		return image;
 	}
 	
@@ -67,7 +71,7 @@ public class Task {
 		this.heureDebut = heureDebut;
 	}
 
-	public void setImage(Drawable image) {
+	public void setImage(int image) {
 		this.image = image;
 	}
 	
@@ -84,6 +88,17 @@ public class Task {
 	 */
 	public int getXbegin(int W, double h0, double h1){
 		return (int) ((W/(h1-h0))*heureDebut - (h0*W)/(h1-h0));
+	}
+	
+	/**
+	 * Donne la position en pixel du debut de l'activite sur la frise
+	 * @param W longueur de la frise en pixel
+	 * @param h0 heure de debut de la frise
+	 * @param h1 heure de fin de la frise
+	 * @return la position du debut
+	 */
+	public static int getXHour(int W, double h0, double h1,double heure){
+		return (int) ((W/(h1-h0))*heure - (h0*W)/(h1-h0));
 	}
 	
 	/**
@@ -115,7 +130,7 @@ public class Task {
 	 * @return
 	 */
 	public static ArrayList<Task> createTasksLouise(Context c){
-		Drawable image = c.getResources().getDrawable(R.drawable.image_dejeuner);
+		int image = R.drawable.dejeuner;
 		Task t1 = new Task("Réveil", "C'est l'heure de se réveiller et de se préparer",1,8,image);
 		Task t2 = new Task("Accueil", "Tous les enfants arrivent à l'école",1,9,image);
 		Task t3 = new Task("Activites manuelles", "On fait des activités manuelles",2,10,image);
@@ -147,7 +162,7 @@ public class Task {
 	 * @return
 	 */
 	public static ArrayList<Task> createTasksRomain(Context c){
-		Drawable image = c.getResources().getDrawable(R.drawable.image_dejeuner);
+		int image = R.drawable.dejeuner;
 		Task t1 = new Task("Réveil", "C'est l'heure de se réveiller et de se préparer",1,8,image);
 		Task t2 = new Task("Accueil", "Tous les enfants arrivent à l'école",2,9,image);
 		Task t3 = new Task("Jeux", "On fait des activités manuelles et des jeux",1,11,image);
@@ -173,17 +188,6 @@ public class Task {
 		return tasks;
 		
 	}
-	
-	/**
-	 * Verifie si un planning est correct, qu'il n'y a pas de chevauchement d'activites
-	 * @param myTasks le planning a tester
-	 * @return si oui ou non le planning est correct
-	 */
-	public static boolean isPlanningValid(ArrayList<Task> myTasks){
-		/* A faire */
-		return false;
-	}
-	
 	
 	/**
 	 * Trouve une activite dans un planning relativement a une activite donne

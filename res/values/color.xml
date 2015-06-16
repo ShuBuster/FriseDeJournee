@@ -4,6 +4,8 @@
     <color name="translucide">#00000000</color>
     <color name="blanc">#FFFFFF</color>
     <color name="rose">#EE4775</color>
+    <color name="bleu_frise">#109BD2</color>
+    <color name="bleu_lagon">#6AFFD3</color>
     <color name="fushia">#D91B5B</color>
     <color name="blanc_casse">#E8E3DA</color>
     <color name="noir">#000000</color>
@@ -23,7 +25,7 @@
     <color name="pink7">#870D4E</color>
     <color name="purple1">#B967C7</color>
     <color name="purple2">#B967C7</color>
-        <color name="violet">#9B26AF</color>
+    <color name="violet">#9B26AF</color>
     <color name="purple3">#9B26AF</color>
     <color name="purple4">#8D23A9</color>
     <color name="purple5">#7A1EA1</color>
@@ -120,6 +122,5 @@
     <color name="grey5">#606060</color>
     <color name="grey6">#414141</color>
     <color name="grey7">#202020</color>
-    
 
 </resources>

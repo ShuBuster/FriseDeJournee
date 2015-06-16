@@ -3,37 +3,25 @@
     android:id="@+id/parent_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple6"
+    android:background="@color/purple4"
     android:clipChildren="true"
     tools:context="${relativePackage}.${activityClass}" >
 
-        <ImageView 
+    <ImageView
         android:id="@+id/logo_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="@drawable/logo_app"
-        android:visibility="invisible"
-        />
-    
+        android:visibility="invisible" />
+
     <RelativeLayout
         android:id="@+id/slide_top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/blanc_casse"
-        android:visibility="invisible"
-        android:elevation="20dp" >
-
-        <TextView
-            android:id="@+id/texte"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:text="@string/titre_frise"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/fushia"
-            android:textSize="50sp" />
+        android:elevation="20dp"
+        android:visibility="invisible" >
 
         <RelativeLayout
             android:id="@+id/embleme"
@@ -91,34 +79,7 @@
             android:contentDescription="@drawable/frise_target"
             android:elevation="8dp"
             android:scaleType="fitXY"
-            android:src="@drawable/frise_target" />
-
-        <Button
-            android:id="@+id/bouton_manual"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="45dp"
-            android:layout_toEndOf="@id/frise"
-            android:background="@drawable/manual" />
-
-        <Button
-            android:id="@+id/bouton_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@id/frise"
-            android:layout_below="@id/frise"
-            android:background="@drawable/fleche_droite"
-            android:visibility="invisible" />
-
-        <Button
-            android:id="@+id/bouton_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@id/frise"
-            android:layout_below="@id/frise"
-            android:background="@drawable/fleche_gauche"
-            android:visibility="invisible" /> />
+            android:src="@drawable/new_scope" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -159,15 +120,16 @@
 
         <TextView
             android:id="@+id/titreTask"
+            style="@style/lightTextShadow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/frame"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
-            android:elevation="8dp"
+            android:elevation="9dp"
             android:text=""
             android:textColor="@color/jaune1"
-            android:textSize="60sp" />
+            android:textSize="70sp" />
 
         <ImageView
             android:id="@+id/imageTask"
@@ -176,7 +138,8 @@
             android:layout_alignBottom="@id/frame"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="50dp"
-            android:contentDescription="@drawable/image_dejeuner"
+            android:layout_marginTop="240dp"
+            android:adjustViewBounds="true"
             android:elevation="8dp" />
 
         <LinearLayout
@@ -310,44 +273,34 @@
             </LinearLayout>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/bouton_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <RelativeLayout
+            android:id="@+id/aide_parent"
+            style="@style/wrapped"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/home"
-            android:elevation="12dp"
-            android:stateListAnimator="@null" />
+            android:clipChildren="false"
+            android:elevation="12dp" >
 
-        <Button
-            android:id="@+id/bouton_aide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
-            android:layout_marginStart="67dp"
-            android:layout_toEndOf="@id/bouton_menu"
-            android:background="@drawable/help"
-            android:elevation="12dp"
-            android:stateListAnimator="@null" />
+            <Button
+                android:id="@+id/bouton_menu"
+                style="@style/wrapped"
+                android:background="@drawable/home"
+                android:elevation="1dp"
+                android:stateListAnimator="@null" />
 
-        <Button
-            android:id="@+id/bouton_retour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
-            android:layout_marginStart="420dp"
-            android:background="@drawable/back"
-            android:elevation="12dp"
-            android:stateListAnimator="@null" />
+            <Button
+                android:id="@+id/bouton_aide"
+                style="@style/wrapped"
+                android:layout_marginStart="100dp"
+                android:layout_toEndOf="@id/bouton_menu"
+                android:background="@drawable/help"
+                android:stateListAnimator="@null" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/information"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/wrapped"
             android:layout_alignBottom="@id/frame"
             android:layout_alignEnd="@id/frame"
             android:layout_alignStart="@+id/gnar"
@@ -399,18 +352,48 @@
             android:text="Description"
             android:textAllCaps="false"
             android:textColor="@color/noir"
-            android:textSize="20sp" />
+            android:textSize="30sp" />
 
         <RelativeLayout
             android:id="@id/gnar"
-            android:clipChildren="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="20dp"
             android:layout_marginEnd="20dp"
+            android:clipChildren="false"
             android:elevation="8dp" />
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/slide_right"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/slide_top"
+        android:alpha="0.9"
+        android:background="@color/blanc_casse" >
+
+        <LinearLayout
+            android:id="@+id/liste_activite"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:layout_marginTop="50dp"
+            android:orientation="vertical" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/bouton_sommaire"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/slide_right"
+        android:layout_marginTop="110dp"
+        android:layout_toLeftOf="@id/slide_right"
+        android:alpha="0.9"
+        android:text="Sommaire"
+        android:visibility="invisible" />
 
 </RelativeLayout>
