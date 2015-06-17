@@ -27,13 +27,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import boutons.ButtonCreator;
+import boutons.Bouton;
 import boutons.ExitApplicationListener;
 
-import composants.Animate;
+import composants.Animer;
 import composants.AnimatedGnar;
 import composants.AnimatedText;
-import composants.BulleCreator;
+import composants.Bulle;
 
 public class MenuActivity extends Activity {
 
@@ -91,7 +91,7 @@ public class MenuActivity extends Activity {
 			array_spinner[i] = emplois.get(i).getNomEnfant();
 		}
 
-		final TextView bulle = BulleCreator.createBubble(mySpinner, "Choisis ton prénom dans la liste",
+		final TextView bulle = Bulle.create(mySpinner, "Choisis ton prénom dans la liste",
 				"right", true, this);
 		ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
 				this, R.layout.spinner_item_text, array_spinner);
@@ -103,7 +103,7 @@ public class MenuActivity extends Activity {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-		            BulleCreator.destroyBubble(bulle, a);
+		            Bulle.destroy(bulle, a);
 		        }
 				executeDelayed();
 		        return false;
@@ -111,7 +111,7 @@ public class MenuActivity extends Activity {
 		});
 		
 		/* Boutons et titre */
-		Drawable bouton_go_d = ButtonCreator.roundedDrawable(this,getResources().getColor(R.color.light_blue3),1f);
+		Drawable bouton_go_d = Bouton.roundedDrawable(this,getResources().getColor(R.color.light_blue3),1f);
 		final Button boutonGo = (Button) findViewById(R.id.go);
 		boutonGo.setBackground(bouton_go_d);
 		boutonGo.setTypeface(externalFont);
@@ -120,7 +120,7 @@ public class MenuActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
-				Drawable bouton_go_pressed = ButtonCreator.pressedRoundedDrawable(a,getResources().getColor(R.color.light_blue3),1f);
+				Drawable bouton_go_pressed = Bouton.pressedRoundedDrawable(a,getResources().getColor(R.color.light_blue3),1f);
 				boutonGo.setBackground(bouton_go_pressed);
 				
 				/* Recuperation du nom de l'enfant selectione */
@@ -129,7 +129,7 @@ public class MenuActivity extends Activity {
 
 				/* animation rideau sur l'ecran violet */
 				RelativeLayout slide_top = (RelativeLayout) findViewById(R.id.slide_top);
-				Animate.translateDecelerate(slide_top, 0, 0, 0, -H/3, 700);
+				Animer.translateDecelerate(slide_top, 0, 0, 0, -H/3, 700);
 				
 				RelativeLayout slide_bottom = (RelativeLayout) findViewById(R.id.slide_bottom);
 				TranslateAnimation trans = new TranslateAnimation(0, 0, 0, H*1.1f);
@@ -165,8 +165,8 @@ public class MenuActivity extends Activity {
 
 		// Bouton exit //
 		Button exit = (Button) findViewById(R.id.exit);
-		Drawable exit_d = ButtonCreator.roundedDrawable(this,getResources().getColor(R.color.amber5),0.5f);
-		Drawable exit_pressed = ButtonCreator.pressedRoundedDrawable(this,getResources().getColor(R.color.amber5),0.5f);
+		Drawable exit_d = Bouton.roundedDrawable(this,getResources().getColor(R.color.amber5),0.5f);
+		Drawable exit_pressed = Bouton.pressedRoundedDrawable(this,getResources().getColor(R.color.amber5),0.5f);
 		exit.setBackground(exit_d);
 		exit.setTypeface(externalFont);
 		exit.setTextSize(30);
@@ -175,7 +175,7 @@ public class MenuActivity extends Activity {
 		
 		/* Apparition du logo bouton */
 		final Button logo_bouton = (Button) findViewById(R.id.logo_bouton);
-		Animate.fade_in(logo_bouton,1000);
+		Animer.fade_in(logo_bouton,1000);
 		AlphaAnimation alpha = new AlphaAnimation(0, 1);
 		alpha.setDuration(1000);
 		alpha.setAnimationListener(new AnimationListener() {
@@ -194,11 +194,11 @@ public class MenuActivity extends Activity {
 				/* Arrivée du menu par le haut et le bas*/
 				RelativeLayout slide_top = (RelativeLayout) findViewById(R.id.slide_top);
 				slide_top.setVisibility(View.VISIBLE);
-				Animate.translateDecelerate(slide_top, 0, -H/3, 0, 0, 1000,200);
+				Animer.translateDecelerate(slide_top, 0, -H/3, 0, 0, 1000,200);
 				RelativeLayout slide_bottom = (RelativeLayout) findViewById(R.id.slide_bottom);
 				slide_bottom.setVisibility(View.VISIBLE);
-				Animate.translateDecelerate(slide_bottom, 0, H*1.1f, 0, 0, 1800,600);
-				Animate.fade_out(logo_bouton, 500, true);
+				Animer.translateDecelerate(slide_bottom, 0, H*1.1f, 0, 0, 1800,600);
+				Animer.fade_out(logo_bouton, 500, true);
 			}
 		});
 		logo_bouton.startAnimation(alpha);
@@ -206,15 +206,15 @@ public class MenuActivity extends Activity {
 		// Animation titre
 		LinearLayout layout_titre = (LinearLayout) findViewById(R.id.titre);
 		int[] colors = {R.color.light_green3,R.color.light_green4,R.color.light_green5,R.color.green4,R.color.green5,R.color.blue3,R.color.blue5,R.color.red2,R.color.pink2,R.color.pink3,R.color.red3,R.color.pink4,R.color.red4,R.color.red5,};
-		AnimatedText.addAnimatedText(this, layout_titre,"Frise de journee",colors, 80);
+		AnimatedText.add(this, layout_titre,"Frise de journee",colors, 80);
 		
 		// Animation Gnar
 		RelativeLayout gnar = (RelativeLayout) findViewById(R.id.gnar);
-		AnimatedGnar.addAnimatedGnar(this, gnar);
+		AnimatedGnar.addGnar(this, gnar);
 		
 		// Animation mini Gnar
 		RelativeLayout mini_gnar = (RelativeLayout) findViewById(R.id.baby_gnar);
-		AnimatedGnar.addAnimatedMiniGnar(this, mini_gnar);
+		AnimatedGnar.addMiniGnar(this, mini_gnar);
 	}
 
 	@Override
@@ -222,7 +222,7 @@ public class MenuActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		final Button boutonGo = (Button) findViewById(R.id.go);
-		Drawable bouton_go_d = ButtonCreator.roundedDrawable(this,getResources().getColor(R.color.light_blue3),1f);
+		Drawable bouton_go_d = Bouton.roundedDrawable(this,getResources().getColor(R.color.light_blue3),1f);
 		boutonGo.setBackground(bouton_go_d);
 		executeDelayed();
 
