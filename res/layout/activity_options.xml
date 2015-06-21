@@ -1,0 +1,32 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/purple4"
+    android:clipChildren="false"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <Button
+        android:id="@+id/logo_bouton"
+        style="@style/wrapped"
+        android:layout_centerInParent="true"
+        android:background="@drawable/logo_app"
+        android:visibility="invisible" />
+
+    <RelativeLayout
+        android:id="@+id/parent"
+        style="@style/wrapped" >
+
+        <Button
+            android:id="@+id/bouton_menu"
+            style="@style/wrapped"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text=" Valider "
+            android:textColor="@color/blanc_casse"
+            android:textSize="50sp"
+            android:layout_marginTop="10dp" >
+        </Button>
+    </RelativeLayout>
+
+</RelativeLayout>
