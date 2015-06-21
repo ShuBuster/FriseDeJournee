@@ -12,6 +12,8 @@
         android:layout_centerInParent="true"
         android:background="@drawable/logo_app"
         android:visibility="invisible" />
+    
+    
 
     <RelativeLayout
         android:id="@+id/slide_top"
@@ -44,6 +46,17 @@
         android:clipChildren="false"
         android:elevation="1dp" >
 
+        <Button
+        android:id="@+id/options_bouton"
+        style="@style/wrapped"
+        android:layout_above="@id/gnar"
+        android:layout_alignRight="@id/gnar"
+        android:textSize="30sp"
+        android:layout_marginRight="30dp"
+        android:textColor="@color/blanc"
+        android:text="Options"
+          />
+        
         <TextView
             android:id="@+id/sous_titre"
             style="@style/wrapped"

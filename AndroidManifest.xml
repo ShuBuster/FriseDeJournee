@@ -28,11 +28,11 @@
             android:label="@string/title_activity_frise" >
         </activity>
         <activity
-            android:name="com$Atlas$framework$BoutonsActivity"
+            android:name=".com$Atlas$framework$BoutonsActivity"
             android:label="@string/title_activity_second" >
         </activity>
         <activity
-            android:name="com$Atlas$framework$CustomMenuActivity"
+            android:name=".com$Atlas$framework$CustomMenuActivity"
             android:label="@string/title_activity_third" >
         </activity>
         <activity
@@ -40,20 +40,24 @@
             android:label="@string/title_activity_test" >
         </activity>
         <activity
-            android:name="com$Atlas$framework$DragAndDropActivity"
+            android:name=".com$Atlas$framework$DragAndDropActivity"
             android:label="@string/title_activity_drag_and_drop" >
         </activity>
         <activity
-            android:name="com$Atlas$framework$FullScreenActivity"
+            android:name=".com$Atlas$framework$FullScreenActivity"
             android:label="@string/title_activity_full_screen" >
         </activity>
         <activity
-            android:name="com$Atlas$framework$TTSActivity"
+            android:name=".com$Atlas$framework$TTSActivity"
             android:label="@string/title_activity_tts" >
         </activity>
         <activity
-            android:name="com$Atlas$framework$GlowActivity"
+            android:name=".com$Atlas$framework$GlowActivity"
             android:label="@string/title_activity_glow" >
+        </activity>
+        <activity
+            android:name=".OptionsActivity"
+            android:label="@string/title_activity_options" >
         </activity>
     </application>
 

@@ -19,43 +19,18 @@
         android:id="@+id/slide_top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:background="@color/blanc_casse"
         android:elevation="20dp"
         android:visibility="invisible" >
 
         <RelativeLayout
-            android:id="@+id/embleme"
+            android:id="@+id/horloge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="15dp" >
 
-            <ImageView
-                android:id="@+id/etoile"
-                android:layout_width="155dp"
-                android:layout_height="155dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/etoile"
-                android:contentDescription="@drawable/etoile" />
-
-            <ImageView
-                android:id="@+id/cercle"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/cercle"
-                android:contentDescription="@drawable/cercle"
-                android:elevation="5dp" />
-
-            <TextView
-                android:id="@+id/nom_enfant"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:elevation="5dp"
-                android:textAlignment="center"
-                android:textColor="@color/purple6"
-                android:textSize="35sp" />
         </RelativeLayout>
 
         <LinearLayout
@@ -64,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="67dp"
-            android:layout_toEndOf="@id/embleme"
+            android:layout_toEndOf="@id/horloge"
             android:background="@drawable/frise"
             android:elevation="8dp"
             android:orientation="horizontal"
