@@ -298,16 +298,19 @@ public class FriseActivity extends Activity {
 		
 		// Sommaire
 		LinearLayout liste_activite = (LinearLayout) findViewById(R.id.liste_activite);
+		int indice = 0;
 		for(Task task : myTasks){
-			TextView txt_activite = new TextView(getApplicationContext());
+			Button txt_activite = new Button(getApplicationContext());
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			params.setMarginStart(50);
 			txt_activite.setLayoutParams(params);
 			txt_activite.setText(formatHour(task.getHeureDebut())+" - "+formatHour(task.getHeureFin())+"   "+task.getNom());
 			txt_activite.setTextColor(getResources().getColor(R.color.fushia));
-			txt_activite.setTextSize(30f);
+			txt_activite.setTextSize(40f);
+			txt_activite.setOnClickListener(new TaskListener(indice, this));
 			Police.setFont(this, txt_activite, "intsh.ttf");
 			liste_activite.addView(txt_activite);
+			indice++;
 		}
 		
 		//Sortie du sommaire
@@ -1174,29 +1177,6 @@ public class FriseActivity extends Activity {
 		shape.setIntrinsicWidth((int) (W_horloge*1.1));
 		shape.getPaint().setColor(getResources().getColor(colorId));
 		img.setBackground(shape);
-	}
-	
-	public void test(){
-		ImageView img = new ImageView(this);
-		TranslateAnimation translation = new TranslateAnimation(0, 10, 0, 20);
-		translation.setAnimationListener(new AnimationListener() {
-			
-			@Override
-			public void onAnimationStart(Animation animation) {
-				// Code à exécuter au démarrage de l'animation
-			}
-			
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-				// Code à exécuter à chaque répétition
-			}
-			
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				// Code à exécuter lors de la fin de l'animation
-			}
-		});
-		img.startAnimation(translation);
 	}
 	
 }
