@@ -25,13 +25,9 @@ import composants.Ecran;
 import composants.MyLayoutParams;
 import composants.Police;
 
-import custom.FabriqueMenu;
-import custom.Menu;
-import custom.TypeMenu;
 
 public class OptionsActivity extends Activity {
 
-	private Menu m;
 	private int H;
 
 	@Override
@@ -53,25 +49,24 @@ public class OptionsActivity extends Activity {
 		display.getSize(size);
 		H = size.y;
 		
-		final RelativeLayout parent = (RelativeLayout) findViewById(R.id.parent);
 		// on cree le menu d'options
 		
-		try {
-			m = FabriqueMenu.create(TypeMenu.Options, this);
-		} catch (IllegalArgumentException | InstantiationException
-				| IllegalAccessException e) {
-
-			e.printStackTrace();
-		}
+		MenuOptions m = new MenuOptions(this,options);
 
 		
-		m.createMenu(parent);
-		m.addTitre("OPTIONS GNAR !!  ");
-		final RadioGroup gnar = (RadioGroup) m.addButton("gnar", 1);
-		final RadioGroup horloge = (RadioGroup) m.addButton("horloge", 3);
-		final RadioGroup son = (RadioGroup) m.addButton("son", 5);
-		final RadioGroup bulle = (RadioGroup) m.addButton("bulle", 2);
-		final RadioGroup sommaire = (RadioGroup) m.addButton("sommaire", 4);
+		m.createMenu();
+		m.addTitre(" OPTIONS ");
+		final RadioGroup gnar = (RadioGroup) m.addOption("gnar", 1);
+		final RadioGroup horloge = (RadioGroup) m.addOption("horloge", 3);
+		final RadioGroup son = (RadioGroup) m.addOption("son", 5);
+		final RadioGroup bulle = (RadioGroup) m.addOption("bulle", 2);
+		final RadioGroup sommaire = (RadioGroup) m.addOption("sommaire", 4);
+		
+		final RelativeLayout slide_bottom = (RelativeLayout)findViewById(R.id.slide_bottom);
+		RelativeLayout slide_top = (RelativeLayout)findViewById(R.id.slide_top);
+		slide_bottom.addView(m.getSlide());
+		slide_top.addView(m.getTitre());
+		
 		
 		
 		gnar.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -113,21 +108,30 @@ public class OptionsActivity extends Activity {
 		
 		/* Apparition du logo bouton */
 		Button logo_bouton = (Button) findViewById(R.id.logo_bouton);
-		Animer.activityApparitionAnimation(logo_bouton,parent,null,H);
+		Animer.activityApparitionAnimation(logo_bouton,slide_bottom,slide_top,H);
 
+		// bouton de validation des options
+		Button bouton_menu = Bouton.createRoundedButton(this, R.color.amber7);
+		bouton_menu.setText(" Valider ");
+		bouton_menu.setTextSize(30);
+		bouton_menu.setTextColor(this.getResources().getColor(R.color.blanc_casse));
+		MyLayoutParams menu_params = new MyLayoutParams().centerHorizontal();
+		menu_params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		menu_params.setMargins(0, 20, 0, 0);
+		bouton_menu.setLayoutParams(menu_params);
+		Police.setFont(this, bouton_menu, "intsh.ttf");
 		
-		Button bouton_menu = (Button) findViewById(R.id.bouton_menu);
-		Drawable bouton_d = Bouton.roundedDrawable(this, getResources()
-				.getColor(R.color.amber7), 0.5f);
-		bouton_menu.setBackground(bouton_d);
-			Police.setFont(this, bouton_menu, "intsh.ttf");
+		slide_top.addView(bouton_menu);
+		
 		
 		bouton_menu.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 
 				// on recupere les parametres d'options
-				Animer.changeActivityAnimation(parent, MenuActivity.class,
+				RelativeLayout slide_top = (RelativeLayout) findViewById(R.id.slide_top);
+				Animer.translateDecelerate(slide_top, 0, 0, 0, -H / 3, 700);
+				Animer.changeActivityAnimation(slide_bottom, MenuActivity.class,
 						options, "options", null, null);
 			}
 		});
