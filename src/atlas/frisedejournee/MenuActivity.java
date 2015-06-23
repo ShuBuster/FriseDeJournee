@@ -127,8 +127,7 @@ public class MenuActivity extends Activity {
 		});
 
 		/* Boutons et titre */
-		Drawable bouton_go_d = Bouton.roundedDrawable(this, getResources()
-				.getColor(R.color.light_blue3), 1f);
+		Drawable bouton_go_d = Bouton.roundedDrawable(this, R.color.light_blue3, 1f);
 		final Button boutonGo = (Button) findViewById(R.id.go);
 		boutonGo.setBackground(bouton_go_d);
 		boutonGo.setTypeface(externalFont);
@@ -137,8 +136,7 @@ public class MenuActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
-				Drawable bouton_go_pressed = Bouton.pressedRoundedDrawable(a,
-						getResources().getColor(R.color.light_blue3), 1f);
+				Drawable bouton_go_pressed = Bouton.pressedRoundedDrawable(a,R.color.light_blue3, 1f);
 				boutonGo.setBackground(bouton_go_pressed);
 
 				/* Recuperation du nom de l'enfant selectione */
@@ -160,8 +158,7 @@ public class MenuActivity extends Activity {
 
 		// Bouton des options
 		Button bouton_options = (Button) findViewById(R.id.options_bouton);
-		Drawable option_d = Bouton.roundedDrawable(this, getResources()
-				.getColor(R.color.amber7), 0.5f);
+		Drawable option_d = Bouton.roundedDrawable(this,R.color.amber7, 0.5f);
 		bouton_options.setBackground(option_d);
 		Police.setFont(a, bouton_options, "intsh.ttf");
 		bouton_options.setOnClickListener(new OnClickListener() {
@@ -177,10 +174,8 @@ public class MenuActivity extends Activity {
 
 		// Bouton exit //
 		Button exit = (Button) findViewById(R.id.exit);
-		Drawable exit_d = Bouton.roundedDrawable(this,
-				getResources().getColor(R.color.amber5), 0.5f);
-		Drawable exit_pressed = Bouton.pressedRoundedDrawable(this,
-				getResources().getColor(R.color.amber5), 0.5f);
+		Drawable exit_d = Bouton.roundedDrawable(this,R.color.amber5, 0.5f);
+		Drawable exit_pressed = Bouton.pressedRoundedDrawable(this,R.color.amber5, 0.5f);
 		exit.setBackground(exit_d);
 		exit.setTypeface(externalFont);
 		exit.setTextSize(30);
@@ -224,8 +219,7 @@ public class MenuActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		final Button boutonGo = (Button) findViewById(R.id.go);
-		Drawable bouton_go_d = Bouton.roundedDrawable(this, getResources()
-				.getColor(R.color.light_blue3), 1f);
+		Drawable bouton_go_d = Bouton.roundedDrawable(this, R.color.light_blue3, 1f);
 		boutonGo.setBackground(bouton_go_d);
 		executeDelayed();
 		Ecran.fullScreenResume(this);

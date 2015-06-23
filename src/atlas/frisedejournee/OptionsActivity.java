@@ -117,8 +117,7 @@ public class OptionsActivity extends Activity {
 
 		
 		Button bouton_menu = (Button) findViewById(R.id.bouton_menu);
-		Drawable bouton_d = Bouton.roundedDrawable(this, getResources()
-				.getColor(R.color.amber7), 0.5f);
+		Drawable bouton_d = Bouton.roundedDrawable(this,R.color.amber7, 0.5f);
 		bouton_menu.setBackground(bouton_d);
 			Police.setFont(this, bouton_menu, "intsh.ttf");
 		
