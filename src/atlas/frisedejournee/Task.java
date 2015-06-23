@@ -14,11 +14,11 @@ public class Task implements Serializable{
 	private String description; // description de l'activite en quelques mots
 	private double duree; // duree de l'activite en heure
 	private double heureDebut; // heure du debut de l'activite
-	private int image; // une image illustrant l'activite
+	private String image; // une image illustrant l'activite
 	private int couleur; // la couleur de l'activite dans la frise
 	
 	public Task(String nom, String description, double duree, double heureDebut,
-			int image) {
+			String image) {
 		this.nom = nom;
 		this.description = description;
 		this.duree = duree;
@@ -47,7 +47,7 @@ public class Task implements Serializable{
 		return heureDebut+duree;
 	}
 	
-	public int getImage() {
+	public String getImage() {
 		return image;
 	}
 	
@@ -71,7 +71,7 @@ public class Task implements Serializable{
 		this.heureDebut = heureDebut;
 	}
 
-	public void setImage(int image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 	
@@ -125,70 +125,7 @@ public class Task implements Serializable{
 		return begin + width/2;
 	}
 	
-	/**
-	 * Cree un planning par defaut
-	 * @return
-	 */
-	public static ArrayList<Task> createTasksLouise(Context c){
-		int image = R.drawable.dejeuner;
-		Task t1 = new Task("Réveil", "C'est l'heure de se réveiller et de se préparer",1,8,image);
-		Task t2 = new Task("Accueil", "Tous les enfants arrivent à l'école",1,9,image);
-		Task t3 = new Task("Activites manuelles", "On fait des activités manuelles",2,10,image);
-		Task t4 = new Task("Déjeuner", "C'est l'heure de manger !",1,12,image);
-		Task t5 = new Task("Theatre", "On apprend a jouer la comedie",1.5,13,image);
-		Task t6 = new Task("Cours de danse", "J'apprends la danse classique",1.75,14.5,image);
-		Task t7 = new Task("Pause", "On prend une pause pour se détendre",0.75,16.25,image);
-		Task t8 = new Task("Cours de chant", "On fait des vocalises",1,17,image);
-		Task t9 = new Task("Retour à la maison", "On rentre à la maison pour se reposer !",1,18,image);
-		Task t10 = new Task("Soiree", "On mange, les dents et au lit !",2,19,image);
 		
-		ArrayList<Task> tasks = new ArrayList<Task>();
-		tasks.add(t1);
-		tasks.add(t2);
-		tasks.add(t3);
-		tasks.add(t4);
-		tasks.add(t5);
-		tasks.add(t6);
-		tasks.add(t7);
-		tasks.add(t8);
-		tasks.add(t9);
-		tasks.add(t10);
-		return tasks;
-		
-	}
-	
-	/**
-	 * Cree un planning par defaut
-	 * @return
-	 */
-	public static ArrayList<Task> createTasksRomain(Context c){
-		int image = R.drawable.dejeuner;
-		Task t1 = new Task("Réveil", "C'est l'heure de se réveiller et de se préparer",1,8,image);
-		Task t2 = new Task("Accueil", "Tous les enfants arrivent à l'école",2,9,image);
-		Task t3 = new Task("Jeux", "On fait des activités manuelles et des jeux",1,11,image);
-		Task t4 = new Task("Déjeuner", "C'est l'heure de manger !",1,12,image);
-		Task t5 = new Task("Temps libre", "On peut s'amuser librement après manger",1,13,image);
-		Task t6 = new Task("Cours de Maths", "On étudie les additions et les fractions",1,14,image);
-		Task t7 = new Task("Pause", "On prend une pause entre les deux leçons pour se détendre",0.5,15,image);
-		Task t8 = new Task("Français", "On étudie la conjugaison et on s'entraîne à la dictée",1,15.5,image);
-		Task t9 = new Task("Retour à la maison", "On rentre à la maison pour se reposer !",1,16.5,image);
-		Task t10 = new Task("Soiree", "On mange, les dents et au lit !",3.5,17.5,image);
-		
-		ArrayList<Task> tasks = new ArrayList<Task>();
-		tasks.add(t1);
-		tasks.add(t2);
-		tasks.add(t3);
-		tasks.add(t4);
-		tasks.add(t5);
-		tasks.add(t6);
-		tasks.add(t7);
-		tasks.add(t8);
-		tasks.add(t9);
-		tasks.add(t10);
-		return tasks;
-		
-	}
-	
 	/**
 	 * Trouve une activite dans un planning relativement a une activite donne
 	 * @param myTasks Le planning

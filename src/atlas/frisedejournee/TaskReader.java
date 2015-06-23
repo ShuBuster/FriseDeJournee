@@ -64,9 +64,7 @@ public class TaskReader {
 					
 					ligne = br.readLine();
 					String nomImage = ligne;
-					int imageId = context.getResources().getIdentifier(nomImage , "drawable", context.getPackageName());
-					//Drawable image = context.getResources().getDrawable(imageId);
-					Task myTask = new Task(nom, description, duree, heureDebut,imageId);
+					Task myTask = new Task(nom, description, duree, heureDebut,nomImage);
 					myTasks.add(myTask);
 					
 					ligne = br.readLine(); // passe le saut de ligne entre les requetes

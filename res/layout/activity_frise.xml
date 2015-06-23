@@ -30,7 +30,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginTop="15dp" >
-
         </RelativeLayout>
 
         <LinearLayout
@@ -350,13 +349,19 @@
         android:alpha="0.9"
         android:background="@color/blanc_casse" >
 
-        <LinearLayout
-            android:id="@+id/liste_activite"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:layout_marginTop="50dp"
-            android:orientation="vertical" />
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:elevation="20dp" >
+
+            <LinearLayout
+                android:id="@+id/liste_activite"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="50dp"
+                android:layout_marginTop="50dp"
+                android:orientation="vertical" />
+        </ScrollView>
     </RelativeLayout>
 
     <Button
