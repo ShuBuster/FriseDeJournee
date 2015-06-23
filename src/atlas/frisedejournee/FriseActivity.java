@@ -349,7 +349,7 @@ public class FriseActivity extends Activity {
 			txt_activite.setText(formatHour(task.getHeureDebut()) + " - "
 					+ formatHour(task.getHeureFin()) + "   " + task.getNom());
 			txt_activite.setTextColor(getResources().getColor(R.color.fushia));
-			txt_activite.setTextSize(30f);
+			txt_activite.setTextSize(20f);
 			txt_activite.setLayerPaint(new Paint(getResources().getColor(R.color.grey1)));
 			txt_activite.setOnClickListener(new TaskListener(indice, FriseActivity.this));
 			Police.setFont(this, txt_activite, "intsh.ttf");
