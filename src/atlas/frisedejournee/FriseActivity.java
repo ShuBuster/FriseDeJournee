@@ -2,6 +2,7 @@ package atlas.frisedejournee;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -15,7 +16,6 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.PaintDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.ArcShape;
 import android.os.Build;
@@ -32,9 +32,9 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
@@ -46,6 +46,7 @@ import boutons.NextActivityListener;
 import boutons.TTSBouton;
 
 import composants.AnimatedGnar;
+import composants.AnimatedText;
 import composants.Animer;
 import composants.Bulle;
 import composants.Couleur;
@@ -232,8 +233,10 @@ public class FriseActivity extends Activity {
 		currentTask = findCurrentTask();
 		if (!(currentTask == null)) {
 			scopedTask = currentTask;
-			drawRange();
-			drawProgress();
+			if(options.getHorloge()){
+				drawRange();
+				drawProgress();
+			}
 			replaceScope(); // place le scope sur la tache
 			displayTask(); // affiche les infos de la tache
 			displayHour(); // afiche l'heure de la tache
@@ -349,7 +352,8 @@ public class FriseActivity extends Activity {
 			txt_activite.setText(formatHour(task.getHeureDebut()) + " - "
 					+ formatHour(task.getHeureFin()) + "   " + task.getNom());
 			txt_activite.setTextColor(getResources().getColor(R.color.fushia));
-			txt_activite.setTextSize(20f);
+			txt_activite.setTextSize(28f);
+			txt_activite.setId(200+indice);
 			txt_activite.setLayerPaint(new Paint(getResources().getColor(R.color.grey1)));
 			txt_activite.setOnClickListener(new TaskListener(indice, FriseActivity.this));
 			Police.setFont(this, txt_activite, "intsh.ttf");
@@ -391,13 +395,30 @@ public class FriseActivity extends Activity {
 		}
 
 		// affichage de l'horloge à l'heure
-		RelativeLayout horloge = (RelativeLayout) findViewById(R.id.horloge);
+		final RelativeLayout horloge = (RelativeLayout) findViewById(R.id.horloge);
 		if (options.getHorloge()) {
 			final Calendar now = Calendar.getInstance();
 			Horloge.create(horloge, this, now.get(Calendar.HOUR_OF_DAY),
-					now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
-			if (options.getSound())
-				TTSBouton.parle(horloge, Horloge.dateActuelle(), this);
+					now.get(Calendar.MINUTE), 0);
+			tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+				@Override
+				public void onInit(int status) {
+					if (status != TextToSpeech.ERROR) {
+						tts.setLanguage(Locale.FRANCE);
+					}
+				}
+			});
+			horloge.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					moveScopeToCurrentTask();
+					if (options.getSound()){
+						String t = Horloge.dateActuelle();
+						tts.speak(t, TextToSpeech.QUEUE_FLUSH, null);
+						}
+					}
+				});
+
 			// drawProgression();
 		} else {
 			horloge.setVisibility(View.INVISIBLE);
@@ -555,10 +576,10 @@ public class FriseActivity extends Activity {
 			// Affiche progression si tache courante sinon enleve
 			Task actual_task = findCurrentTask();
 
-			if (scopedTask == actual_task) {
+			if (scopedTask == actual_task && options.getHorloge()) {
 				drawRange();
 				drawProgress();
-			} else {
+			} else if(options.getHorloge()){
 				removeProgression();
 			}
 
@@ -577,14 +598,9 @@ public class FriseActivity extends Activity {
 			int XDelta = nextScopedTask.getXbegin(W, h0, h1)
 					- oldScopedTask.getXbegin(W, h0, h1);
 			TranslateAnimation translate = null;
-			if (XDelta >= 0) {
-				translate = new TranslateAnimation(0, (XDelta) + pas
+			translate = new TranslateAnimation(0, (XDelta) + pas
 						* (x1 / x2) * margin + 7, 0, 0);
-			} else {
-				translate = new TranslateAnimation(0, (XDelta) * (x1 / x2)
-						+ pas * (x1 / x2) * margin + 7, 0, 0);
-			}
-			animationSet.addAnimation(translate);
+
 
 			// Mise a l'echelle
 
@@ -593,13 +609,13 @@ public class FriseActivity extends Activity {
 			ScaleAnimation scale = null;
 			if (XDelta >= 0) {
 				scale = new ScaleAnimation(1f, ratioF, 1f, 1f,
-						ScaleAnimation.RELATIVE_TO_SELF, 1f,
-						ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
+						ScaleAnimation.RELATIVE_TO_SELF, 0f,
+						ScaleAnimation.RELATIVE_TO_SELF, 0f);
 			} else {
 				scale = new ScaleAnimation(1f, ratioF, 1f, 1f);
 			}
 			animationSet.addAnimation(scale);
-
+			animationSet.addAnimation(translate);
 			animationSet.setAnimationListener(new AnimationListener() {
 
 				@Override
@@ -630,13 +646,11 @@ public class FriseActivity extends Activity {
 	 * Fait revenir le scope a la tache courante avec animation
 	 */
 	public void moveScopeToCurrentTask() {
-		Task currentTask = findCurrentTask();
-		int pas = Task.indexOfTask(myTasks, currentTask)
-				- Task.indexOfTask(myTasks, scopedTask);
-		Task beforeTask = scopedTask;
-		moveScope(pas);
-		changeHour(beforeTask.getHeureDebut());
-		displayTask();
+		Task currentT = findCurrentTask();
+		if(currentT!=null){
+			int index = Task.indexOfTask(myTasks,currentT);
+			taskClicked(index);
+		}
 	}
 
 	/**
@@ -920,14 +934,6 @@ public class FriseActivity extends Activity {
 		view.setLayoutParams(params);
 	}
 
-	@Override
-	public void onPause() {
-		if (tts != null) {
-			tts.stop();
-			tts.shutdown();
-		}
-		super.onPause();
-	}
 
 	@Override
 	/* L'activite revient sur le devant de la scene */
@@ -954,6 +960,10 @@ public class FriseActivity extends Activity {
 	public void setEnableTaskButton(boolean b) {
 		for (int i = 0; i < nbTask; i++) {
 			Button rectTask = (Button) findViewById(i);
+			Button sommaireTask = (Button) findViewById(200+i);
+			RelativeLayout horloge = (RelativeLayout) findViewById(R.id.horloge);
+			horloge.setEnabled(b);
+			sommaireTask.setEnabled(b);
 			rectTask.setEnabled(b);
 		}
 	}
@@ -1213,7 +1223,9 @@ public class FriseActivity extends Activity {
 	public void startTimer() {
 		timer = new Timer();
 		initializeTimerTask();
-		timer.schedule(timerTask, 60000, 60000); //
+		Calendar now = Calendar.getInstance();
+		int s = 1000*now.get(Calendar.SECOND);
+		timer.schedule(timerTask, 60000-s, 60000); //
 	}
 
 	public void stoptimertask(View v) {
@@ -1232,16 +1244,12 @@ public class FriseActivity extends Activity {
 				// use a handler to run a toast that shows the current timestamp
 				handler.post(new Runnable() {
 					public void run() {
-						if (options.getHorloge())
+						if (options.getHorloge()){
 							Horloge.incrementMin(a);
-						drawProgress();
-						if (scopedTask != findCurrentTask()) { // On cache si on
-																// est pas sur
-																// l'activité
-																// courante
-							ImageView progress = (ImageView) findViewById(90);
-							if (progress != null) {
-								progress.setVisibility(View.INVISIBLE);
+							drawProgress();
+						if (scopedTask != findCurrentTask()) {
+								removeProgression();
+								moveScopeToCurrentTask();
 							}
 						}
 					}
@@ -1250,45 +1258,57 @@ public class FriseActivity extends Activity {
 		};
 	}
 
+	/**
+	 * affiche la plage horaire de l'activite en cours
+	 */
 	public void drawRange() {
 		RelativeLayout horloge = (RelativeLayout) findViewById(R.id.horloge);
 		ImageView ring = (ImageView) findViewById(89);
 		if (ring != null) { // not first time
 			ring.setVisibility(View.VISIBLE);
 		} else { // first time
+			MyLayoutParams params = new MyLayoutParams().centerHorizontal().centerVertical();
 			ring = new ImageView(this);
 			ring.setId(89);
-			horloge.addView(ring);
+			horloge.addView(ring,params);
 		}
 		// always
 		double hd = scopedTask.getHeureDebut();
 		double duree = scopedTask.getDuree();
-		setRingBack(ring, hd, duree, R.color.amber5);
+		setRingBack(ring, hd, duree, R.color.amber2,true);
 	}
 
+	/**
+	 * affiche la progression horaire
+	 */
 	public void drawProgress() {
 		RelativeLayout horloge = (RelativeLayout) findViewById(R.id.horloge);
 		ImageView progress = (ImageView) findViewById(90);
 		if (progress != null) {
 			progress.setVisibility(View.VISIBLE);
 		} else { // first time
+			MyLayoutParams params = new MyLayoutParams().centerHorizontal().centerVertical();
 			progress = new ImageView(this);
 			progress.setId(90);
-			horloge.addView(progress);
+			horloge.addView(progress,params);
 		}
 		// always
 		double hd = scopedTask.getHeureDebut();
 		double duree = getCurrentHour() - hd;
-		setRingBack(progress, hd, duree, R.color.orange1);
+		setRingBack(progress, hd, duree, R.color.light_blue1,false);
 	}
 
 	public double getCurrentHour() {
 		Calendar now = Calendar.getInstance();
 		int h = now.get(Calendar.HOUR_OF_DAY);
 		int m = now.get(Calendar.MINUTE);
-		return h + (m / 60);
+		int s = now.get(Calendar.SECOND);
+		return h + (m / 60f) +(s/3600f);
 	}
 
+	/**
+	 * retire les deux anneaux sur l'horloge
+	 */
 	public void removeProgression() {
 		ImageView ring = (ImageView) findViewById(89);
 		ImageView progress = (ImageView) findViewById(90);
@@ -1301,7 +1321,7 @@ public class FriseActivity extends Activity {
 	}
 
 	public void setRingBack(ImageView img, double heure, double duree,
-			int colorId) {
+			int colorId,boolean isBig) {
 		Bitmap bit_horloge = ((BitmapDrawable) getResources().getDrawable(
 				R.drawable.clock_dial_w)).getBitmap();
 		int W_horloge = bit_horloge.getWidth();
@@ -1314,8 +1334,14 @@ public class FriseActivity extends Activity {
 			min_duree = getMinute(duree) * 6;
 		}
 		ShapeDrawable shape = new ShapeDrawable(new ArcShape(min_d, min_duree));
-		shape.setIntrinsicHeight((int) (W_horloge * 1.1));
-		shape.setIntrinsicWidth((int) (W_horloge * 1.1));
+		if(isBig){
+			shape.setIntrinsicHeight((int) (W_horloge * 1.15));
+			shape.setIntrinsicWidth((int) (W_horloge * 1.15));
+		}else{
+			shape.setIntrinsicHeight((int) (W_horloge * 1.1));
+			shape.setIntrinsicWidth((int) (W_horloge * 1.1));
+		}
+
 		shape.getPaint().setColor(getResources().getColor(colorId));
 		img.setBackground(shape);
 	}
