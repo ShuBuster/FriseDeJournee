@@ -10,10 +10,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.PaintDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.ArcShape;
 import android.os.Build;
@@ -30,6 +32,7 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
@@ -39,7 +42,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import boutons.HomeActivityListener;
+import boutons.NextActivityListener;
 import boutons.TTSBouton;
 
 import composants.AnimatedGnar;
@@ -245,8 +248,9 @@ public class FriseActivity extends Activity {
 		/* creation des 2 boutons menu, aide */
 		aide = (Button) findViewById(R.id.bouton_aide);
 		menu = (Button) findViewById(R.id.bouton_menu);
-		menu_listenner = new HomeActivityListener(this, menu,
-				FriseActivity.this, MenuActivity.class,options,"options");
+		Drawable menu_presse = getResources().getDrawable(R.drawable.home_e);
+		menu_listenner = new NextActivityListener(menu, menu_presse,
+				FriseActivity.this, MenuActivity.class, options, "options");
 		menu.setOnClickListener(menu_listenner);
 
 		// creation de l'aide
@@ -317,14 +321,13 @@ public class FriseActivity extends Activity {
 
 		// Ecran logo et apparition frise
 
-	
-		 logo = (ImageView) findViewById(R.id.logo_image);
-		 logo.setVisibility(View.VISIBLE); AlphaAnimation alpha1 = new
-		 AlphaAnimation(0, 1); alpha1.setDuration(500);
-		 alpha1.setFillAfter(true);
-		 alpha1.setAnimationListener(logo_listener);
-		 logo.startAnimation(alpha1);
-		 
+		logo = (ImageView) findViewById(R.id.logo_image);
+		logo.setVisibility(View.VISIBLE);
+		AlphaAnimation alpha1 = new AlphaAnimation(0, 1);
+		alpha1.setDuration(500);
+		alpha1.setFillAfter(true);
+		alpha1.setAnimationListener(logo_listener);
+		logo.startAnimation(alpha1);
 
 		/* Gnar anime */
 
@@ -335,43 +338,31 @@ public class FriseActivity extends Activity {
 		// Sommaire
 		LinearLayout liste_activite = (LinearLayout) findViewById(R.id.liste_activite);
 		int indice = 0;
-		for(Task task : myTasks){
+		for (Task task : myTasks) {
 			Button txt_activite = new Button(getApplicationContext());
-			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			params.setMarginStart(50);
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			params.setMargins(50, 10, 0, 10);
 			txt_activite.setLayoutParams(params);
-			txt_activite.setText(formatHour(task.getHeureDebut())+" - "+formatHour(task.getHeureFin())+"   "+task.getNom());
+			txt_activite.setElevation(myTasks.size()-indice);
+			txt_activite.setBackgroundColor(getResources().getColor(R.color.blanc_casse));
+			txt_activite.setText(formatHour(task.getHeureDebut()) + " - "
+					+ formatHour(task.getHeureFin()) + "   " + task.getNom());
 			txt_activite.setTextColor(getResources().getColor(R.color.fushia));
-			txt_activite.setTextSize(40f);
-			txt_activite.setOnClickListener(new TaskListener(indice, this));
+			txt_activite.setTextSize(30f);
+			txt_activite.setLayerPaint(new Paint(getResources().getColor(R.color.grey1)));
+			txt_activite.setOnClickListener(new TaskListener(indice, FriseActivity.this));
 			Police.setFont(this, txt_activite, "intsh.ttf");
 			liste_activite.addView(txt_activite);
 			indice++;
 		}
+
 		
-		//Sortie du sommaire
 		slide_right = (RelativeLayout) findViewById(R.id.slide_right);
 		sommaire = (Button) findViewById(R.id.bouton_sommaire);
 		if (options.getSommaire()) {
 			
-			for (Task task : myTasks) {
-				TextView txt_activite = new TextView(getApplicationContext());
-				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-				params.setMarginStart(50);
-				txt_activite.setLayoutParams(params);
-				txt_activite.setText(formatHour(task.getHeureDebut()) + " - "
-						+ formatHour(task.getHeureFin()) + "   "
-						+ task.getNom());
-				txt_activite.setTextColor(getResources().getColor(
-						R.color.fushia));
-				txt_activite.setTextSize(30f);
-				Police.setFont(this, txt_activite, "intsh.ttf");
-				liste_activite.addView(txt_activite);
-			}
-
 			// Sortie du sommaire
-
 			Police.setFont(this, sommaire, "intsh.ttf");
 			sommaire.setTextSize(20f);
 			setSize(slide_right, 0, width / 3);
@@ -690,7 +681,17 @@ public class FriseActivity extends Activity {
 		/* Affichage de l'image de l'activite */
 		ImageView imageTask = (ImageView) findViewById(R.id.imageTask);
 		// imageTask.setBackground(getDrawable(scopedTask.getImage()));
-		imageTask.setImageDrawable(getDrawable(scopedTask.getImage()));
+		
+		if(scopedTask.getImage().startsWith("@")){
+			String path = scopedTask.getImage();
+			path = (String) path.substring(1,path.length());
+			imageTask.setImageBitmap(BitmapFactory.decodeFile(path));
+		}
+		else{
+		int imageId = getResources().getIdentifier(scopedTask.getImage() , "drawable", getPackageName());
+		imageTask.setImageDrawable(getDrawable(imageId));
+		}
+		
 
 		/* Affiche l'heure de debut l'activite */
 		// colore les rectangles de fond
@@ -1145,20 +1146,58 @@ public class FriseActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			if (!sommaire_open) {
-				Animer.translateDecelerate(slide_right, 0, 0, -width / 3, 0,
-						1000);
-				// Animer.translateDecelerate(sommaire, 0, 0, -width/4, 0,
-				// 1000);
+				
+				TranslateAnimation trans = new TranslateAnimation(0,-width/3,0,0);
+				trans.setDuration(1000);
+				trans.setFillAfter(true);
+				trans.setInterpolator(new DecelerateInterpolator());
+				trans.setAnimationListener(new AnimationListener() {
+
+					@Override
+					public void onAnimationStart(Animation animation) {
+						
+					}
+
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+					}
+
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						slide_right.setTranslationX(0);
+						slide_right.clearAnimation();
+					}
+				});
+				slide_right.startAnimation(trans);
+				
 				sommaire.setTranslationX(0);
 				sommaire.setBackgroundColor(getResources().getColor(
 						R.color.bleu_lagon));
 				sommaire.setTextColor(getResources().getColor(R.color.indigo3));
 				sommaire_open = true;
 			} else {
-				Animer.translateDecelerate(slide_right, -width / 3, 0, 0, 0,
-						1000);
-				// Animer.translateDecelerate(sommaire, -width/4, 0, 0, 0,
-				// 1000);
+				
+				TranslateAnimation trans = new TranslateAnimation(0, width/3, 0, 0);
+				trans.setDuration(1000);
+				trans.setFillAfter(true);
+				trans.setInterpolator(new DecelerateInterpolator());
+				trans.setAnimationListener(new AnimationListener() {
+
+					@Override
+					public void onAnimationStart(Animation animation) {
+					}
+
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+					}
+
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						slide_right.setTranslationX(width/3);
+					}
+				});
+				slide_right.startAnimation(trans);
+				
 				sommaire.setTranslationX(width / 3);
 				Task next = Task.findRelativeTask(myTasks, scopedTask, 1);
 				if (next != null) {
