@@ -188,13 +188,9 @@ public class MenuActivity extends Activity {
 
 		// Animation titre
 		LinearLayout layout_titre = (LinearLayout) findViewById(R.id.titre);
-		int[] colors = { R.color.light_green3, R.color.light_green4,
-				R.color.light_green5, R.color.green4, R.color.green5,
-				R.color.blue3, R.color.blue5, R.color.red2, R.color.pink2,
-				R.color.pink3, R.color.red3, R.color.pink4, R.color.red4,
-				R.color.red5, };
+		int[] colors = {R.color.red3,R.color.pink3,R.color.purple3,R.color.deep_purple3,R.color.indigo3};
 
-		AnimatedText.add(this, layout_titre, "Frise de journee", colors, 80);
+		AnimatedText.add(this, layout_titre, "Frizz", colors, 100);
 
 		// Animation Gnar
 		RelativeLayout gnar = (RelativeLayout) findViewById(R.id.gnar);

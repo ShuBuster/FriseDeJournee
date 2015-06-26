@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="110dip"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal" />
 
         <TextView
@@ -32,7 +32,7 @@
             style="@style/wrapped"
             android:layout_below="@id/titre"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:text="-MENU- "
             android:textColor="@color/blue4"
             android:textSize="50sp" />

@@ -86,8 +86,9 @@ public class Task implements Serializable{
 	 * @param h1 heure de fin de la frise
 	 * @return la position du debut
 	 */
-	public int getXbegin(int W, double h0, double h1){
-		return (int) ((W/(h1-h0))*heureDebut - (h0*W)/(h1-h0));
+	public int getXbegin(int W, double h0, double h1,int margin,ArrayList<Task> myTasks){
+		int index = Task.indexOfTask(myTasks,this);
+		return (int) ((W/(h1-h0))*heureDebut - (h0*W)/(h1-h0))-index*margin;
 	}
 	
 	/**
@@ -108,22 +109,10 @@ public class Task implements Serializable{
 	 * @param h1 heure de fin de la frise
 	 * @return la largeur
 	 */
-	public int getXwidth(int W,double h0,double h1){
-		return (int) ((duree*W)/(h1-h0));
+	public int getXwidth(int W,double h0,double h1,int margin){
+		return (int) ((duree*W)/(h1-h0))-margin;
 	}
 	
-	/**
-	 * Donne la position en pixel du milieu de l'activite sur la frise
-	 * @param W longueur de la frise en pixel
-	 * @param h0 heure de debut de la frise
-	 * @param h1 heure de fin de la frise
-	 * @return la largeur du milieu
-	 */
-	public int getMiddle(int W,double h0,double h1){
-		int begin = getXbegin(W, h0, h1);
-		int width = getXwidth(W, h0, h1);
-		return begin + width/2;
-	}
 	
 		
 	/**

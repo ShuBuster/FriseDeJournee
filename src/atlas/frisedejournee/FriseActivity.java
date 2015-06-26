@@ -18,7 +18,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.ArcShape;
-import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,7 +47,6 @@ import boutons.NextActivityListener;
 import boutons.TTSBouton;
 
 import composants.AnimatedGnar;
-import composants.AnimatedText;
 import composants.Animer;
 import composants.Bulle;
 import composants.Couleur;
@@ -171,10 +169,6 @@ public class FriseActivity extends Activity {
 		int[] size = Ecran.getSize(this);
 		width = size[0];
 		height = size[1]; // hauteur de l'ecran en px
-		Display display = getWindowManager().getDefaultDisplay();
-		Point taille = new Point();
-		display.getSize(taille);
-		H = taille.y;
 
 		/* Passage en plein ecran */
 		Ecran.fullScreen(this);
@@ -608,8 +602,8 @@ public class FriseActivity extends Activity {
 			scope = (ImageView) findViewById(R.id.scope);
 			/* Creation de l'animation */
 
-			final int x1 = oldScopedTask.getXwidth(W, h0, h1);
-			final int x2 = nextScopedTask.getXwidth(W, h0, h1);
+			final int x1 = oldScopedTask.getXwidth(W, h0, h1,margin);
+			final int x2 = nextScopedTask.getXwidth(W, h0, h1,margin);
 
 			// Translation
 
@@ -617,8 +611,8 @@ public class FriseActivity extends Activity {
 			animationSet.setDuration(1000);
 			// animationSet.setInterpolator(new LinearInterpolator());
 
-			int XDelta = nextScopedTask.getXbegin(W, h0, h1)
-					- oldScopedTask.getXbegin(W, h0, h1);
+			int XDelta = nextScopedTask.getXbegin(W, h0, h1,margin,myTasks)
+					- oldScopedTask.getXbegin(W, h0, h1,margin,myTasks);
 			TranslateAnimation translate = null;
 			translate = new TranslateAnimation(0, (XDelta) + pas
 						* (x1 / x2) * margin + 7, 0, 0);
@@ -682,8 +676,8 @@ public class FriseActivity extends Activity {
 
 		ImageView scope = (ImageView) findViewById(R.id.scope);
 		int indice = Task.indexOfTask(myTasks, scopedTask);
-		int XBegin = scopedTask.getXbegin(W, h0, h1);
-		int XWidth = scopedTask.getXwidth(W, h0, h1);
+		int XBegin = scopedTask.getXbegin(W, h0, h1,margin,myTasks);
+		int XWidth = scopedTask.getXwidth(W, h0, h1,margin);
 		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) scope
 				.getLayoutParams();
 		params.addRule(RelativeLayout.ALIGN_START, R.id.frise);
@@ -1000,16 +994,11 @@ public class FriseActivity extends Activity {
 			int task_indice, int color_indice) {
 		/* Affichage de ma tache sur la frise */
 		Button rectTask = new Button(this);
-		int Xwidth = myTask.getXwidth(W, h0, h1);
+		int Xwidth = myTask.getXwidth(W, h0, h1,margin);
 		/* Creation du rectangle et placement */
 		LinearLayout.LayoutParams layoutParams;
-		if (task_indice != myTasks.size() - 1) {
-			layoutParams = new LinearLayout.LayoutParams(Xwidth,
+		layoutParams = new LinearLayout.LayoutParams(Xwidth,
 					LayoutParams.MATCH_PARENT);
-		} else { // si c'est la derniere tache de la journee
-			layoutParams = new LinearLayout.LayoutParams(Xwidth - margin * 5,
-					LayoutParams.MATCH_PARENT);
-		}
 		layoutParams.setMargins(margin, margin, 0, margin);
 		rectTask.setLayoutParams(layoutParams);
 
