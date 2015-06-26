@@ -271,7 +271,6 @@ public class FriseActivity extends Activity {
 		// Creation des bulles d'aide
 
 		LinearLayout heure = (LinearLayout) findViewById(R.id.heure_fond);
-		TTSBouton.parle(heure,heureToString(scopedTask.getHeureDebut()), this);
 		info = (Button) findViewById(R.id.description_bouton);
 		View aide_parent = findViewById(R.id.aide_parent);
 		if (options.getBulle()) {
@@ -688,6 +687,10 @@ public class FriseActivity extends Activity {
 	 */
 	public void displayTask() {
 
+		
+		LinearLayout heure_fond = (LinearLayout)findViewById(R.id.heure_fond);
+		TTSBouton.parle(heure_fond,heureToString(scopedTask.getHeureDebut()), this);
+		
 		/* Recuperation du cadre et modification de sa couleur */
 		ImageView cadre = (ImageView) findViewById(R.id.frame);
 		GradientDrawable drawable = (GradientDrawable) cadre.getBackground();
