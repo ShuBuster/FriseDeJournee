@@ -215,6 +215,12 @@ public class FriseActivity extends Activity {
 		/* Ajustement taille scope */
 		ImageView scope = (ImageView) findViewById(R.id.scope);
 		setSize(scope, (int) (H * 1.2), 0);
+		
+		/* Ajustement taille description */
+		menuDeroulant = (LinearLayout) findViewById(R.id.info);
+		info = (Button) findViewById(R.id.description_bouton);
+		setSize(menuDeroulant, LayoutParams.MATCH_PARENT, width/5);
+		setSize(info,0,width/5);
 
 		/* Remplissage de la frise */
 
@@ -233,9 +239,11 @@ public class FriseActivity extends Activity {
 		currentTask = findCurrentTask();
 		if (!(currentTask == null)) {
 			scopedTask = currentTask;
-			if(options.getHorloge()){
-				drawRange();
-				drawProgress();
+			drawRange();
+			drawProgress();
+			if(!options.getHorloge()){
+				RelativeLayout horloge = (RelativeLayout) findViewById(R.id.horloge);
+				horloge.setVisibility(View.INVISIBLE);
 			}
 			replaceScope(); // place le scope sur la tache
 			displayTask(); // affiche les infos de la tache
@@ -303,23 +311,19 @@ public class FriseActivity extends Activity {
 
 		// creation de l'information sur l'activite courante
 
-		info = (Button) findViewById(R.id.description_bouton);
 		info.setBackgroundColor(currentTask.getCouleur());
 		menuDeroulant = (LinearLayout) findViewById(R.id.info);
-		audio = (Button) findViewById(R.id.info_audio);
 		info_text = (TextView) findViewById(R.id.info_text);
 		info_text.setTextColor(getResources().getColor(R.color.yellow3));
 		info.setTextColor(getResources().getColor(R.color.yellow3));
 		Police.setFont(this, info_text, "intsh.ttf");
 		Police.setFont(this, info, "intsh.ttf");
 
-		if (options.getSound())
-			TTSBouton.parle(audio, currentTask.getDescription(),
+		if (options.getSound()){
+			TTSBouton.parle(info_text, currentTask.getDescription(),
 					getApplicationContext());
-		else {
-			audio.setVisibility(View.INVISIBLE);
-			audio.setEnabled(false);
 		}
+
 		info.setOnClickListener(info_listener);
 
 		// Ecran logo et apparition frise
@@ -396,7 +400,6 @@ public class FriseActivity extends Activity {
 
 		// affichage de l'horloge à l'heure
 		final RelativeLayout horloge = (RelativeLayout) findViewById(R.id.horloge);
-		if (options.getHorloge()) {
 			final Calendar now = Calendar.getInstance();
 			Horloge.create(horloge, this, now.get(Calendar.HOUR_OF_DAY),
 					now.get(Calendar.MINUTE), 0);
@@ -420,10 +423,9 @@ public class FriseActivity extends Activity {
 				});
 
 			// drawProgression();
-		} else {
-			horloge.setVisibility(View.INVISIBLE);
-			horloge.setEnabled(false);
-		}
+			if(!options.getHorloge()){
+				horloge.setVisibility(View.INVISIBLE);
+			}
 
 	}
 
@@ -518,7 +520,7 @@ public class FriseActivity extends Activity {
 		info_text.setText(currentTask.getDescription() + "\nDuree : "
 				+ formatHour(currentTask.getDuree()));
 		if (options.getSound())
-			TTSBouton.parle(audio, currentTask.getDescription(),
+			TTSBouton.parle(info_text, currentTask.getDescription(),
 					getApplicationContext());
 		// le menu d'information sur l'activite change avec l'activite
 
@@ -1115,7 +1117,7 @@ public class FriseActivity extends Activity {
 		@Override
 		public void onAnimationEnd(Animation animation) {
 			AlphaAnimation alpha2 = new AlphaAnimation(1, 0);
-			alpha2.setDuration(200);
+			alpha2.setDuration(500);
 			alpha2.setFillAfter(true);
 			alpha2.setAnimationListener(new AnimationListener() {
 
@@ -1246,10 +1248,8 @@ public class FriseActivity extends Activity {
 					public void run() {
 						if (options.getHorloge()){
 							Horloge.incrementMin(a);
-							drawProgress();
-						if (scopedTask != findCurrentTask()) {
-								removeProgression();
-								moveScopeToCurrentTask();
+						if (scopedTask == findCurrentTask()) {
+								drawProgress();
 							}
 						}
 					}

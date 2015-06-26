@@ -1,24 +1,18 @@
 package atlas.frisedejournee;
 
-import java.io.Serializable;
-
-import boutons.Bouton;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.RelativeLayout.LayoutParams;
+import android.widget.RelativeLayout;
+import boutons.Bouton;
 
 import composants.Animer;
 import composants.Ecran;

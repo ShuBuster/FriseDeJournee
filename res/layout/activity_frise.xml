@@ -277,7 +277,6 @@
             style="@style/wrapped"
             android:layout_alignBottom="@id/frame"
             android:layout_alignEnd="@id/frame"
-            android:layout_alignStart="@+id/gnar"
             android:layout_below="@+id/description_bouton"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"
@@ -287,7 +286,7 @@
 
             <LinearLayout
                 android:id="@+id/info"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:elevation="12dp"
                 android:orientation="vertical"
@@ -300,15 +299,6 @@
                     android:padding="12dp"
                     android:textColor="@color/noir"
                     android:textSize="30sp" />
-
-                <Button
-                    android:id="@+id/info_audio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginRight="0dp"
-                    android:background="@drawable/sound" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -317,7 +307,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignEnd="@id/frame"
-            android:layout_alignStart="@id/gnar"
             android:layout_alignTop="@id/frame"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp"
@@ -329,7 +318,7 @@
             android:textSize="30sp" />
 
         <RelativeLayout
-            android:id="@id/gnar"
+            android:id="@+id/gnar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
