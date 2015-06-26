@@ -39,6 +39,7 @@ import composants.AnimatedText;
 import composants.Bulle;
 import composants.Ecran;
 import composants.Police;
+import composants.Utile;
 
 public class MenuActivity extends Activity {
 
@@ -174,12 +175,8 @@ public class MenuActivity extends Activity {
 
 		// Bouton exit //
 		Button exit = (Button) findViewById(R.id.exit);
-		Drawable exit_d = Bouton.roundedDrawable(this,R.color.amber5, 0.5f);
-		Drawable exit_pressed = Bouton.pressedRoundedDrawable(this,R.color.amber5, 0.5f);
-		exit.setBackground(exit_d);
-		exit.setTypeface(externalFont);
-		exit.setTextSize(30);
-		exit.setOnClickListener(new ExitApplicationListener(exit, exit_pressed,
+		Utile.setSize(exit,H/13 , H/13);
+		exit.setOnClickListener(new ExitApplicationListener(exit,getDrawable(R.drawable.close),
 				MenuActivity.this));
 
 		/* Apparition du logo puis de l'activite */

@@ -187,13 +187,6 @@ public class FriseActivity extends Activity {
 		Intent opt = getIntent();
 		options = (Options) opt.getSerializableExtra("options");
 
-		/* Affichage du nom de l'enfant */
-		/**
-		 * TextView nom_enfant = (TextView) findViewById(R.id.nom_enfant);
-		 * Police.setFont(this, nom_enfant, "onthemove.ttf");
-		 * nom_enfant.setText(nomEnfant);
-		 */
-
 		/* Remplissage des taches selon l'enfant */
 		myTasks = emploi.getEmploi();
 		setHourBounds();
@@ -346,6 +339,7 @@ public class FriseActivity extends Activity {
 		LinearLayout liste_activite = (LinearLayout) findViewById(R.id.liste_activite);
 		int indice = 0;
 		for (Task task : myTasks) {
+			String nom = task.getNom();
 			Button txt_activite = new Button(getApplicationContext());
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -426,6 +420,24 @@ public class FriseActivity extends Activity {
 			if(!options.getHorloge()){
 				horloge.setVisibility(View.INVISIBLE);
 			}
+			
+			// swipe
+			RelativeLayout slide_bottom = (RelativeLayout) findViewById(R.id.slide_bottom);
+			slide_bottom.setOnTouchListener(new OnSwipeTouchListener(this){
+				public void onSwipeRight(){
+					int index = Task.indexOfTask(myTasks, scopedTask);
+					if(index-1>=0){
+						taskClicked(index-1);
+					}
+				}
+				
+				public void onSwipeLeft(){
+					int index = Task.indexOfTask(myTasks, scopedTask);
+					if(index+1<nbTask){
+						taskClicked(index+1);
+					}
+				}
+			});
 
 	}
 
@@ -975,7 +987,6 @@ public class FriseActivity extends Activity {
 		/* Affichage de ma tache sur la frise */
 		Button rectTask = new Button(this);
 		int Xwidth = myTask.getXwidth(W, h0, h1);
-
 		/* Creation du rectangle et placement */
 		LinearLayout.LayoutParams layoutParams;
 		if (task_indice != myTasks.size() - 1) {

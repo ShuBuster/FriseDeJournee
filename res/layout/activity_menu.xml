@@ -12,8 +12,6 @@
         android:layout_centerInParent="true"
         android:background="@drawable/logo_app"
         android:visibility="invisible" />
-    
-    
 
     <RelativeLayout
         android:id="@+id/slide_top"
@@ -38,6 +36,15 @@
             android:text="-MENU- "
             android:textColor="@color/blue4"
             android:textSize="50sp" />
+
+        <Button
+            android:id="@+id/exit"
+            style="@style/textShadow"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/close"
+            android:elevation="15dp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -46,17 +53,6 @@
         android:clipChildren="false"
         android:elevation="1dp" >
 
-        <Button
-        android:id="@+id/options_bouton"
-        style="@style/wrapped"
-        android:layout_above="@id/gnar"
-        android:layout_alignRight="@id/gnar"
-        android:textSize="30sp"
-        android:layout_marginRight="30dp"
-        android:textColor="@color/blanc"
-        android:text="Options"
-          />
-        
         <TextView
             android:id="@+id/sous_titre"
             style="@style/wrapped"
@@ -66,8 +62,7 @@
             android:text="Que veux-tu faire ?"
             android:textColor="@color/fushia"
             android:textSize="40sp" />
-        
-        
+
         <Button
             android:id="@+id/go"
             style="@style/textShadow"
@@ -83,9 +78,9 @@
         <TextView
             android:id="@+id/jeSuis"
             style="@style/wrapped"
+            android:layout_below="@id/go"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="35dp"
-            android:layout_below="@id/go"
             android:text="@string/jeSuis"
             android:textColor="@color/fushia"
             android:textSize="40sp" />
@@ -98,17 +93,18 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:popupBackground="@color/red2"
-            android:spinnerMode="dropdown"/>
-
+            android:spinnerMode="dropdown" />
 
         <Button
-            android:id="@+id/exit"
+            android:id="@+id/options_bouton"
             style="@style/textShadow"
             android:layout_below="@+id/enfant_spinner"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="44dp"
             android:elevation="15dp"
-            android:text="Quitter" />
+            android:text="Options"
+            android:textColor="@color/blanc"
+            android:textSize="30sp" />
 
         <RelativeLayout
             android:id="@+id/gnar"
