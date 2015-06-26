@@ -361,7 +361,9 @@ public class FriseActivity extends Activity {
 			indice++;
 		}
 
-		
+		liste_activite.addView(new TextView(this));
+		liste_activite.addView(new TextView(this));
+		liste_activite.addView(new TextView(this));
 		slide_right = (RelativeLayout) findViewById(R.id.slide_right);
 		sommaire = (Button) findViewById(R.id.bouton_sommaire);
 		if (options.getSommaire()) {
