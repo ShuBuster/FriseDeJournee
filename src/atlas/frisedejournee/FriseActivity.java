@@ -18,6 +18,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.ArcShape;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,6 +43,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import boutons.NextActivityListener;
 import boutons.TTSBouton;
 
@@ -348,7 +350,7 @@ public class FriseActivity extends Activity {
 			txt_activite.setElevation(myTasks.size()-indice);
 			txt_activite.setBackgroundColor(getResources().getColor(R.color.blanc_casse));
 			txt_activite.setText(formatHour(task.getHeureDebut()) + " - "
-					+ formatHour(task.getHeureFin()) + "   " + task.getNom());
+					+ formatHour(task.getHeureFin()) + "   " + task.getNom()+ " ");
 			txt_activite.setTextColor(getResources().getColor(R.color.fushia));
 			txt_activite.setTextSize(28f);
 			txt_activite.setId(200+indice);
@@ -409,11 +411,15 @@ public class FriseActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					moveScopeToCurrentTask();
+					String t = Horloge.dateActuelle();
 					if (options.getSound()){
-						String t = Horloge.dateActuelle();
 						tts.speak(t, TextToSpeech.QUEUE_FLUSH, null);
 						}
+					Toast.makeText(getApplicationContext(), t,Toast.LENGTH_SHORT).show();
+
+					
 					}
+				
 				});
 
 			// drawProgression();
@@ -693,6 +699,10 @@ public class FriseActivity extends Activity {
 	 */
 	public void displayTask() {
 
+		
+		LinearLayout heure_fond = (LinearLayout)findViewById(R.id.heure_fond);
+		TTSBouton.parle(heure_fond,heureToString(scopedTask.getHeureDebut()), this);
+		
 		/* Recuperation du cadre et modification de sa couleur */
 		ImageView cadre = (ImageView) findViewById(R.id.frame);
 		GradientDrawable drawable = (GradientDrawable) cadre.getBackground();
@@ -705,6 +715,8 @@ public class FriseActivity extends Activity {
 		TextView titreTask = (TextView) findViewById(R.id.titreTask);
 		Police.setFont(this, titreTask, "intsh.ttf");
 		titreTask.setText(" " + scopedTask.getNom() + " ");
+		if(options.getSound())
+		TTSBouton.parle(titreTask,titreTask.getText().toString(),this);
 
 		/* Affichage de l'image de l'activite */
 		ImageView imageTask = (ImageView) findViewById(R.id.imageTask);
@@ -1355,5 +1367,13 @@ public class FriseActivity extends Activity {
 
 		shape.getPaint().setColor(getResources().getColor(colorId));
 		img.setBackground(shape);
+	}
+	
+	public String heureToString(double heure){
+		String h = String.valueOf((int) heure);
+		int m = (int) (60*(heure- (int) heure));
+		if(m==0) return h+" heure";
+		String min = String.valueOf(m);
+		return h+" heures et "+min+" minutes";
 	}
 }
