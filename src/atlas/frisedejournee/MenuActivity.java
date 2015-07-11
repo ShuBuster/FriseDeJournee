@@ -65,17 +65,15 @@ public class MenuActivity extends Activity {
 
 		/* Police du texte avant spinner */
 		Typeface externalFont = Typeface.createFromAsset(getAssets(),
-				"fonts/intsh.ttf");
+				"fonts/Action_Man.ttf");
 		TextView jeSuis = (TextView) findViewById(R.id.jeSuis);
 		jeSuis.setTypeface(externalFont);
+		jeSuis.setTextSize(35f);
 
 		/* Police du titre menu */
 		TextView titre_menu = (TextView) findViewById(R.id.texte_menu);
 		titre_menu.setTypeface(externalFont);
 
-		/* Police du sous-titre */
-		TextView sous_titre = (TextView) findViewById(R.id.sous_titre);
-		sous_titre.setTypeface(externalFont);
 
 		/* Police du spinner */
 		Spinner mySpinner = (Spinner) findViewById(R.id.enfant_spinner);
@@ -130,6 +128,7 @@ public class MenuActivity extends Activity {
 		/* Boutons et titre */
 		Drawable bouton_go_d = Bouton.roundedDrawable(this, R.color.light_blue3, 1f);
 		final Button boutonGo = (Button) findViewById(R.id.go);
+		//boutonGo.setTextSize(20f);
 		boutonGo.setBackground(bouton_go_d);
 		boutonGo.setTypeface(externalFont);
 
@@ -161,7 +160,7 @@ public class MenuActivity extends Activity {
 		Button bouton_options = (Button) findViewById(R.id.options_bouton);
 		Drawable option_d = Bouton.roundedDrawable(this,R.color.amber7, 0.5f);
 		bouton_options.setBackground(option_d);
-		Police.setFont(a, bouton_options, "intsh.ttf");
+		Police.setFont(a, bouton_options, "Action_Man.ttf");
 		bouton_options.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {

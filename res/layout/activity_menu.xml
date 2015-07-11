@@ -53,27 +53,16 @@
         android:clipChildren="false"
         android:elevation="1dp" >
 
-        <TextView
-            android:id="@+id/sous_titre"
-            style="@style/wrapped"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="250dp"
-            android:paddingEnd="3dp"
-            android:text="Que veux-tu faire ?"
-            android:textColor="@color/fushia"
-            android:textSize="40sp" />
-
         <Button
             android:id="@+id/go"
             style="@style/textShadow"
-            android:layout_below="@id/sous_titre"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="300dp"
             android:elevation="15dp"
             android:paddingBottom="5dp"
             android:text="@string/bouton_regarder"
             android:textColor="@color/jaune1"
-            android:textSize="50sp" />
+            android:textSize="40sp" />
 
         <TextView
             android:id="@+id/jeSuis"

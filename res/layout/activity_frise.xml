@@ -267,8 +267,7 @@
                 style="@style/wrapped"
                 android:layout_marginStart="100dp"
                 android:layout_toEndOf="@id/bouton_menu"
-                android:background="@drawable/help"
-                android:stateListAnimator="@null" />
+                android:background="@drawable/help" />
         </RelativeLayout>
 
         <RelativeLayout

@@ -135,40 +135,13 @@ public class FriseActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		/* Determination densite ecran */
-		DisplayMetrics metrics = getResources().getDisplayMetrics();
-		int density = metrics.densityDpi;
-		BitmapFactory.Options option = new BitmapFactory.Options();
-
-		switch (density) {
-		case DisplayMetrics.DENSITY_XHIGH:
-			Log.d("TAG", "densite= tres haute");
-			option.inTargetDensity = DisplayMetrics.DENSITY_XHIGH;
-			margin = 12;
-			break;
-
-		case DisplayMetrics.DENSITY_HIGH:
-			Log.d("TAG", "densite= haute");
-			option.inTargetDensity = DisplayMetrics.DENSITY_HIGH;
-			margin = 6;
-			break;
-
-		case DisplayMetrics.DENSITY_MEDIUM:
-			Log.d("TAG", "densite= moyenne");
-			option.inTargetDensity = DisplayMetrics.DENSITY_MEDIUM;
-			margin = 3;
-			break;
-
-		default:
-			Log.d("TAG", "densite= défaut");
-			option.inTargetDensity = DisplayMetrics.DENSITY_DEFAULT;
-			break;
-		}
-
 		/* Taille ecran */
 		int[] size = Ecran.getSize(this);
 		width = size[0];
 		height = size[1]; // hauteur de l'ecran en px
+		
+		/* Determination densite ecran */
+		margin = 12*size[0]/2560;
 
 		/* Passage en plein ecran */
 		Ecran.fullScreen(this);
@@ -305,8 +278,8 @@ public class FriseActivity extends Activity {
 		info_text = (TextView) findViewById(R.id.info_text);
 		info_text.setTextColor(getResources().getColor(R.color.yellow3));
 		info.setTextColor(getResources().getColor(R.color.yellow3));
-		Police.setFont(this, info_text, "intsh.ttf");
-		Police.setFont(this, info, "intsh.ttf");
+		Police.setFont(this, info_text, "Action_Man.ttf");
+		Police.setFont(this, info, "Action_Man.ttf");
 
 		if (options.getSound()){
 			TTSBouton.parle(info_text, currentTask.getDescription(),
@@ -350,7 +323,7 @@ public class FriseActivity extends Activity {
 			txt_activite.setId(200+indice);
 			txt_activite.setLayerPaint(new Paint(getResources().getColor(R.color.grey1)));
 			txt_activite.setOnClickListener(new TaskListener(indice, FriseActivity.this));
-			Police.setFont(this, txt_activite, "intsh.ttf");
+			Police.setFont(this, txt_activite, "Action_Man.ttf");
 			liste_activite.addView(txt_activite);
 			indice++;
 		}
@@ -363,7 +336,7 @@ public class FriseActivity extends Activity {
 		if (options.getSommaire()) {
 			
 			// Sortie du sommaire
-			Police.setFont(this, sommaire, "intsh.ttf");
+			Police.setFont(this, sommaire, "Action_Man.ttf");
 			sommaire.setTextSize(20f);
 			setSize(slide_right, 0, width / 3);
 			slide_right.setTranslationX(width / 3);
@@ -384,7 +357,7 @@ public class FriseActivity extends Activity {
 			txt_temps.setText(" " + formatHour(temps_fort) + " ");
 			txt_temps.setTextColor(getResources().getColor(R.color.fushia));
 			txt_temps.setTextSize(35f);
-			Police.setFont(this, txt_temps, "intsh.ttf");
+			Police.setFont(this, txt_temps, "Action_Man.ttf");
 			MyLayoutParams params = new MyLayoutParams();
 			params.alignStart(frise).margins(x_pos - margin, margin * 4, 0, 0);
 			parent.addView(txt_temps, params);
@@ -709,7 +682,7 @@ public class FriseActivity extends Activity {
 
 		/* Affichage du titre de l'activite */
 		TextView titreTask = (TextView) findViewById(R.id.titreTask);
-		Police.setFont(this, titreTask, "intsh.ttf");
+		Police.setFont(this, titreTask, "Action_Man.ttf");
 		titreTask.setText(" " + scopedTask.getNom() + " ");
 		if(options.getSound())
 		TTSBouton.parle(titreTask,titreTask.getText().toString(),this);
