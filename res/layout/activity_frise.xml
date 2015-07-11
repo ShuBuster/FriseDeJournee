@@ -16,46 +16,6 @@
         android:visibility="invisible" />
 
     <RelativeLayout
-        android:id="@+id/slide_top"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:background="@color/blanc_casse"
-        android:elevation="20dp"
-        android:visibility="invisible" >
-
-        <RelativeLayout
-            android:id="@+id/horloge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="15dp" >
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/frise"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="67dp"
-            android:layout_toEndOf="@id/horloge"
-            android:background="@drawable/frise"
-            android:elevation="8dp"
-            android:orientation="horizontal" >
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/scope"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="58dp"
-            android:contentDescription="@drawable/frise_target"
-            android:elevation="8dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/new_scope" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/slide_bottom"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -66,7 +26,7 @@
             android:id="@+id/frame_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="250dp"
             android:visibility="invisible" />
@@ -75,10 +35,9 @@
             android:id="@+id/frame_previous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="250dp"
-            android:elevation="6dp"
             android:visibility="invisible" />
 
         <ImageView
@@ -88,21 +47,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="230dp"
-            android:background="@drawable/frame"
-            android:elevation="8dp" />
-
-        <TextView
-            android:id="@+id/titreTask"
-            style="@style/lightTextShadow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/frame"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20dp"
-            android:elevation="9dp"
-            android:text=""
-            android:textColor="@color/jaune1"
-            android:textSize="70sp" />
+            android:background="@drawable/frame" />
 
         <ImageView
             android:id="@+id/imageTask"
@@ -112,18 +57,25 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="50dp"
             android:layout_marginTop="240dp"
-            android:adjustViewBounds="true"
-            android:elevation="8dp" />
+            android:adjustViewBounds="true"/>
+
+        <TextView
+            android:id="@+id/titreTask"
+            style="@style/lightTextShadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/jaune1"
+            android:textSize="70sp" />
 
         <LinearLayout
             android:id="@+id/heure_fond"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@id/frame"
+            android:layout_alignLeft="@id/frame"
             android:layout_alignTop="@id/frame"
-            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
-            android:elevation="8dp"
             android:orientation="horizontal" >
 
             <LinearLayout
@@ -131,7 +83,7 @@
                 android:layout_width="60dp"
                 android:layout_height="80dp"
                 android:orientation="vertical"
-                android:paddingStart="15dp"
+                android:paddingLeft="15dp"
                 android:paddingTop="5dp"
                 android:textColor="@color/blanc"
                 android:textSize="50sp" >
@@ -157,10 +109,10 @@
                 android:id="@+id/heure_unite_fond"
                 android:layout_width="60dp"
                 android:layout_height="80dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:clipChildren="true"
                 android:orientation="vertical"
-                android:paddingStart="15dp"
+                android:paddingLeft="15dp"
                 android:paddingTop="5dp"
                 android:textSize="50sp" >
 
@@ -184,7 +136,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="5dp"
+                android:paddingLeft="5dp"
                 android:text="@string/deux_points"
                 android:textColor="@color/blanc"
                 android:textSize="50sp" />
@@ -193,9 +145,9 @@
                 android:id="@+id/minute_dizaine_fond"
                 android:layout_width="60dp"
                 android:layout_height="80dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:orientation="vertical"
-                android:paddingStart="15dp"
+                android:paddingLeft="15dp"
                 android:paddingTop="5dp"
                 android:textColor="@color/blanc"
                 android:textSize="50sp" >
@@ -221,9 +173,9 @@
                 android:id="@+id/minute_unite_fond"
                 android:layout_width="60dp"
                 android:layout_height="80dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:orientation="vertical"
-                android:paddingStart="15dp"
+                android:paddingLeft="15dp"
                 android:paddingTop="5dp"
                 android:textColor="@color/blanc"
                 android:textSize="50sp" >
@@ -252,21 +204,19 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
-            android:clipChildren="false"
-            android:elevation="12dp" >
+            android:clipChildren="false" >
 
             <Button
                 android:id="@+id/bouton_menu"
                 style="@style/wrapped"
                 android:background="@drawable/home"
-                android:elevation="1dp"
                 android:stateListAnimator="@null" />
 
             <Button
                 android:id="@+id/bouton_aide"
                 style="@style/wrapped"
-                android:layout_marginStart="100dp"
-                android:layout_toEndOf="@id/bouton_menu"
+                android:layout_marginLeft="100dp"
+                android:layout_toRightOf="@id/bouton_menu"
                 android:background="@drawable/help" />
         </RelativeLayout>
 
@@ -274,19 +224,17 @@
             android:id="@+id/information"
             style="@style/wrapped"
             android:layout_alignBottom="@id/frame"
-            android:layout_alignEnd="@id/frame"
+            android:layout_alignRight="@id/frame"
             android:layout_below="@+id/description_bouton"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"
             android:clipChildren="true"
-            android:elevation="8dp"
             android:orientation="vertical" >
 
             <LinearLayout
                 android:id="@+id/info"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:elevation="12dp"
                 android:orientation="vertical"
                 android:visibility="invisible" >
 
@@ -304,11 +252,10 @@
             android:id="@id/description_bouton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@id/frame"
+            android:layout_alignRight="@id/frame"
             android:layout_alignTop="@id/frame"
-            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            android:elevation="9dp"
             android:stateListAnimator="@null"
             android:text="Description"
             android:textAllCaps="false"
@@ -320,11 +267,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_marginBottom="20dp"
-            android:layout_marginEnd="20dp"
-            android:clipChildren="false"
-            android:elevation="8dp" />
+            android:layout_marginRight="20dp"
+            android:clipChildren="false" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -332,14 +278,13 @@
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/slide_top"
+        android:layout_below="@+id/slide_top"
         android:alpha="0.9"
         android:background="@color/blanc_casse" >
 
         <ScrollView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:elevation="20dp" >
+            android:layout_height="match_parent" >
 
             <LinearLayout
                 android:id="@+id/liste_activite"
@@ -361,5 +306,42 @@
         android:alpha="0.9"
         android:text="Sommaire"
         android:visibility="invisible" />
+
+    <RelativeLayout
+        android:id="@id/slide_top"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@color/blanc_casse"
+        android:visibility="invisible" >
+
+        <RelativeLayout
+            android:id="@+id/horloge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="15dp" >
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/frise"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="67dp"
+            android:layout_toRightOf="@id/horloge"
+            android:background="@drawable/frise"
+            android:orientation="horizontal" >
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/scope"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="58dp"
+            android:contentDescription="@drawable/frise_target"
+            android:scaleType="fitXY"
+            android:src="@drawable/new_scope" />
+    </RelativeLayout>
 
 </RelativeLayout>

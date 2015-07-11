@@ -17,14 +17,12 @@
     <RelativeLayout
         android:id="@+id/slide_bottom"
         style="@style/bottomPannel"
-        android:clipChildren="false"
-        android:elevation="1dp" >
+        android:clipChildren="false" >
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/slide_top"
         style="@style/topPannel"
-        android:elevation="20dp"
         android:paddingBottom="10dp" >
     </RelativeLayout>
 
