@@ -1127,6 +1127,10 @@ public class FriseActivity extends Activity {
 					slide_bottom.setVisibility(View.VISIBLE);
 					Animer.translateDecelerate(slide_bottom, 0, height * 1.1f,
 							0, 0, 1800);
+					ImageView shadow = (ImageView) findViewById(R.id.slide_top_shadow);
+					shadow.setVisibility(View.VISIBLE);
+					Animer.translateDecelerate(shadow, 0, -width / 3, 0, 0,
+							1000);
 					sommaire = (Button) findViewById(R.id.bouton_sommaire);
 					if (options.getSommaire()) {
 						sommaire.setVisibility(View.VISIBLE);

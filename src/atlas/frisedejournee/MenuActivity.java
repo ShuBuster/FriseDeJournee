@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.v4.view.ViewCompat;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +26,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -146,6 +148,8 @@ public class MenuActivity extends Activity {
 				/* animation rideau sur l'ecran violet */
 				RelativeLayout slide_top = (RelativeLayout) findViewById(R.id.slide_top);
 				Animer.translateDecelerate(slide_top, 0, 0, 0, -H / 3, 700);
+				ImageView slide_top_shadow = (ImageView) findViewById(R.id.slide_top_shadow);
+				Animer.translateDecelerate(slide_top_shadow, 0, 0, 0, -H / 3, 700);
 				// passage à l'autre activite
 				EmploiDuTemps emploi = emplois.get(indice);
 				RelativeLayout slide_bottom = (RelativeLayout) findViewById(R.id.slide_bottom);
@@ -166,6 +170,8 @@ public class MenuActivity extends Activity {
 			public void onClick(View v) {
 				RelativeLayout slide_top = (RelativeLayout) findViewById(R.id.slide_top);
 				Animer.translateDecelerate(slide_top, 0, 0, 0, -H / 3, 700);
+				ImageView slide_top_shadow = (ImageView) findViewById(R.id.slide_top_shadow);
+				Animer.translateDecelerate(slide_top_shadow, 0, 0, 0, -H / 3, 700);
 				RelativeLayout slide_bottom = (RelativeLayout) findViewById(R.id.slide_bottom);
 				Animer.changeActivityAnimation(slide_bottom,
 						OptionsActivity.class, options, "options", null, null);
@@ -179,11 +185,13 @@ public class MenuActivity extends Activity {
 				MenuActivity.this));
 
 		/* Apparition du logo puis de l'activite */
-		Button logo_bouton = (Button) findViewById(R.id.logo_bouton);
+		ImageView logo = (ImageView) findViewById(R.id.logo);
+		ImageView shadow = (ImageView) findViewById(R.id.slide_top_shadow);
 		RelativeLayout slide_top = (RelativeLayout) findViewById(R.id.slide_top);
 		RelativeLayout slide_bottom = (RelativeLayout) findViewById(R.id.slide_bottom);
-		Animer.activityApparitionAnimation(logo_bouton, slide_bottom,
-				slide_top, H);
+		Animer.activityApparitionAnimation(logo, slide_bottom,
+				slide_top,shadow, H);
+		
 
 		// Animation titre
 		LinearLayout layout_titre = (LinearLayout) findViewById(R.id.titre);

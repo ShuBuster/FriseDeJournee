@@ -20,8 +20,22 @@
         android:clipChildren="false" >
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/slide_top_shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/slide_top"
+        android:layout_alignLeft="@+id/slide_top"
+        android:layout_alignRight="@+id/slide_top"
+        android:layout_alignTop="@+id/slide_top"
+        android:layout_marginBottom="-30dp"
+        android:layout_marginLeft="-20dp"
+        android:layout_marginRight="-20dp"
+        android:background="@drawable/shadow_xlarge"
+        android:visibility="invisible" />
+
     <RelativeLayout
-        android:id="@+id/slide_top"
+        android:id="@id/slide_top"
         style="@style/topPannel"
         android:paddingBottom="10dp" >
     </RelativeLayout>

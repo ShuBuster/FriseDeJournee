@@ -9,6 +9,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
@@ -102,7 +103,8 @@ public class OptionsActivity extends Activity {
 		
 		/* Apparition du logo bouton */
 		Button logo_bouton = (Button) findViewById(R.id.logo_bouton);
-		Animer.activityApparitionAnimation(logo_bouton,slide_bottom,slide_top,H);
+		ImageView shadow = (ImageView) findViewById(R.id.slide_top_shadow);
+		Animer.activityApparitionAnimation(logo_bouton,slide_bottom,slide_top,shadow,H);
 
 		// bouton de validation des options
 		Button bouton_menu = Bouton.createRoundedButton(this, R.color.amber7);
@@ -125,6 +127,8 @@ public class OptionsActivity extends Activity {
 				// on recupere les parametres d'options
 				RelativeLayout slide_top = (RelativeLayout) findViewById(R.id.slide_top);
 				Animer.translateDecelerate(slide_top, 0, 0, 0, -H / 3, 700);
+				ImageView slide_top_shadow = (ImageView) findViewById(R.id.slide_top_shadow);
+				Animer.translateDecelerate(slide_top_shadow, 0, 0, 0, -H / 3, 700);
 				Animer.changeActivityAnimation(slide_bottom, MenuActivity.class,
 						options, "options", null, null);
 			}

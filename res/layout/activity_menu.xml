@@ -6,8 +6,8 @@
     android:clipChildren="false"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <Button
-        android:id="@+id/logo_bouton"
+    <ImageView
+        android:id="@+id/logo"
         style="@style/wrapped"
         android:layout_centerInParent="true"
         android:background="@drawable/logo_app"
@@ -75,8 +75,22 @@
             android:layout_marginLeft="100dp" />
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/slide_top_shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/slide_top"
+        android:layout_alignLeft="@+id/slide_top"
+        android:layout_alignRight="@+id/slide_top"
+        android:layout_alignTop="@+id/slide_top"
+        android:layout_marginBottom="-30dp"
+        android:layout_marginLeft="-20dp"
+        android:layout_marginRight="-20dp"
+        android:background="@drawable/shadow_xlarge"
+        android:visibility="invisible" />
+
     <RelativeLayout
-        android:id="@+id/slide_top"
+        android:id="@id/slide_top"
         style="@style/topPannel"
         android:paddingBottom="10dp" >
 

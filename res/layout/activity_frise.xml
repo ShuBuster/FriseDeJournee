@@ -57,14 +57,17 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="50dp"
             android:layout_marginTop="240dp"
-            android:adjustViewBounds="true"/>
+            android:adjustViewBounds="true" />
 
         <TextView
             android:id="@+id/titreTask"
             style="@style/lightTextShadow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/frame"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
+            android:text=""
             android:textColor="@color/jaune1"
             android:textSize="70sp" />
 
@@ -307,6 +310,20 @@
         android:text="Sommaire"
         android:visibility="invisible" />
 
+    <ImageView
+        android:id="@+id/slide_top_shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/slide_top"
+        android:layout_alignLeft="@+id/slide_top"
+        android:layout_alignRight="@+id/slide_top"
+        android:layout_alignTop="@+id/slide_top"
+        android:layout_marginBottom="-30dp"
+        android:layout_marginLeft="-20dp"
+        android:layout_marginRight="-20dp"
+        android:background="@drawable/shadow_xlarge"
+        android:visibility="invisible" />
+
     <RelativeLayout
         android:id="@id/slide_top"
         android:layout_width="fill_parent"
@@ -323,8 +340,20 @@
             android:layout_marginTop="15dp" >
         </RelativeLayout>
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/frise"
+            android:layout_alignLeft="@+id/frise"
+            android:layout_alignRight="@+id/frise"
+            android:layout_alignTop="@+id/frise"
+            android:layout_marginLeft="-2dp"
+            android:layout_marginRight="-2dp"
+            android:layout_marginBottom="-2dp"
+            android:background="@drawable/shadow_small" />
+
         <LinearLayout
-            android:id="@+id/frise"
+            android:id="@id/frise"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
