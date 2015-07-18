@@ -181,7 +181,7 @@ public class MenuActivity extends Activity {
 		// Bouton exit //
 		Button exit = (Button) findViewById(R.id.exit);
 		Utile.setSize(exit,H/13 , H/13);
-		exit.setOnClickListener(new ExitApplicationListener(exit,getDrawable(R.drawable.close),
+		exit.setOnClickListener(new ExitApplicationListener(exit,getResources().getDrawable(R.drawable.close),
 				MenuActivity.this));
 
 		/* Apparition du logo puis de l'activite */
