@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -22,9 +21,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -72,6 +68,7 @@ public class FriseActivity extends Activity {
 	private int margin; // marge entre les cases des taches
 	private boolean modeAide = false;
 	private boolean sommaire_open = false;
+	private boolean swiping = false;
 	private Task currentTask = null;
 	private int nbTask = 0;
 
@@ -308,7 +305,6 @@ public class FriseActivity extends Activity {
 		LinearLayout liste_activite = (LinearLayout) findViewById(R.id.liste_activite);
 		int indice = 0;
 		for (Task task : myTasks) {
-			String nom = task.getNom();
 			Button txt_activite = new Button(getApplicationContext());
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -401,14 +397,14 @@ public class FriseActivity extends Activity {
 			slide_bottom.setOnTouchListener(new OnSwipeTouchListener(this){
 				public void onSwipeRight(){
 					int index = Task.indexOfTask(myTasks, scopedTask);
-					if(index-1>=0){
+					if(index-1>=0 && !swiping){
 						taskClicked(index-1);
 					}
 				}
 				
 				public void onSwipeLeft(){
 					int index = Task.indexOfTask(myTasks, scopedTask);
-					if(index+1<nbTask){
+					if(index+1<nbTask && !swiping){
 						taskClicked(index+1);
 					}
 				}
@@ -487,6 +483,7 @@ public class FriseActivity extends Activity {
 	 * @param taskId
 	 */
 	public void taskClicked(int taskId) {
+		swiping = true;
 		Button rectTask = (Button) findViewById(taskId);
 		int couleur = getResources().getColor(colorTab[taskId]);
 		rectTask.setBackgroundColor(Couleur.lighten(couleur));
@@ -624,6 +621,7 @@ public class FriseActivity extends Activity {
 					scope.clearAnimation();
 					replaceScope(); // replace vraiment le scope a sa nouvelle
 									// position
+					swiping = false;
 				}
 			});
 
@@ -653,7 +651,7 @@ public class FriseActivity extends Activity {
 		int XWidth = scopedTask.getXwidth(W, h0, h1,margin);
 		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) scope
 				.getLayoutParams();
-		params.addRule(RelativeLayout.ALIGN_START, R.id.frise);
+		params.addRule(RelativeLayout.ALIGN_LEFT, R.id.frise);
 		MarginLayoutParams paramsScope = (MarginLayoutParams) scope
 				.getLayoutParams();
 		paramsScope.width = XWidth + 20;
@@ -1018,7 +1016,7 @@ public class FriseActivity extends Activity {
 				// Replacement du bouton aide a droite du bouton menu//
 				RelativeLayout.LayoutParams params_aide = (RelativeLayout.LayoutParams) aide
 						.getLayoutParams();
-				params_aide.addRule(RelativeLayout.END_OF, R.id.bouton_menu);
+				params_aide.addRule(RelativeLayout.RIGHT_OF, R.id.bouton_menu);
 				aide.setLayoutParams(params_aide);
 
 				// Disparition des bulles d'aide //
@@ -1035,15 +1033,10 @@ public class FriseActivity extends Activity {
 
 				modeAide = true; // on passe en mode aide
 
-				// glow sur les autres boutons //
-
-				glowMenu = GlowingButton.makeGlow(menu,
-						getApplicationContext(), 118);
-
 				// Replacement du bouton aide a droite du bouton menu//
 				RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) aide
 						.getLayoutParams();
-				params.addRule(RelativeLayout.END_OF, 118);
+				params.addRule(RelativeLayout.RIGHT_OF, 118);
 				aide.setLayoutParams(params);
 
 				// text to speech sur les boutons //
