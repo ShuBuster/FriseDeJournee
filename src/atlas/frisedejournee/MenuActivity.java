@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.Typeface;
@@ -13,7 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.v4.view.ViewCompat;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -137,6 +139,8 @@ public class MenuActivity extends Activity {
 		boutonGo.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				
+				if(!emplois.isEmpty()) {
 				/* Changement de l'aspect du bouton lorsqu'on l'enfonce */
 				Drawable bouton_go_pressed = Bouton.pressedRoundedDrawable(a,R.color.light_blue3, 1f);
 				boutonGo.setBackground(bouton_go_pressed);
@@ -156,6 +160,11 @@ public class MenuActivity extends Activity {
 				Animer.changeActivityAnimation(slide_bottom,
 						FriseActivity.class, emploi, "emploi", options,
 						"options");
+			}
+				else {
+					alert("Impossible de lancer la frise",
+							"Il doit y avoir au moins un emploi du temps de créée");
+				}
 
 			}
 		});
@@ -181,7 +190,7 @@ public class MenuActivity extends Activity {
 		// Bouton exit //
 		Button exit = (Button) findViewById(R.id.exit);
 		Utile.setSize(exit,H/13 , H/13);
-		exit.setOnClickListener(new ExitApplicationListener(exit,getDrawable(R.drawable.close),
+		exit.setOnClickListener(new ExitApplicationListener(exit,getResources().getDrawable(R.drawable.close),
 				MenuActivity.this));
 
 		/* Apparition du logo puis de l'activite */
@@ -290,6 +299,24 @@ public class MenuActivity extends Activity {
 	public void chargerEmplois() {
 		File frise = readFriseFile();
 		this.emplois = TaskReader.read(frise, this);
+		if(emplois.size()==0) {
+			File file = new File("/Frizz/emploiTest.txt");
+			Log.d("file",file.toString());
+			this.emplois = TaskReader.read(file , this);
+		}
+	}
+	
+	public void alert(String titre, String message) {
+		new AlertDialog.Builder(this)
+				.setTitle(titre)
+				.setMessage(message)
+				.setPositiveButton(android.R.string.yes,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.cancel();
+							}
+						}).setIcon(android.R.drawable.ic_dialog_alert).show();
 	}
 
 }
