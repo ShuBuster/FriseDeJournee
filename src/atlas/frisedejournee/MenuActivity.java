@@ -90,7 +90,7 @@ public class MenuActivity extends Activity {
 		Intent opt = getIntent();
 		if ((Options) opt.getSerializableExtra("options") != null)
 			options = (Options) opt.getSerializableExtra("options");
-		;
+		
 
 		/* Spinner ajout des enfants */
 
