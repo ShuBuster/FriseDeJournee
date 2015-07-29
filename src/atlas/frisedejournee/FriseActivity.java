@@ -310,7 +310,9 @@ public class FriseActivity extends Activity {
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			params.setMargins(50, 10, 0, 10);
 			txt_activite.setLayoutParams(params);
+			if (Build.VERSION.SDK_INT >= 21) {
 			txt_activite.setElevation(myTasks.size()-indice);
+			}
 			txt_activite.setBackgroundColor(getResources().getColor(R.color.blanc_casse));
 			txt_activite.setText(formatHour(task.getHeureDebut()) + " - "
 					+ formatHour(task.getHeureFin()) + "   " + task.getNom()+ " ");
@@ -696,7 +698,7 @@ public class FriseActivity extends Activity {
 		}
 		else{
 		int imageId = getResources().getIdentifier(scopedTask.getImage() , "drawable", getPackageName());
-		imageTask.setImageDrawable(getDrawable(imageId));
+		imageTask.setImageDrawable(getResources().getDrawable(imageId));
 		}
 		
 
