@@ -300,9 +300,7 @@ public class MenuActivity extends Activity {
 		File frise = readFriseFile();
 		this.emplois = TaskReader.read(frise, this);
 		if(emplois.size()==0) {
-			File file = new File("/Frizz/emploiTest.txt");
-			Log.d("file",file.toString());
-			this.emplois = TaskReader.read(file , this);
+			emplois.add(EmploiDuTemps.emploiTest());
 		}
 	}
 	
