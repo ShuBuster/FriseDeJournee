@@ -41,7 +41,6 @@ import composants.Animer;
 import composants.AnimatedGnar;
 import composants.AnimatedText;
 import composants.Bulle;
-import composants.Ecran;
 import composants.Police;
 import composants.Utile;
 
@@ -64,7 +63,7 @@ public class MenuActivity extends Activity {
 		H = size.y;
 
 		/* Passage en plein ecran */
-		Ecran.fullScreen(a);
+		Utile.fullScreen(a);
 		setContentView(R.layout.activity_menu);
 
 		/* Police du texte avant spinner */
@@ -231,7 +230,7 @@ public class MenuActivity extends Activity {
 		Drawable bouton_go_d = Bouton.roundedDrawable(this, R.color.light_blue3, 1f);
 		boutonGo.setBackground(bouton_go_d);
 		executeDelayed();
-		Ecran.fullScreenResume(this);
+		Utile.fullScreenResume(this);
 
 	}
 

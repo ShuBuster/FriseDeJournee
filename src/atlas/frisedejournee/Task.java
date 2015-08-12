@@ -18,13 +18,13 @@ public class Task implements Serializable{
 	private int couleur; // la couleur de l'activite dans la frise
 	
 	public Task(String nom, String description, double duree, double heureDebut,
-			String image) {
+			String image,int couleur) {
 		this.nom = nom;
 		this.description = description;
 		this.duree = duree;
 		this.heureDebut = heureDebut;
 		this.image = image;
-		this.couleur = Color.BLACK;
+		this.couleur = couleur;
 	}
 
 	public String getNom() {

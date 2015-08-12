@@ -48,7 +48,14 @@ public class TaskReader {
 				
 				while(notEmpty(ligne = br.readLine())) { // tant qu'il y a des taches
 					String nom = ligne; // nom de l'activite
-	
+					int couleur = -1;
+					if(nom.contains("_")){ // si il y a une couleur
+						int index = nom.indexOf("_");
+						String col = nom.substring(index+1);
+						couleur = Integer.valueOf(col);
+						nom = nom.substring(0, index);
+					}
+					
 					ligne = br.readLine();
 					String description = ligne; // description de l'activite
 					
@@ -64,7 +71,7 @@ public class TaskReader {
 					
 					ligne = br.readLine();
 					String nomImage = ligne;
-					Task myTask = new Task(nom, description, duree, heureDebut,nomImage);
+					Task myTask = new Task(nom, description, duree, heureDebut,nomImage,couleur);
 					myTasks.add(myTask);
 					
 					ligne = br.readLine(); // passe le saut de ligne entre les requetes
