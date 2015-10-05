@@ -61,6 +61,8 @@ public class FriseActivity extends Activity {
 	private double h1; // l'heure a laquelle se termine la frise
 	private final int[] colorTab; // les id des differentes couleurs des
 									// activites
+	int color_indice = 0;
+	
 	private int width; // largeur de l'ecran en px
 	private int height; // hauteur de l'ecran en px
 	private int W; // largeur de la frise en px
@@ -183,13 +185,11 @@ public class FriseActivity extends Activity {
 
 		/* Remplissage de la frise */
 
-		int color_indice = 0;
 		int task_indice = 0;
 
 		for (Task myTask : myTasks) {
 
-			addTaskToFrise(myTask, frise, task_indice, color_indice);
-			color_indice += 1;
+			addTaskToFrise(myTask, frise, task_indice);
 			task_indice += 1;
 		}
 		nbTask = task_indice;
@@ -320,7 +320,7 @@ public class FriseActivity extends Activity {
 			txt_activite.setTextSize(28f);
 			txt_activite.setId(200+indice);
 			txt_activite.setLayerPaint(new Paint(getResources().getColor(R.color.grey1)));
-			txt_activite.setOnClickListener(new TaskListener(indice, FriseActivity.this));
+			txt_activite.setOnClickListener(new TaskListener(indice,task,FriseActivity.this));
 			Police.setFont(this, txt_activite, "Action_Man.ttf");
 			liste_activite.addView(txt_activite);
 			indice++;
@@ -400,14 +400,14 @@ public class FriseActivity extends Activity {
 				public void onSwipeRight(){
 					int index = Task.indexOfTask(myTasks, scopedTask);
 					if(index-1>=0 && !swiping){
-						taskClicked(index-1);
+						taskClicked(index-1,scopedTask);
 					}
 				}
 				
 				public void onSwipeLeft(){
 					int index = Task.indexOfTask(myTasks, scopedTask);
 					if(index+1<nbTask && !swiping){
-						taskClicked(index+1);
+						taskClicked(index+1,scopedTask);
 					}
 				}
 			});
@@ -484,10 +484,10 @@ public class FriseActivity extends Activity {
 	 * 
 	 * @param taskId
 	 */
-	public void taskClicked(int taskId) {
+	public void taskClicked(int taskId,Task task) {
 		swiping = true;
 		Button rectTask = (Button) findViewById(taskId);
-		int couleur = getResources().getColor(colorTab[taskId]);
+		int couleur = task.getCouleur();
 		rectTask.setBackgroundColor(Couleur.lighten(couleur));
 		int scopedId = Task.indexOfTask(myTasks, scopedTask);
 		int deltaId = taskId - scopedId;
@@ -617,7 +617,7 @@ public class FriseActivity extends Activity {
 				@Override
 				public void onAnimationEnd(Animation animation) {
 					Button rectTask = (Button) findViewById(taskId);
-					int couleur = getResources().getColor(colorTab[taskId]);
+					int couleur = scopedTask.getCouleur();
 					rectTask.setBackgroundColor(couleur);
 					setEnableTaskButton(true);
 					scope.clearAnimation();
@@ -638,7 +638,7 @@ public class FriseActivity extends Activity {
 		Task currentT = findCurrentTask();
 		if(currentT!=null){
 			int index = Task.indexOfTask(myTasks,currentT);
-			taskClicked(index);
+			taskClicked(index,currentT);
 		}
 	}
 
@@ -964,7 +964,7 @@ public class FriseActivity extends Activity {
 	}
 
 	public void addTaskToFrise(Task myTask, LinearLayout frise,
-			int task_indice, int color_indice) {
+			int task_indice) {
 		/* Affichage de ma tache sur la frise */
 		Button rectTask = new Button(this);
 		int Xwidth = myTask.getXwidth(W, h0, h1,margin);
@@ -975,13 +975,22 @@ public class FriseActivity extends Activity {
 		layoutParams.setMargins(margin, margin, 0, margin);
 		rectTask.setLayoutParams(layoutParams);
 
-		int couleur = getResources().getColor(colorTab[color_indice]);
-		myTask.setCouleur(couleur); // on associe a la tache sa couleur
-		rectTask.setBackgroundColor(couleur);
+		int color = myTask.getCouleur();
+		if(color>=0){
+			int couleur = getResources().getColor(colorTab[color]);
+			myTask.setCouleur(couleur); // on associe a la tache sa couleur traduite
+			rectTask.setBackgroundColor(couleur);
+		}else{
+			int couleur = getResources().getColor(colorTab[color_indice]);
+			color_indice++;
+			myTask.setCouleur(couleur);
+			rectTask.setBackgroundColor(couleur);
+		}
+		
 		frise.addView(rectTask);
 		rectTask.setId(task_indice);
 		// rend le bouton clickable
-		rectTask.setOnClickListener(new TaskListener(task_indice, this));
+		rectTask.setOnClickListener(new TaskListener(task_indice,myTask,this));
 
 	}
 
