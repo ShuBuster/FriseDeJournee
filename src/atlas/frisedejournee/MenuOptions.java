@@ -58,13 +58,12 @@ public class MenuOptions {
 		Activity a = (Activity) context;
 		a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-		
 		// les parametres du layout qui contient les options
 		RelativeLayout.LayoutParams boutons_params = new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		boutons_params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		slide_bottom.setLayoutParams(boutons_params);
-	
+
 		// on attribue un id a chaque emplacement de layout/titre
 		for (int i = 0; i < 7; i++) {
 			menu[i] = new RelativeLayout(context);
@@ -86,7 +85,7 @@ public class MenuOptions {
 						LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 				titre_params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 				titre_params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-				titre_params.addRule(RelativeLayout.ABOVE,menu[0].getId());
+				titre_params.addRule(RelativeLayout.ABOVE, menu[0].getId());
 				menu[0].setLayoutParams(titre_params);
 				break;
 
@@ -143,7 +142,6 @@ public class MenuOptions {
 
 				break;
 			}
-
 
 		}
 
@@ -244,55 +242,46 @@ public class MenuOptions {
 			group.addView(oui);
 			group.addView(non);
 
-			switch (typeOption) {
-			case "gnar": {
+			if (typeOption.equals("gnar")) {
 				option.setBackground(context.getResources().getDrawable(
 						R.drawable.mini_tete_2));
-				if(options.getGnar()){
+				if (options.getGnar()) {
 					group.check(1213);
 					oui.setChecked(true);
 				} else {
 					group.check(1214);
 					non.setChecked(true);
 				}
-				break;
-			}
-			case "horloge": {
+			} else if (typeOption.equals("horloge")) {
 				Horloge.create(option, context, 3, 30, 45);
-				if(options.getHorloge()){
+				if (options.getHorloge()) {
 					group.check(1213);
 					oui.setChecked(true);
 				} else {
 					group.check(1214);
 					non.setChecked(true);
 				}
-				break;
-			}
-			case "son": {
+			} else if (typeOption.equals("son")) {
 				option.setBackground(context.getResources().getDrawable(
 						R.drawable.sound));
-				if(options.getSound()){
+				if (options.getSound()) {
 					group.check(1213);
 					oui.setChecked(true);
 				} else {
 					group.check(1214);
 					non.setChecked(true);
 				}
-				break;
-			}
-			case "bulle": {
+			} else if (typeOption.equals("bulle")) {
 				option.setBackground(context.getResources().getDrawable(
 						R.drawable.bulle_bas));
-				if(options.getBulle()){
+				if (options.getBulle()) {
 					group.check(1213);
 					oui.setChecked(true);
 				} else {
 					group.check(1214);
 					non.setChecked(true);
 				}
-				break;
-			}
-			case "sommaire": {
+			} else if (typeOption.equals("sommaire")) {
 				TextView t = new TextView(context);
 				t.setText("sommaire   ");
 				Police.setFont((Activity) context, t, "intsh.ttf");
@@ -305,15 +294,13 @@ public class MenuOptions {
 				t.setBackgroundColor(context.getResources().getColor(
 						R.color.blanc));
 				option.addView(t);
-				
-				if(options.getSommaire()){
+
+				if (options.getSommaire()) {
 					group.check(1213);
 					oui.setChecked(true);
 				} else {
 					group.check(1214);
 					non.setChecked(true);
-				}
-				break;
 				}
 			}
 
@@ -353,14 +340,14 @@ public class MenuOptions {
 
 	}
 
-	public RelativeLayout getTitre(){
+	public RelativeLayout getTitre() {
 		return menu[0];
 	}
-	
-	public RelativeLayout getSlide(){
+
+	public RelativeLayout getSlide() {
 		return slide_bottom;
 	}
-	
+
 	/**
 	 * methode qui detruit toutes les vues qui se trouvent dans l'emplacement
 	 * designe et laisse donc cet emplacement vide
