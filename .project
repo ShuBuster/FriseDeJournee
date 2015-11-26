@@ -3,6 +3,7 @@
 	<name>Frizz</name>
 	<comment></comment>
 	<projects>
+		<project>AppBox</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -212,8 +212,8 @@
             <Button
                 android:id="@+id/bouton_menu"
                 style="@style/wrapped"
-                android:background="@drawable/home"
-                android:stateListAnimator="@null" />
+                android:background="@drawable/home" />
+            <!-- android:stateListAnimator="@null" -->
 
             <Button
                 android:id="@+id/bouton_aide"
@@ -259,11 +259,11 @@
             android:layout_alignTop="@id/frame"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            android:stateListAnimator="@null"
             android:text="Description"
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:textSize="30sp" />
+			<!-- android:stateListAnimator="@null" -->
 
         <RelativeLayout
             android:id="@+id/gnar"
@@ -347,9 +347,9 @@
             android:layout_alignLeft="@+id/frise"
             android:layout_alignRight="@+id/frise"
             android:layout_alignTop="@+id/frise"
+            android:layout_marginBottom="-2dp"
             android:layout_marginLeft="-2dp"
             android:layout_marginRight="-2dp"
-            android:layout_marginBottom="-2dp"
             android:background="@drawable/shadow_small" />
 
         <LinearLayout

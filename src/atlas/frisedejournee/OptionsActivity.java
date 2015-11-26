@@ -121,7 +121,6 @@ public class OptionsActivity extends Activity {
 		slide_top.addView(bouton_menu);
 		
 		bouton_menu.setOnClickListener(new OnClickListener() {
-			@Override
 			public void onClick(View v) {
 
 				// on recupere les parametres d'options
