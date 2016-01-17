@@ -4,9 +4,10 @@
     <string name="app_name">FriseDeJournee</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_frise">FriseActivity</string>
-    <string name="aide">le petit enfant Romouille a une question ?</string>
+    <string name="aide">le petit enfant Romouille à une question ?</string>
     <string name="prenom">Mon prénom</string>
     <string name="jeSuis">Je suis :</string>
+    <string name="emplois_recus">De nouveaux emplois du temps sont arrivés !</string>
     <string name="title_activity_second">SecondActivity</string>
     <string name="title_activity_third">ThirdActivity</string>
     <string name="title_activity_test">TestActivity</string>
@@ -16,7 +17,7 @@
     <string name="title_activity_boutons">BoutonsActivity</string>
     <string name="title_activity_menu">CustomMenuActivity</string>
     <string name="titre_menu">Bienvenue dans la démo du Framework !</string>
-    <string name="sous_titre_menu">Cliquer sur un des composants pour en avoir un aperçu</string>
+    <string name="sous_titre_menu">Cliquer sur un des composants pour en avoir un aperÃ§u</string>
     <string name="titre_bouton">Créer des boutons très simplement</string>
     <string name="indication_bouton">Entrez le nom de votre bouton :</string>
     <string name="title_activity_glow">GlowActivity</string>
@@ -26,5 +27,14 @@
     <string name="title_activity_options">OptionsActivity</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_other">OtherActivity</string>
+    <string name="sauvegarde">Vos emplois du temps ont été sauvegardés dans le ficher "frise.txt"</string>
+    <string name="charge_emplois_fichier">Les emplois du temps ont été chargés depuis le fichier</string>
+    <string name="charge_emplois_db">Les emplois du temps ont été chargés depuis la base de données</string>    <string name="enfant_vide">"Impossible de lancer la frise", il doit y avoir au moins un emploi du temps de créé"</string>
+
+    <!-- Bluetooth -->
+    <string name="send">Envoi des emploi du temps !</string>
+    <string name="not_connected_bluetooth">Vous n\'êtes connecté à aucun appareil</string>
+    <string name="title_connecting">En connection...</string>
+    <string name="title_not_connected">Pas connecté</string>
 
 </resources>

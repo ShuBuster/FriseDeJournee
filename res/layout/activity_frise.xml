@@ -7,6 +7,8 @@
     android:clipChildren="true"
     tools:context="${relativePackage}.${activityClass}" >
 
+        <!-- logo AppBox -->
+        
     <ImageView
         android:id="@+id/logo_image"
         android:layout_width="wrap_content"
@@ -14,6 +16,8 @@
         android:layout_centerInParent="true"
         android:background="@drawable/logo_app"
         android:visibility="invisible" />
+
+    <!-- fenetre qui arrive du bas, contient le zoom sur l'activite avec toues les aides -->
 
     <RelativeLayout
         android:id="@+id/slide_bottom"
@@ -201,12 +205,14 @@
             </LinearLayout>
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/aide_parent"
+        <LinearLayout
+            android:id="@+id/boutons"
             style="@style/wrapped"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
+            android:layout_alignParentLeft="true"
             android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:orientation="horizontal"
             android:clipChildren="false" >
 
             <Button
@@ -221,38 +227,11 @@
                 android:layout_marginLeft="100dp"
                 android:layout_toRightOf="@id/bouton_menu"
                 android:background="@drawable/help" />
-        </RelativeLayout>
+        </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/information"
-            style="@style/wrapped"
-            android:layout_alignBottom="@id/frame"
-            android:layout_alignRight="@id/frame"
-            android:layout_below="@+id/description_bouton"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
-            android:clipChildren="true"
-            android:orientation="vertical" >
-
-            <LinearLayout
-                android:id="@+id/info"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:orientation="vertical"
-                android:visibility="invisible" >
-
-                <TextView
-                    android:id="@+id/info_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:textColor="@color/noir"
-                    android:textSize="30sp" />
-            </LinearLayout>
-        </RelativeLayout>
-
+ 
         <Button
-            android:id="@id/description_bouton"
+            android:id="@+id/description_bouton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignRight="@id/frame"
@@ -263,7 +242,27 @@
             android:textAllCaps="false"
             android:textColor="@color/noir"
             android:textSize="30sp" />
-			<!-- android:stateListAnimator="@null" -->
+			<!-- android:stateListAnimator="@null" />-->
+
+       <RelativeLayout
+            android:id="@+id/description_layout"
+            style="@style/wrapped"
+            android:layout_alignBottom="@id/frame"
+            android:layout_alignRight="@id/frame"
+            android:layout_below="@id/description_bouton"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp" 
+            android:visibility="invisible"  >
+
+            <TextView
+                android:id="@+id/description_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:textColor="@color/noir"
+                android:textSize="30sp" />
+                    
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/gnar"
@@ -275,6 +274,8 @@
             android:layout_marginRight="20dp"
             android:clipChildren="false" />
     </RelativeLayout>
+
+<!-- fenetre de droite, contient le sommaire -->
 
     <RelativeLayout
         android:id="@+id/slide_right"
@@ -310,6 +311,8 @@
         android:text="Sommaire"
         android:visibility="invisible" />
 
+    <!-- separation entre le slide top et bottom, apparence de relief -->
+
     <ImageView
         android:id="@+id/slide_top_shadow"
         android:layout_width="fill_parent"
@@ -323,6 +326,8 @@
         android:layout_marginRight="-20dp"
         android:background="@drawable/shadow_xlarge"
         android:visibility="invisible" />
+
+<!-- fenetre qui arrive du haut, contient la frise integrale et l'horloge -->
 
     <RelativeLayout
         android:id="@id/slide_top"
