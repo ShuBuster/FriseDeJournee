@@ -16,7 +16,6 @@ import android.widget.RelativeLayout;
 import boutons.Bouton;
 
 import composants.Animer;
-import composants.Ecran;
 import composants.MyLayoutParams;
 import composants.Police;
 
@@ -30,7 +29,7 @@ public class OptionsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		/* Passage en plein ecran */
-		Ecran.fullScreen(this);
+		//Ecran.fullScreen(this);
 		setContentView(R.layout.activity_options);
 
 		// recuperation des options precedentes
@@ -54,7 +53,7 @@ public class OptionsActivity extends Activity {
 		final RadioGroup gnar = (RadioGroup) m.addOption("gnar", 1);
 		final RadioGroup horloge = (RadioGroup) m.addOption("horloge", 3);
 		final RadioGroup son = (RadioGroup) m.addOption("son", 5);
-		final RadioGroup bulle = (RadioGroup) m.addOption("bulle", 2);
+		final RadioGroup bulle = (RadioGroup) m.addOption("aide", 2);
 		final RadioGroup sommaire = (RadioGroup) m.addOption("sommaire", 4);
 		
 		final RelativeLayout slide_bottom = (RelativeLayout)findViewById(R.id.slide_bottom);
@@ -87,8 +86,8 @@ public class OptionsActivity extends Activity {
 
 		bulle.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				options.setBulle(!options.getBulle());
-				Log.d("options","bulle vaut "+options.getBulle());
+				options.setAide(!options.getAide());
+				Log.d("options","aide vaut "+options.getAide());
 			}
 		});
 
@@ -139,7 +138,7 @@ public class OptionsActivity extends Activity {
 	/* L'activite revient sur le devant de la scene */
 	public void onResume() {
 		super.onResume();
-		Ecran.fullScreenResume(this);
+		//Ecran.fullScreenResume(this);
 
 	}
 

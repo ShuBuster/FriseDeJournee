@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -41,6 +42,8 @@ import composants.Utile;
 public class MenuActivity extends Activity {
 
 	private int H; // hauteur de l'ecran en px
+	
+	private final static String TAG = "MENU_ACTIVITY";
 
 	private ArrayList<EmploiDuTemps> emplois = new ArrayList<EmploiDuTemps>();
 
@@ -57,8 +60,8 @@ public class MenuActivity extends Activity {
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-			/* Taille ecran */
+
+		/* Taille ecran */
 
 		final Display display = getWindowManager().getDefaultDisplay();
 		final Point size = new Point();
@@ -66,7 +69,7 @@ public class MenuActivity extends Activity {
 		H = size.y;
 
 		/* Passage en plein ecran */
-		Utile.fullScreen(a);
+		// Utile.fullScreen(a);
 		setContentView(R.layout.activity_menu);
 
 		/* Police du texte avant spinner */
@@ -99,7 +102,7 @@ public class MenuActivity extends Activity {
 		if (options.getSound()) {
 			TTSBouton.parle(bulle, "Choisis ton prenom dans la liste", this);
 		}
-		if (!options.getBulle()) {
+		if (!options.getAide()) {
 			bulle.setVisibility(View.INVISIBLE);
 		}
 
@@ -112,7 +115,7 @@ public class MenuActivity extends Activity {
 					Bulle.destroy(bulle, a);
 
 				}
-				executeDelayed();
+				// executeDelayed();
 				return false;
 			}
 		});
@@ -201,9 +204,9 @@ public class MenuActivity extends Activity {
 
 		AnimatedText.add(this, layout_titre, "Frizz", colors, 100,
 				TypedValue.COMPLEX_UNIT_SP);
-
+		
 		// Animation Gnar
-		final RelativeLayout gnar = (RelativeLayout) findViewById(R.id.gnar);
+		final RelativeLayout gnar = (RelativeLayout) findViewById(R.id.gnar_adulte);
 		AnimatedGnar.addGnar(this, gnar);
 
 		// Animation mini Gnar
@@ -226,7 +229,7 @@ public class MenuActivity extends Activity {
 		final Drawable bouton_go_d = Bouton.roundedDrawable(this,
 				R.color.light_blue3, 1f);
 		boutonGo.setBackgroundDrawable(bouton_go_d);
-		executeDelayed();
+		// executeDelayed();
 		// Utile.fullScreenResume(this);
 
 		// lancement du bluetooth si autorise
@@ -234,7 +237,7 @@ public class MenuActivity extends Activity {
 
 		// chargement des edt
 		emplois = _presenter.chargeEmplois();
-		
+
 		setSpinner();
 
 	}
@@ -272,8 +275,6 @@ public class MenuActivity extends Activity {
 				case Bluetooth.STATE_CONNECTED:
 					Toast.makeText(getApplicationContext(), "STATE_CONNECTED",
 							Toast.LENGTH_SHORT).show();
-					// MAJ de la BD du createur connecte par Bluetooth
-					_presenter.syncBluetooth(emplois);
 					break;
 				case Bluetooth.STATE_CONNECTING:
 					Toast.makeText(getApplicationContext(), "STATE_CONNECTING",
@@ -292,13 +293,18 @@ public class MenuActivity extends Activity {
 				}
 				break;
 			case Bluetooth_Constants.MESSAGE_WRITE:
+				Toast.makeText(getApplicationContext(),
+						getResources().getString(R.string.send),
+						Toast.LENGTH_SHORT).show();
+				Log.d(TAG,"bytes written : "+msg.arg1);
 
 				break;
 			case Bluetooth_Constants.MESSAGE_READ: {
 				// MAJ de la base de donnees envoyee par Bluetooth
+				Log.d(TAG,"bytes read : "+msg.arg1);
 				emplois = _presenter.getEdtBluetooth(msg.obj);
 				setSpinner();
-
+				_presenter.syncBluetooth(emplois);
 			}
 
 				break;
@@ -312,9 +318,9 @@ public class MenuActivity extends Activity {
 				break;
 			case Bluetooth_Constants.MESSAGE_TOAST:
 
-				//Toast.makeText(getApplicationContext(),
-				//		msg.getData().getString(Bluetooth_Constants.TOAST),
-				//		Toast.LENGTH_SHORT).show();
+				// Toast.makeText(getApplicationContext(),
+				// msg.getData().getString(Bluetooth_Constants.TOAST),
+				// Toast.LENGTH_SHORT).show();
 				break;
 
 			}

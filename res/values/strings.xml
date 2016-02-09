@@ -17,7 +17,7 @@
     <string name="title_activity_boutons">BoutonsActivity</string>
     <string name="title_activity_menu">CustomMenuActivity</string>
     <string name="titre_menu">Bienvenue dans la démo du Framework !</string>
-    <string name="sous_titre_menu">Cliquer sur un des composants pour en avoir un aperÃ§u</string>
+    <string name="sous_titre_menu">Cliquer sur un des composants pour en avoir un apercu</string>
     <string name="titre_bouton">Créer des boutons très simplement</string>
     <string name="indication_bouton">Entrez le nom de votre bouton :</string>
     <string name="title_activity_glow">GlowActivity</string>
@@ -30,7 +30,13 @@
     <string name="sauvegarde">Vos emplois du temps ont été sauvegardés dans le ficher "frise.txt"</string>
     <string name="charge_emplois_fichier">Les emplois du temps ont été chargés depuis le fichier</string>
     <string name="charge_emplois_db">Les emplois du temps ont été chargés depuis la base de données</string>    <string name="enfant_vide">"Impossible de lancer la frise", il doit y avoir au moins un emploi du temps de créé"</string>
-
+	<string name="bulle_heure">L\'heure de début de l\'activité</string>
+	<string name="bulle_aide_avant">Clique sur ce bouton pour obtenir de l\'aide</string>
+	<string name="bulle_aide_apres">Clique sur ce bouton pour sortir de l\'aide</string>
+	<string name="bulle_description">Pour afficher\nune description de l\'activité</string>
+	<string name="aide_menu">Pour retourner au menu principal</string>
+    
+    
     <!-- Bluetooth -->
     <string name="send">Envoi des emploi du temps !</string>
     <string name="not_connected_bluetooth">Vous n\'êtes connecté à aucun appareil</string>

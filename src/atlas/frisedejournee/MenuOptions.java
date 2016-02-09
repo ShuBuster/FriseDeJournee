@@ -1,17 +1,10 @@
 package atlas.frisedejournee;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
-import android.content.res.Resources.NotFoundException;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -264,7 +257,7 @@ public class MenuOptions
 
             if (typeOption.equals("gnar"))
             {
-                setBackground(option, context.getResources().getDrawable(R.drawable.mini_tete_2));
+                option.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.mini_tete_2));
                 if (options.getGnar())
                 {
                     group.check(1213);
@@ -292,7 +285,7 @@ public class MenuOptions
             }
             else if (typeOption.equals("son"))
             {
-                setBackground(option, context.getResources().getDrawable(R.drawable.sound));
+                option.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.sound));
                 if (options.getSound())
                 {
                     group.check(1213);
@@ -304,10 +297,10 @@ public class MenuOptions
                     non.setChecked(true);
                 }
             }
-            else if (typeOption.equals("bulle"))
+            else if (typeOption.equals("aide"))
             {
-                setBackground(option, context.getResources().getDrawable(R.drawable.bulle_bas));
-                if (options.getBulle())
+                option.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.help));
+                if (options.getAide())
                 {
                     group.check(1213);
                     oui.setChecked(true);
@@ -411,40 +404,5 @@ public class MenuOptions
             Log.d("Attention", "le layout designe ne convient pas ou est nul");
         }
     }
-
-    /**
-	 * sets the background of a view depending on the API
-	 * 
-	 * @param v
-	 * @param d
-	 */
-	private static void setBackground(final View v, final Drawable d) {
-		if (Build.VERSION.SDK_INT >= 16) {
-			// v.setBackground(d);
-			Method methodBackgroung;
-			try {
-				methodBackgroung = View.class.getMethod("setBackground",
-						Drawable.class);
-				methodBackgroung.invoke(v, d);
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else {
-			v.setBackgroundDrawable(d);
-		}
-	}
 
 }

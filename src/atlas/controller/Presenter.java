@@ -28,6 +28,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 import atlas.frisedejournee.R;
 
@@ -74,7 +75,7 @@ public class Presenter {
 		if (_service != null) {
 			_service.stop();
 		}
-		// sauvegardeFichier(emplois);
+		//sauvegardeFichier(emplois);
 	}
 
 	/**
@@ -123,8 +124,12 @@ public class Presenter {
 
 			// remise a jour de la base de donnees
 			updateDataBase(edt);
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
-
 		return getDataBase();
 
 	}
@@ -144,13 +149,13 @@ public class Presenter {
 		emplois = getDataBase();
 
 		// lecture depuis le fichier si la base de donnees est vide
-		/*
-		 * if (emplois.isEmpty()) { emplois = EmploiDuTemps.deserialize(null);
-		 * Toast.makeText( _context, _context.getResources().getString(
-		 * R.string.charge_emplois_fichier), Toast.LENGTH_SHORT).show();
-		 * 
-		 * // remet a jour la base de donnees recoverDataBase(); }
-		 */
+
+		/*if (emplois.isEmpty()) {
+			emplois = EmploiDuTemps.deserialize(null);
+
+			// remet a jour la base de donnees
+			recoverDataBase();
+		}*/
 
 		// trie les taches des emplois du temps
 		for (EmploiDuTemps emploi : emplois) {
@@ -174,19 +179,21 @@ public class Presenter {
 		// tous les emplois valides
 		Cursor c = resolver.query(Emploi.CONTENT_URI, projection, projection[2]
 				+ " = ?", new String[] { String.valueOf(1) }, null);
-		// parcours tous les edt valides
-		while (c.moveToNext()) {
-			final int edt_id = c.getInt(0);
-			final String nom_edt = c.getString(1);
-			ArrayList<Task> tasks = getDataBaseTask(resolver, nom_edt);
-			ArrayList<HeuresMarquees> heures = getDataBaseHours(resolver,
-					nom_edt);
-			final EmploiDuTemps edt = new EmploiDuTemps(edt_id, tasks, nom_edt,
-					heures);
-			edt.setValid(true);
-			emplois.add(edt);
+		if (c != null) {
+			// parcours tous les edt valides
+			while (c.moveToNext()) {
+				final int edt_id = c.getInt(0);
+				final String nom_edt = c.getString(1);
+				ArrayList<Task> tasks = getDataBaseTask(resolver, nom_edt);
+				ArrayList<HeuresMarquees> heures = getDataBaseHours(resolver,
+						nom_edt);
+				final EmploiDuTemps edt = new EmploiDuTemps(edt_id, tasks,
+						nom_edt, heures);
+				edt.setValid(true);
+				emplois.add(edt);
+			}
+			c.close();
 		}
-		c.close();
 		return emplois;
 	}
 
@@ -214,8 +221,7 @@ public class Presenter {
 			int couleur = c.getInt(6);
 			String description = c.getString(7);
 
-			tasks.add(new Task(id, nom_edt, nomTask, description, heureFin
-					- heureDebut, heureDebut, image, couleur));
+			tasks.add(new Task(id, nom_edt, nomTask, description,heureDebut, heureFin, image, couleur));
 		}
 		c.close();
 		return tasks;
@@ -267,13 +273,17 @@ public class Presenter {
 			return;
 
 		}
+
 		// Check that there's actually something to send
 		if (!emplois.isEmpty()) {
 			// Get the message bytes and tell the BluetoothService to write
 			final byte[] send = EmploiDuTemps.serialize(emplois);
 			_service.write(send);
+
 		}
+
 	}
+	
 
 	/**
 	 * met a jour la base de donnees
@@ -284,36 +294,34 @@ public class Presenter {
 	private void updateDataBase(ArrayList<EmploiDuTemps> emplois) {
 
 		for (EmploiDuTemps emploi : emplois) {
-			// checks if this edt already exists in the dataBase et return its ID
-			// or 0 if the emploi is new.
-			int id = getId(emploi);
-			
-			
-			/*if (i < edtDB.size()) {
-				modifierEDT(emploi);
-			} else {
-				insererEDT(emploi);
-			}*/
+			deleteEDT(emploi);
 			insererEDT(emploi);
 		}
 
 	}
 
-	private int getId(EmploiDuTemps emploi) {
+	/**
+	 * supprime un emploi du temps de la base de donnees
+	 * 
+	 * @param emploi
+	 */
+	private void deleteEDT(EmploiDuTemps emploi) {
 		ContentResolver resolver = _context.getContentResolver();
-		String[] projection = Emploi.PROJECTION_ALL;
-		ArrayList<EmploiDuTemps> emplois = new ArrayList<EmploiDuTemps>();
-		int edt_id = 0;
-		
-		// tous les emplois valides avec le meme nom
-		Cursor c = resolver.query(Emploi.CONTENT_URI, projection, projection[2]
-				+ " = ? AND "+ projection[1] +" LIKE ?", new String[] { String.valueOf(1),emploi.getNomEnfant()}, null);
-		// parcours tous les edt valides
-		while (c.moveToNext()) {
-			edt_id = c.getInt(0);
-		}
-		c.close();
-		return edt_id;
+
+		// suppression des edt
+		String[] edt_projection = Emploi.PROJECTION_ALL;
+		resolver.delete(Emploi.CONTENT_URI, edt_projection[1] + " LIKE ?",
+				new String[] { emploi.getNomEnfant() });
+
+		// suppression des activites
+		String[] task_projection = Activite.PROJECTION_ALL;
+		resolver.delete(Activite.CONTENT_URI, task_projection[1] + " LIKE ?",
+				new String[] { emploi.getNomEnfant() });
+
+		// suppression des Heures
+		String[] heure_projection = Heure.PROJECTION_ALL;
+		resolver.delete(Heure.CONTENT_URI, heure_projection[1] + " LIKE ?",
+				new String[] { emploi.getNomEnfant() });
 
 	}
 
@@ -326,18 +334,18 @@ public class Presenter {
 		ContentResolver resolver = _context.getContentResolver();
 		String[] edt_projection = Emploi.PROJECTION_ALL;
 		ContentValues values = new ContentValues();
-		values.put(edt_projection[0], emploi.getId());
+		// values.put(edt_projection[0], emploi.getId());
 		values.put(edt_projection[1], emploi.getNomEnfant());
 		values.put(edt_projection[2], emploi.isValid());
 
 		resolver.insert(Emploi.CONTENT_URI, values);
 
-		// remise a jour des activites
+		// insertion des activites
 		String[] task_projection = Activite.PROJECTION_ALL;
 		ArrayList<Task> tasks = emploi.getEmploi();
 		for (Task task : tasks) {
 			ContentValues task_values = new ContentValues();
-			task_values.put(task_projection[0], task.getId());
+			// task_values.put(task_projection[0], task.getId());
 			task_values.put(task_projection[1], emploi.getNomEnfant());
 			task_values.put(task_projection[2], task.getNom());
 			task_values.put(task_projection[3], task.getHeureDebut());
@@ -355,7 +363,7 @@ public class Presenter {
 		ArrayList<HeuresMarquees> heures = emploi.getMarqueTemps();
 		for (HeuresMarquees heure : heures) {
 			ContentValues heure_values = new ContentValues();
-			heure_values.put(heure_projection[0], heure.getId());
+			// heure_values.put(heure_projection[0], heure.getId());
 			heure_values.put(heure_projection[1], emploi.getNomEnfant());
 			heure_values.put(heure_projection[2], heure.getHeure_marquee());
 
@@ -366,100 +374,13 @@ public class Presenter {
 	}
 
 	/**
-	 * modifie un emploi du temps existant dans la base de donnees
-	 * 
-	 * @param emploi
-	 */
-	private void modifierEDT(EmploiDuTemps emploi) {
-		ContentResolver resolver = _context.getContentResolver();
-		String[] edt_projection = Emploi.PROJECTION_ALL;
-		ContentValues values = new ContentValues();
-		values.put(edt_projection[0], emploi.getId());
-		values.put(edt_projection[1], emploi.getNomEnfant());
-		values.put(edt_projection[2], emploi.isValid());
-
-		resolver.update(Emploi.CONTENT_URI, values, edt_projection[1]
-				+ " LIKE ?", new String[] { emploi.getNomEnfant() });
-
-		// remise a jour des activites
-		String[] task_projection = Activite.PROJECTION_ALL;
-		ArrayList<Task> tasks = emploi.getEmploi();
-		for (Task task : tasks) {
-			ContentValues task_values = new ContentValues();
-			task_values.put(task_projection[0], task.getId());
-			task_values.put(task_projection[1], emploi.getNomEnfant());
-			task_values.put(task_projection[2], task.getNom());
-			task_values.put(task_projection[3], task.getHeureDebut());
-			task_values.put(task_projection[4], task.getHeureFin());
-			task_values.put(task_projection[5], task.getImage());
-			task_values.put(task_projection[6], task.getCouleur());
-			task_values.put(task_projection[7], task.getDescription());
-
-			resolver.update(Activite.CONTENT_URI, task_values,
-					task_projection[1] + " LIKE ?",
-					new String[] { emploi.getNomEnfant() });
-
-		}
-
-		// insertion des Heures
-		String[] heure_projection = Heure.PROJECTION_ALL;
-		ArrayList<HeuresMarquees> heures = emploi.getMarqueTemps();
-		for (HeuresMarquees heure : heures) {
-			ContentValues heure_values = new ContentValues();
-			heure_values.put(heure_projection[0], heure.getId());
-			heure_values.put(heure_projection[1], emploi.getNomEnfant());
-			heure_values.put(heure_projection[2], heure.getHeure_marquee());
-
-			resolver.update(Heure.CONTENT_URI, heure_values, heure_projection[1]
-					+ " LIKE ?", new String[] { emploi.getNomEnfant() });
-
-		}
-
-	}
-
-	/**
 	 * Met a jour la base de donnees avec le fichier de sauvegarde (si la BD
-	 * etait corrompue ou si on a reinstaller l'appli).
+	 * etait corrompue ou si on a reinstalle l'appli).
 	 */
 	private void recoverDataBase() {
 		ArrayList<EmploiDuTemps> emplois = EmploiDuTemps.deserialize(null);
-		ContentResolver resolver = _context.getContentResolver();
-		for (EmploiDuTemps edt : emplois) {
-
-			// insertion des edt
-			String[] edt_projection = Emploi.PROJECTION_ALL;
-			ContentValues edt_values = new ContentValues();
-			edt_values.put(edt_projection[0], edt.getId());
-			edt_values.put(edt_projection[1], edt.getNomEnfant());
-			edt_values.put(edt_projection[2], edt.isValid());
-			resolver.insert(Emploi.CONTENT_URI, edt_values);
-
-			// insertion des activites
-			String[] task_projection = Activite.PROJECTION_ALL;
-			ArrayList<Task> tasks = edt.getEmploi();
-			for (Task task : tasks) {
-				ContentValues task_values = new ContentValues();
-				task_values.put(task_projection[0], task.getId());
-				task_values.put(task_projection[1], edt.getNomEnfant());
-				task_values.put(task_projection[2], task.getNom());
-				task_values.put(task_projection[3], task.getHeureDebut());
-				task_values.put(task_projection[4], task.getHeureFin());
-				task_values.put(task_projection[5], task.getImage());
-				task_values.put(task_projection[6], task.getCouleur());
-				task_values.put(task_projection[7], task.getDescription());
-				resolver.insert(Activite.CONTENT_URI, task_values);
-			}
-
-			// insertion des Heures
-			String[] heure_projection = Heure.PROJECTION_ALL;
-			ArrayList<HeuresMarquees> heures = edt.getMarqueTemps();
-			for (HeuresMarquees heure : heures) {
-				ContentValues heure_values = new ContentValues();
-				heure_values.put(heure_projection[0], heure.getId());
-				heure_values.put(heure_projection[1], edt.getNomEnfant());
-				heure_values.put(heure_projection[2], heure.getHeure_marquee());
-				resolver.insert(Heure.CONTENT_URI, heure_values);
-			}
+		for (EmploiDuTemps emploi : emplois) {
+			insererEDT(emploi);
 		}
 
 	}

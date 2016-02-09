@@ -59,7 +59,7 @@
             android:textSize="30sp" />
 
         <RelativeLayout
-            android:id="@+id/gnar"
+            android:id="@+id/gnar_adulte"
             style="@style/wrapped"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"

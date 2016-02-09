@@ -3,7 +3,6 @@ package atlas.frisedejournee;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -24,7 +23,6 @@ import android.graphics.drawable.shapes.ArcShape;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -58,6 +56,7 @@ public class FriseActivity extends Activity {
 
 	private ArrayList<Task> myTasks; // la liste des activites de la frise
 
+	/* l'activite sur laquelle se trouve le scope */
 	private Task scopedTask; // l'activite sur laquelle se trouve le scope
 
 	private double h0; // l'heure a laquelle commence la frise
@@ -85,8 +84,6 @@ public class FriseActivity extends Activity {
 
 	private boolean swiping = false;
 
-	private Task currentTask = null;
-
 	private int nbTask = 0;
 
 	private TextView bulle_heure;
@@ -96,8 +93,6 @@ public class FriseActivity extends Activity {
 	private TextView bulle_aide_apres;
 
 	private TextView bulle_description;
-
-	private TextToSpeech tts;
 
 	private TextView description_texte = null;
 
@@ -208,7 +203,7 @@ public class FriseActivity extends Activity {
 		nbTask = task_indice;
 
 		/* Met le scope a l'activite en cours */
-		currentTask = findCurrentTask();
+		final Task currentTask = findCurrentTask();
 		if (!(currentTask == null)) {
 			scopedTask = currentTask;
 			drawRange();
@@ -221,15 +216,13 @@ public class FriseActivity extends Activity {
 			displayTask(); // affiche les infos de la tache
 			displayHour(); // afiche l'heure de la tache
 		} else {
-			currentTask = myTasks.get(0);
-			scopedTask = currentTask;
+			scopedTask = myTasks.get(0);
 			replaceScope(); // place le scope sur la tahce
 			displayTask(); // affiche les infos de la tache
 			displayHour(); // afiche l'heure de la tache
 		}
 
-		/* creation des 2 boutons menu, aide */
-		aide = (Button) findViewById(R.id.bouton_aide);
+		/* creation du boutons menu */
 		menu = (Button) findViewById(R.id.bouton_menu);
 		final Drawable menu_presse = getResources().getDrawable(
 				R.drawable.home_e);
@@ -243,18 +236,26 @@ public class FriseActivity extends Activity {
 
 		final LinearLayout heure = (LinearLayout) findViewById(R.id.heure_fond);
 		final LinearLayout boutons_layout = (LinearLayout) findViewById(R.id.boutons);
-		if (options.getBulle()) {
-			bulle_heure = Bulle.create(heure, "L'heure de debut de l'activite",
-					"right", false, this);
-			bulle_aide_avant = Bulle.create(boutons_layout,
-					"Clique sur ce bouton pour obtenir de l'aide", "right",
-					true, this);
-			bulle_aide_apres = Bulle.create(boutons_layout,
-					"Clique sur ce bouton pour sortir de l'aide", "right",
+		if (options.getAide()) {
+			aide = (Button) findViewById(R.id.bouton_aide);
+			aide.setEnabled(true);
+			aide.setVisibility(View.VISIBLE);
+			aide.setOnClickListener(aide_listener);
+
+			bulle_heure = Bulle.create(heure,
+					getResources().getString(R.string.bulle_heure), "right",
 					false, this);
-			bulle_description = Bulle.create(description_bouton,
-					"Pour afficher" + "\n" + "une description de l'activite",
-					"below", false, this);
+			bulle_aide_avant = Bulle
+					.create(boutons_layout,
+							getResources().getString(R.string.bulle_aide_avant),
+							"right", false, this);
+			bulle_aide_apres = Bulle
+					.create(boutons_layout,
+							getResources().getString(R.string.bulle_aide_apres),
+							"right", false, this);
+			bulle_description = Bulle.create(description_bouton, getResources()
+					.getString(R.string.bulle_description), "below", false,
+					this);
 			/*
 			 * if (Build.VERSION.SDK_INT >= 21) {
 			 * bulle_aide_avant.setElevation(20); // met les bulle au premier //
@@ -267,32 +268,31 @@ public class FriseActivity extends Activity {
 			 * bulle_description.setOutlineProvider(null); }
 			 */
 			if (options.getSound()) {
-				TTSBouton.parle(bulle_heure, "L'heure de debut de l'activite",
-						this);
+				TTSBouton.parle(bulle_heure,
+						getResources().getString(R.string.bulle_heure), this);
 				TTSBouton.parle(bulle_aide_avant,
-						"Clique sur ce bouton pour obtenir de l'aide", this);
+						getResources().getString(R.string.bulle_aide_avant),
+						this);
 				TTSBouton.parle(bulle_aide_apres,
-						"Clique sur ce bouton pour sortir de l'aide", this);
+						getResources().getString(R.string.bulle_aide_apres),
+						this);
 				TTSBouton.parle(bulle_description,
-						"Pour afficher une description de l'activite", this);
+						getResources().getString(R.string.bulle_description),
+						this);
 			}
 		}
 
-		aide.setOnClickListener(aide_listener);
-
 		// creation de l'information sur l'activite courante
 
-		description_bouton.setBackgroundColor(getResources().getColor(currentTask.getCouleur()));
+		description_bouton.setBackgroundColor(getResources().getColor(
+				scopedTask.getCouleur()));
 		description_texte = (TextView) findViewById(R.id.description_text);
-		description_texte
-				.setTextColor(getResources().getColor(R.color.blanc));
-		description_bouton.setTextColor(getResources()
-				.getColor(R.color.blanc));
+		description_bouton.setTextColor(getResources().getColor(R.color.blanc));
 		Police.setFont(this, description_texte, "Action_Man.ttf");
 		Police.setFont(this, description_bouton, "Action_Man.ttf");
 
 		if (options.getSound()) {
-			TTSBouton.parle(description_texte, currentTask.getDescription(),
+			TTSBouton.parle(description_texte, scopedTask.getDescription(),
 					getApplicationContext());
 		}
 
@@ -414,28 +414,17 @@ public class FriseActivity extends Activity {
 		}
 
 		// affichage de l'horloge a l'heure
-		final RelativeLayout horloge = (RelativeLayout) findViewById(R.id.horloge);
+		final RelativeLayout horlogeHaut = (RelativeLayout) findViewById(R.id.horloge);
 		final Calendar now = Calendar.getInstance();
-		Horloge.create(horloge, this, now.get(Calendar.HOUR_OF_DAY),
+		Horloge.create(horlogeHaut, this, now.get(Calendar.HOUR_OF_DAY),
 				now.get(Calendar.MINUTE), 0);
-		tts = new TextToSpeech(getApplicationContext(),
-				new TextToSpeech.OnInitListener() {
-
-					public void onInit(final int status) {
-						if (status != TextToSpeech.ERROR) {
-							tts.setLanguage(Locale.FRANCE);
-						}
-					}
-				});
-		horloge.setOnClickListener(new View.OnClickListener() {
+	
+		horlogeHaut.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(final View v) {
 				moveScopeToCurrentTask();
 				final String t = Horloge.dateActuelle();
-				if (options.getSound()) {
-					tts.speak(t, TextToSpeech.QUEUE_FLUSH, null);
-				}
-				Toast.makeText(getApplicationContext(), t, Toast.LENGTH_SHORT)
+				Toast.makeText(getApplicationContext(), t, Toast.LENGTH_LONG)
 						.show();
 
 			}
@@ -444,7 +433,7 @@ public class FriseActivity extends Activity {
 
 		// drawProgression();
 		if (!options.getHorloge()) {
-			horloge.setVisibility(View.INVISIBLE);
+			horlogeHaut.setVisibility(View.INVISIBLE);
 		}
 
 		// swipe
@@ -455,7 +444,7 @@ public class FriseActivity extends Activity {
 			public void onSwipeRight() {
 				final int index = Task.indexOfTask(myTasks, scopedTask);
 				if (index - 1 >= 0 && !swiping) {
-					taskClicked(index - 1, scopedTask);
+					taskClicked(index - 1, myTasks.get(index - 1));
 				}
 			}
 
@@ -463,7 +452,7 @@ public class FriseActivity extends Activity {
 			public void onSwipeLeft() {
 				final int index = Task.indexOfTask(myTasks, scopedTask);
 				if (index + 1 < nbTask && !swiping) {
-					taskClicked(index + 1, scopedTask);
+					taskClicked(index + 1, myTasks.get(index + 1));
 				}
 			}
 		});
@@ -472,6 +461,7 @@ public class FriseActivity extends Activity {
 
 	/**
 	 * Changements d'IHM quand une task change de focus.
+	 * 
 	 * @param taskId
 	 * @param task
 	 */
@@ -486,24 +476,15 @@ public class FriseActivity extends Activity {
 		moveScope(deltaId);
 		displayTask(); // affiche la tache scoped au centre
 		changeHour(beforeTask.getHeureDebut());
-		currentTask = scopedTask;
-		if (description_layout.getVisibility() == View.INVISIBLE) {
-			description_bouton
-					.setBackgroundColor(getResources()
-							.getColor(currentTask.getCouleur()));
-		} else {
-			description_bouton.setBackgroundColor(Couleur.lighten(getResources().getColor(
-					currentTask.getCouleur())));
-		}
-
-		description_texte.setText(currentTask.getDescription() + "\nDuree : "
-				+ formatHour(currentTask.getDuree()));
+		description_bouton.setBackgroundColor(couleur);
+		description_layout.setBackgroundColor(couleur);
+		description_texte.setText(task.getDescription() + "\nDuree : "
+				+ formatHour(task.getDuree()));
 		if (options.getSound()) {
-			TTSBouton.parle(description_texte, currentTask.getDescription(),
+			TTSBouton.parle(description_texte, task.getDescription(),
 					getApplicationContext());
 			// le menu d'information sur l'activite change avec l'activite
 		}
-
 	}
 
 	/**
@@ -527,7 +508,7 @@ public class FriseActivity extends Activity {
 			final int minuteD = getMinute(hDebut);
 			before.set(year, month, day, heureD, minuteD);
 
-			final double hFin = hDebut + t.getDuree();
+			final double hFin = t.getHeureFin();
 			final int heureF = (int) Math.floor(hFin);
 			final int minuteF = getMinute(hFin);
 			after.set(year, month, day, heureF, minuteF);
@@ -613,7 +594,8 @@ public class FriseActivity extends Activity {
 
 						public void run() {
 							final Button rectTask = (Button) findViewById(taskId);
-							final int couleur = getResources().getColor(scopedTask.getCouleur());
+							final int couleur = getResources().getColor(
+									scopedTask.getCouleur());
 							rectTask.setBackgroundColor(couleur);
 							setEnableTaskButton(true);
 							scope.clearAnimation();
@@ -668,15 +650,19 @@ public class FriseActivity extends Activity {
 	public void displayTask() {
 
 		final LinearLayout heure_fond = (LinearLayout) findViewById(R.id.heure_fond);
-		TTSBouton.parle(heure_fond, HeuresMarquees.toString(scopedTask.getHeureDebut()),
-				this);
+		if (options.getSound()) {
+			TTSBouton.parle(heure_fond,
+					HeuresMarquees.toSpeak(scopedTask.getHeureDebut()), this);
+		}
 
 		/* Recuperation du cadre et modification de sa couleur */
 		final ImageView cadre = (ImageView) findViewById(R.id.frame);
 		final GradientDrawable drawable = (GradientDrawable) cadre
 				.getBackground();
-		final int couleur = getResources().getColor(scopedTask.getCouleur()); // recuperation de la
-														// couleur
+		final int couleur = getResources().getColor(scopedTask.getCouleur()); // recuperation
+																				// de
+																				// la
+		// couleur
 		final int couleur_clair = Couleur.lighten(couleur);
 		final int[] colors = { couleur_clair, couleur };
 		if (Build.VERSION.SDK_INT >= 16) {
@@ -718,11 +704,11 @@ public class FriseActivity extends Activity {
 			String path = scopedTask.getImage();
 			path = path.substring(1, path.length());
 			Bitmap bm = BitmapFactory.decodeFile(path);
-			if(bm!=null){
-			imageTask.setImageBitmap(bm);
-			}
-			else{
-				imageTask.setImageDrawable(getResources().getDrawable(R.drawable.etoile));
+			if (bm != null) {
+				imageTask.setImageBitmap(bm);
+			} else {
+				imageTask.setImageDrawable(getResources().getDrawable(
+						R.drawable.etoile));
 			}
 		} else {
 			final int imageId = getResources().getIdentifier(
@@ -760,8 +746,10 @@ public class FriseActivity extends Activity {
 
 		/* Affichage de la tache precedente si elle existe */
 		if (previous != null) {
-			final int couleur = getResources().getColor(previous.getCouleur()); // recuperation de la
-														// couleur
+			final int couleur = getResources().getColor(previous.getCouleur()); // recuperation
+																				// de
+																				// la
+			// couleur
 			prev.setBackgroundColor(couleur);
 			prev.setVisibility(View.VISIBLE);
 			prev.setAlpha(0.95f);
@@ -771,7 +759,10 @@ public class FriseActivity extends Activity {
 
 		/* Affichage de la tache precedente si elle existe */
 		if (next != null) {
-			final int couleur = getResources().getColor(next.getCouleur()); // recuperation de la couleur
+			final int couleur = getResources().getColor(next.getCouleur()); // recuperation
+																			// de
+																			// la
+																			// couleur
 			nxt.setBackgroundColor(couleur);
 			sommaire = (Button) findViewById(R.id.bouton_sommaire);
 			sommaire.setBackgroundColor(couleur);
@@ -779,7 +770,8 @@ public class FriseActivity extends Activity {
 			nxt.setAlpha(0.95f);
 		} else {
 			nxt.setVisibility(View.INVISIBLE);
-			final int couleur = getResources().getColor(scopedTask.getCouleur());
+			final int couleur = getResources()
+					.getColor(scopedTask.getCouleur());
 			sommaire = (Button) findViewById(R.id.bouton_sommaire);
 			sommaire.setBackgroundColor(couleur);
 		}
@@ -835,6 +827,9 @@ public class FriseActivity extends Activity {
 	 */
 	public String formatHour(final double hour) {
 		final String[] split = splitHour(hour);
+		if (Integer.valueOf(split[2]) == 0) {
+			return split[0] + split[1] + "h";
+		}
 		return split[0] + split[1] + "h" + split[2] + split[3];
 	}
 
@@ -895,7 +890,7 @@ public class FriseActivity extends Activity {
 			} else if (actual[i] > next[i]) {
 				toY = +h;
 			} else if (actual[i] == next[i]) {
-				continue; // ne rienf faire pour celui-ci
+				continue; // ne rien faire pour celui-ci
 			}
 			TextView view = null;
 			TextView view_clone = null;
@@ -1062,11 +1057,12 @@ public class FriseActivity extends Activity {
 				// R.id.bouton_menu);
 				// aide.setLayoutParams(params_aide);
 
-				// Disparition des bulles d'aide //
-				if (options.getBulle()) {
+				// Disparition des bulles et de l'aide //
+				if (options.getAide()) {
 					Animer.fade_out(bulle_aide_apres, 500, false);
 					Animer.fade_out(bulle_heure, 500, false);
 					Animer.fade_out(bulle_description, 500, false);
+					Animer.fade_out(bulle_aide_avant, 500, false);
 				}
 			} else { // on entre en mode aide
 
@@ -1086,18 +1082,18 @@ public class FriseActivity extends Activity {
 				// text to speech sur les boutons //
 
 				if (options.getSound()) {
-					TTSBouton.parle(menu, "pour retourner au menu principal",
+					TTSBouton.parle(menu,
+							getResources().getString(R.string.aide_menu),
 							getApplicationContext());
 				}
 
 				description_bouton.setEnabled(false);
 
 				// Apparitions des bulles d'aide //
-				if (options.getBulle()) {
+				if (options.getAide()) {
 					Animer.fade_in(bulle_heure, 500);
 					Animer.fade_in(bulle_description, 500);
 					Animer.fade_in(bulle_aide_apres, 500);
-					Animer.fade_out(bulle_aide_avant, 500, true);
 				}
 			}
 		}
@@ -1108,18 +1104,15 @@ public class FriseActivity extends Activity {
 		public void onClick(final View vue) {
 
 			if (description_layout.getVisibility() == View.INVISIBLE) {
+
 				Animer.fade_in(description_layout, 500);
-				description_texte.setText(currentTask.getDescription()
-						+ "\nDuree : " + formatHour(currentTask.getDuree()));
-				description_bouton.setBackgroundColor(Couleur
-						.lighten(getResources().getColor(
-								currentTask.getCouleur())));
+				description_layout.setBackgroundColor(getResources().getColor(
+						scopedTask.getCouleur()));
+				description_texte.setText(scopedTask.getDescription()
+						+ "\nDuree : " + formatHour(scopedTask.getDuree()));
+
 			} else {
 				Animer.fade_out(description_layout, 500, false);
-				description_bouton.setBackgroundColor(getResources().getColor(
-						currentTask.getCouleur()));
-				description_bouton.setTextColor(getResources().getColor(
-						R.color.blanc_casse));
 			}
 		}
 	};
@@ -1248,7 +1241,11 @@ public class FriseActivity extends Activity {
 				sommaire.setTranslationX(width / 3);
 				final Task next = Task.findRelativeTask(myTasks, scopedTask, 1);
 				if (next != null) {
-					sommaire.setBackgroundColor(getResources().getColor(next.getCouleur()));
+					sommaire.setBackgroundColor(getResources().getColor(
+							next.getCouleur()));
+				} else {
+					sommaire.setBackgroundColor(getResources().getColor(
+							scopedTask.getCouleur()));
 				}
 				sommaire.setTextColor(getResources().getColor(R.color.blanc));
 				sommaire_open = false;
@@ -1386,6 +1383,5 @@ public class FriseActivity extends Activity {
 		shape.getPaint().setColor(getResources().getColor(colorId));
 		img.setBackgroundDrawable(shape);
 	}
-
 
 }
