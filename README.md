@@ -8,3 +8,11 @@ Les enfants ont eux aussi le droit à leur emploi du temps ! L'application pour 
 English:
 
 Kids should have their own planner! The tablet application Frizz allows them to visualize their activities in a colorful and fun way, your child will always know what he has already done and what it is left to do in his daily schedule. A friendly mascot helps your child navigate through the application without any trouble! Frizz is the perfect application for children with time-related anxiety or those who just want a fun and interactive planner to carry around with them.
+
+![Frizz Menu](https://raw.github.com/nserguier/Frizz/master/screenshot/screenshots/screen3.png)
+
+![Photo Task](https://raw.github.com/nserguier/Frizz/master/screenshot/screenshots/screen7.png)
+
+![Mascot Picture Task](https://raw.github.com/nserguier/Frizz/master/screenshot/screenshots/screen4.png)
+
+![All tasks](https://raw.github.com/nserguier/Frizz/master/screenshot/screenshots/screen6.png)
